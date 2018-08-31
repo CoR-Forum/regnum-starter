@@ -4,7 +4,7 @@ Mit diesem Tool kannst du dich im Spiel [Champions of Regnum](https://www.champi
 
 ### Benutzung
 
-Die letzte Version kann [HIER](bla) heruntergeladen werden.
+Die letzte Version kann [https://github.com/phil294/cor-schnellstarter/releases](hier) heruntergeladen werden.
 
 ### Built With
 
