@@ -54,7 +54,7 @@ updateServerConfig:
 		if(update_info==-1 || empty(update_info)) {
 		
 		} else {
-			msgbox % "Neue Schnellstarter Version: `n" update_info
+			msgbox, ,CoR Schnellstarter - Selfupdate", "CoR Schnellstarter erfolgreich auf Version `n aktualisiert." update_info
 		}
 	}
 	tooltip
