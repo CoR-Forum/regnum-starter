@@ -45,7 +45,7 @@ updateServerConfig:
 	urldownloadtofile, http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
-		msgbox, IPs / Publisher wurden aktualisiert.
+		msgbox, ,"CoR Schnellstarter - Selfupdate", "Server und Publisher wurden erfolgreich aktualisiert."
 		reload
 	}
 	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
