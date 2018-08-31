@@ -200,6 +200,10 @@ GUI_:
 	WinSet, TransColor, EEAA99
 	
 	gui, add, picture, x0 y0, data\bckg.png
+
+	Gui, Font, s8 bold, Verdana
+	gui, add, button, w70 x36 y136 glogin, Login
+
 	Gui, Font, s7 c000000, Verdana
 
 	gui, add, dropdownlist, x11 y105 w125 vgui_userlist altsubmit
@@ -215,9 +219,7 @@ GUI_:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x256 y105 w80 vgui_refererlist altsubmit
 	gosub updateRefererlist
-	
-	Gui, Font, s8 bold, Verdana
-	gui, add, button, w70 x36 y136 glogin, Login
+
 	Gui, Font, s7 c000000, Verdana
 	gui, add, button, w70 x36 y165 gshortcutCreate, Direktlink`nerstellen
 
