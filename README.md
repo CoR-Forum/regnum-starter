@@ -1,6 +1,6 @@
 # CoR Schnellstarter
 
-![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-33-02_cruPuhJkvJCKAAyHP6az.png)
+![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-59-53_F102WB3ehR42Q1oCOM9y.png)
 
 Mit diesem Tool kannst du dich im Spiel [Champions of Regnum](https://www.championsofregnum.com/) in wenigen Sekunden einloggen und die Eingabe von Benutzername und Passwort überspringen.
 
