@@ -41,6 +41,7 @@ settimer, updateServerConfig, -10
 return
 ; //
 updateServerConfig:
+	tooltip, Hole Update Info...
 	urldownloadtofile, http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
@@ -56,6 +57,7 @@ updateServerConfig:
 			msgbox % "Neue Schnellstarter Version: `n" update_info
 		}
 	}
+	tooltip
 return
 ; ////
 readUsers:
