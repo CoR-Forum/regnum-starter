@@ -16,7 +16,7 @@ Please feel free to fork this project, make your changes and submit a pull reque
 
 ### Authors
 
-* **Blauhirn** - *Whole work* - [@phil294](https://github.com/phil294)
+* **Blauhirn** - *Head Development* - [@phil294](https://github.com/phil294)
 * **Francis** - *GitHub maintenance* - [@joshua2504](https://github.com/joshua2504)
 
 ### License
