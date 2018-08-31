@@ -1,8 +1,8 @@
-#persistent
+﻿#persistent
 #singleinstance off
 setworkingdir %a_scriptDir%
 if(!fileexist("data")) {
-	msgbox, data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugeh�rige "data" Ordner.
+	msgbox, data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehörige "data" Ordner.
 	exitapp
 }
 menu, tray, icon, data/icon.ico
@@ -230,7 +230,7 @@ GUI_:
 	if skip_logo = 1
 		checked = checked
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 %checked% backgroundtrans vgui_skip_logo
-	gui, add, text, x+3 yp backgroundtrans, NGD/Gamigo-Vorspann l�schen
+	gui, add, text, x+3 yp backgroundtrans, NGD-Vorspann löschen
 	
 	checked=
 	if hide_loading_screen = 1
@@ -238,7 +238,7 @@ GUI_:
 	gui, add, checkbox, w%CBW% h%CBH% x11 y237 %checked% backgroundtrans vgui_hide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, Ladescreen ausblenden
 	
-	gui, add, text, x238 y259 backgroundtrans, Regnum-Aufl�sung:
+	gui, add, text, x238 y259 backgroundtrans, Regnum-Auflösung:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vgui_width, %width%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -251,10 +251,10 @@ GUI_:
 	Gui, Font, s7 bold cD8D8D8, Verdana
 	gui, add, text, x256 w80 r2 y160 backgroundtrans vgui_regnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x256 w80 y189 gpath_edit, �ndern
+	gui, add, button, x256 w80 y189 gpath_edit, ändern
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x117 center y136 w130 h100 backgroundtrans, Mit diesem Programm wird der Update-Server umgangen! Neue Inhalte k�nnen nur �ber den normalen Launcher geladen werden!
+	gui, add, text, x117 center y136 w130 h100 backgroundtrans, Mit diesem Programm wird der Update-Server umgangen! Neue Inhalte können nur über den normalen Launcher geladen werden!
 	Gui, Font, s8 c000000, Verdana
 
 	checked=
@@ -262,7 +262,7 @@ GUI_:
 		checked = checked
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x11 y257 %checked% w%CBW% h%CBH% grunasGuiToggled vgui_runas
-	gui, add, text, x29 y257 backgroundtrans, als anderer Win-Nutzer ausf�hren:
+	gui, add, text, x29 y257 backgroundtrans, als anderer Win-Nutzer ausführen:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vgui_runas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -272,7 +272,7 @@ GUI_:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x118 y295 backgroundtrans vgui_runas03, Win Passwort
 	Gui, Font, s5 cD8D8D8, Verdana
-	gui, add, text, x133 y305 backgroundtrans vgui_runas04, (ben�tigt)
+	gui, add, text, x133 y305 backgroundtrans vgui_runas04, (benötigt)
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
@@ -335,7 +335,7 @@ return
 
 ; //////////////////
 path_edit:
-	fileselectfolder, p, *%regnum_path%,, Bitte w�hle das den Hauptordner von Regnum aus! zB. "Regnum Online", oder "Realms Online", evtl. "Champions of Regnum", ...
+	fileselectfolder, p, *%regnum_path%,, Bitte wähle das den Hauptordner von Regnum aus! zB. "Regnum Online", oder "Realms Online", evtl. "Champions of Regnum", ...
 	ifnotinstring, p, \
 		return
 	regnum_path = %p%\
@@ -356,7 +356,7 @@ shortcutCreate:
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
 	
-	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % "W�hle den Speicherort f�r die Verkn�pfung f�r " user.name " " server.name " aus!"
+	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % "Wähle den Speicherort für die Verknüpfung für " user.name " " server.name " aus!"
 	ifnotinstring, shortcut, \
 		return
 		
@@ -372,12 +372,12 @@ shortcutCreate:
 	}
 	
 	if(errorlevel) {
-		msgbox, Direktlink Erstellung war nicht erfolgreich.
+		msgbox, Erstellung des Direktlinks war nicht erfolgreich.
 	} else {
 		wat :=  user.name " " pw " " referer.name " " server.name
 		if(gui_runas==1)
 			wat .= " " gui_runas_name " " gui_runas_pw
-		msgbox, Direktlink Erstellung erfolgreich erstellt f�r folgende Werte:`n%wat%
+		msgbox, Erstellung des Direktlinks erfolgreich erstellt für folgende Werte:`n%wat%
 	}
 	
 	shortcut_last := shortcut
@@ -470,16 +470,16 @@ run:
 	test = %regnum_path%TestServer\
 	ifnotexist, %regnum_path%game.cfg
 	{
-		msgbox, Regnum-Ordnerpfad unzul�ssig! (keine game.cfg gefunden)
+		msgbox, Regnum-Ordnerpfad ungültig! (keine game.cfg gefunden)
 		return
 	}
 	filegetsize, size, %regnum_path%game.cfg, K
 	if(size<0.5) {
-		msgbox, Regnum-Ordnerpfad unzul�ssig! (game.cfg gefunden, aber kleiner als 0.1 KB)
+		msgbox, Regnum-Ordnerpfad ungültig! (game.cfg gefunden, aber kleiner als 0.1 KB)
 		return
 	}
 	if(empty(gui_width) || empty(gui_height)){
-		msgbox, Bitte w�hle eine Aufl�sung!
+		msgbox, Bitte wähle eine Auflösung!
 		return
 	}
 	server := -1
@@ -506,7 +506,7 @@ run:
 	}
 	
 	if(empty(run_pw) || empty(run_name)) {
-		msgbox Du hast keinen Account ausgew�hlt! W�hle zuerst "Accounts verwalten" aus!
+		msgbox Du hast keinen Account ausgewählt! Wähle zuerst "Accounts verwalten" aus!
 		return
 	}
 	
@@ -531,13 +531,13 @@ run:
 	if(server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad unzul�ssig (keine ROClientGame.exe im TestServer-Ordner gefunden) [Amun]
+			msgbox, Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im TestServer-Ordner gefunden) [Amun]
 			return
 		}
 	} else {
 		ifnotexist, %live%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad unzul�ssig (keine ROClientGame.exe im LiveServer-Ordner gefunden)
+			msgbox, Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im LiveServer-Ordner gefunden)
 			return
 		}
 	}
