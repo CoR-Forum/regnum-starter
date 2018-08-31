@@ -2,7 +2,7 @@
 #singleinstance off
 setworkingdir %a_scriptDir%
 if(!fileexist("data")) {
-	msgbox, data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehörige "data" Ordner.
+	msgbox, data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehï¿½rige "data" Ordner.
 	exitapp
 }
 menu, tray, icon, data/icon.ico
@@ -226,7 +226,7 @@ GUI_:
 	if skip_logo = 1
 		checked = checked
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 %checked% backgroundtrans vgui_skip_logo
-	gui, add, text, x+3 yp backgroundtrans, NGD/Gamigo-Vorspann löschen
+	gui, add, text, x+3 yp backgroundtrans, NGD/Gamigo-Vorspann lï¿½schen
 	
 	checked=
 	if hide_loading_screen = 1
@@ -234,7 +234,7 @@ GUI_:
 	gui, add, checkbox, w%CBW% h%CBH% x11 y237 %checked% backgroundtrans vgui_hide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, Ladescreen ausblenden
 	
-	gui, add, text, x238 y259 backgroundtrans, Regnum-Auflösung:
+	gui, add, text, x238 y259 backgroundtrans, Regnum-Auflï¿½sung:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vgui_width, %width%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -247,10 +247,10 @@ GUI_:
 	Gui, Font, s7 bold cD8D8D8, Verdana
 	gui, add, text, x256 w80 r2 y160 backgroundtrans vgui_regnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x256 w80 y189 gpath_edit, ändern
+	gui, add, button, x256 w80 y189 gpath_edit, ï¿½ndern
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x117 center y136 w130 h100 backgroundtrans, Mit diesem Programm wird der Update-Server umgangen! Neue Inhalte können nur über den normalen Launcher geladen werden!
+	gui, add, text, x117 center y136 w130 h100 backgroundtrans, Mit diesem Programm wird der Update-Server umgangen! Neue Inhalte kï¿½nnen nur ï¿½ber den normalen Launcher geladen werden!
 	Gui, Font, s8 c000000, Verdana
 
 	checked=
@@ -258,7 +258,7 @@ GUI_:
 		checked = checked
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x11 y257 %checked% w%CBW% h%CBH% grunasGuiToggled vgui_runas
-	gui, add, text, x29 y257 backgroundtrans, als anderer Win-Nutzer ausführen:
+	gui, add, text, x29 y257 backgroundtrans, als anderer Win-Nutzer ausfï¿½hren:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vgui_runas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -268,7 +268,7 @@ GUI_:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x118 y295 backgroundtrans vgui_runas03, Win Passwort
 	Gui, Font, s5 cD8D8D8, Verdana
-	gui, add, text, x133 y305 backgroundtrans vgui_runas04, (benötigt)
+	gui, add, text, x133 y305 backgroundtrans vgui_runas04, (benï¿½tigt)
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
@@ -331,7 +331,7 @@ return
 
 ; //////////////////
 path_edit:
-	fileselectfolder, p, *%regnum_path%,, Bitte wähle das den Hauptordner von Regnum aus! zB. "Regnum Online", oder "Realms Online", evtl. "Champions of Regnum", ...
+	fileselectfolder, p, *%regnum_path%,, Bitte wï¿½hle das den Hauptordner von Regnum aus! zB. "Regnum Online", oder "Realms Online", evtl. "Champions of Regnum", ...
 	ifnotinstring, p, \
 		return
 	regnum_path = %p%\
@@ -352,14 +352,11 @@ shortcutCreate:
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
 	
-	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % "Wähle den Speicherort für die Verknüpfung für " user.name " " server.name " aus!"
+	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % "Wï¿½hle den Speicherort fï¿½r die Verknï¿½pfung fï¿½r " user.name " " server.name " aus!"
 	ifnotinstring, shortcut, \
 		return
 		
 	pw := MD5_( user.pw , StrLen( user.pw ))
-	stringlower, pw,pw
-	if(pw==-1)
-		msgbox, Fehler beim Login: 20
 	
 	params := """" user.name """ " pw " " referer.name " " server.name " " gui_runas " """ gui_runas_name """ """ gui_runas_pw """"
 	if(a_iscompiled) {
@@ -376,7 +373,7 @@ shortcutCreate:
 		wat :=  user.name " " pw " " referer.name " " server.name
 		if(gui_runas==1)
 			wat .= " " gui_runas_name " " gui_runas_pw
-		msgbox, Direktlink Erstellung erfolgreich erstellt für folgende Werte:`n%wat%
+		msgbox, Direktlink Erstellung erfolgreich erstellt fï¿½r folgende Werte:`n%wat%
 	}
 	
 	shortcut_last := shortcut
@@ -452,7 +449,6 @@ setupParams:
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
 	run_pw := MD5_( user.pw , StrLen( user.pw ))
-	stringlower, run_pw, run_pw
 	run_name := user.name
 	run_referername := referer.name
 	if(run_pw==-1) {
@@ -470,16 +466,16 @@ run:
 	test = %regnum_path%TestServer\
 	ifnotexist, %regnum_path%game.cfg
 	{
-		msgbox, Regnum-Ordnerpfad unzulässig! (keine game.cfg gefunden)
+		msgbox, Regnum-Ordnerpfad unzulï¿½ssig! (keine game.cfg gefunden)
 		return
 	}
 	filegetsize, size, %regnum_path%game.cfg, K
 	if(size<0.5) {
-		msgbox, Regnum-Ordnerpfad unzulässig! (game.cfg gefunden, aber kleiner als 0.1 KB)
+		msgbox, Regnum-Ordnerpfad unzulï¿½ssig! (game.cfg gefunden, aber kleiner als 0.1 KB)
 		return
 	}
 	if(empty(gui_width) || empty(gui_height)){
-		msgbox, Bitte wähle eine Auflösung!
+		msgbox, Bitte wï¿½hle eine Auflï¿½sung!
 		return
 	}
 	server := -1
@@ -506,7 +502,7 @@ run:
 	}
 	
 	if(empty(run_pw) || empty(run_name)) {
-		msgbox Du hast keinen Account ausgewählt! Wähle zuerst "Accounts verwalten" aus!
+		msgbox Du hast keinen Account ausgewï¿½hlt! Wï¿½hle zuerst "Accounts verwalten" aus!
 		return
 	}
 	
@@ -531,13 +527,13 @@ run:
 	if(server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad unzulässig (keine ROClientGame.exe im TestServer-Ordner gefunden) [Amun]
+			msgbox, Regnum-Ordnerpfad unzulï¿½ssig (keine ROClientGame.exe im TestServer-Ordner gefunden) [Amun]
 			return
 		}
 	} else {
 		ifnotexist, %live%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad unzulässig (keine ROClientGame.exe im LiveServer-Ordner gefunden)
+			msgbox, Regnum-Ordnerpfad unzulï¿½ssig (keine ROClientGame.exe im LiveServer-Ordner gefunden)
 			return
 		}
 	}
@@ -629,34 +625,17 @@ return
 
 
 
-
-md5_(s,bla) {
-
-	stringlen, workdirlength, A_WorkingDir
-	count := workdirlength - 1
-	StringTrimRight, laufwerksbuchstabe, A_WorkingDir, %Count%
-	stringlower, laufwerksbuchstabe, laufwerksbuchstabe
-	
-	filedelete, data\tmp.txt
-	
-	runas
-	stringreplace,s,s,","",all
-	Run %comspec% /%laufwerksbuchstabe% ""%A_WorkingDir%\data\md5.exe" -d"%s%" > "%A_WorkingDir%\data\tmp.txt"", %A_WorkingDir%\data,hide
-
-	a_s := a_tickcount
-	while(a_tickcount - a_s < 1500) {
-		fileread,md5,data\tmp.txt
-		if(md5=="")
-			continue
-		filedelete, data\tmp.txt
-		md5 := regexreplace(md5,"\s","")
-		if(empty(md5))
-			break
-		return md5
-	}
-	msgbox Could not generate Password Hash.
-	return -1	
-}
+md5_(string, case := False)    ; by SKAN | rewritten by jNizM
+{
+    static MD5_DIGEST_LENGTH := 16
+    hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
+    , VarSetCapacity(MD5_CTX, 104, 0), DllCall("advapi32\MD5Init", "Ptr", &MD5_CTX)
+    , DllCall("advapi32\MD5Update", "Ptr", &MD5_CTX, "AStr", string, "UInt", StrLen(string))
+    , DllCall("advapi32\MD5Final", "Ptr", &MD5_CTX)
+    loop % MD5_DIGEST_LENGTH
+        o .= Format("{:02" (case ? "X" : "x") "}", NumGet(MD5_CTX, 87 + A_Index, "UChar"))
+    return o, DllCall("FreeLibrary", "Ptr", hModule)
+} ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
 
 
 
