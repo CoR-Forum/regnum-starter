@@ -28,6 +28,8 @@ Der Schnellstarter aktualisiert eigenständig die Liste der Server und Publisher
 
 Please feel free to fork this project, make your changes and submit a pull request. We will kindly review your pull request and merge it with our master branch.
 
+The .exe has been compiled using Ahk2Exe, which is included in the AHK 1.1 files downloadable [here](https://autohotkey.com/download/1.1/).
+
 ### Authors
 
 * **Blauhirn** - *Head Development* - [@phil294](https://github.com/phil294)
