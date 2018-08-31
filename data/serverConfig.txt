@@ -1,0 +1,31 @@
+# THIS FILE WILL BE UPDATED AUTOMATICALLY FROM
+# www.cor-forum.de/regnum/schnellstarter/serverConfig.txt
+[version]
+# version: if ++, notify user & reload IPs + referers
+version=2
+program_version=1
+# update-info: if ! empty, will be prompted to user on program_version++
+update_info=
+[servers]
+# name , ip , port , retriever_ip
+Valhalla,104.155.0.10,48000,91.123.197.143:80
+Ra,104.196.13.153,48000,91.123.197.143:80
+Haven,104.196.26.228,48000,91.123.197.143:80
+[referers]
+# name , token
+GamigoDE,gmg
+GamigoFR,gmf
+NGD,rgn
+SambaInt,gsi
+SambaUSA,gsb
+Boacompra,boa
+RegnumBrasil,rgb
+Alienware,awr
+WildTangent,wtg
+SpilGames,spi
+ControlInvest,civ
+Steam,ste
+SteamGmg,sgm
+SteamGmgFR,sgf
+SteamSamba,sgs
+SteamBoacompra,sbo
