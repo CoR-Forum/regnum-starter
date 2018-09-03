@@ -360,7 +360,7 @@ shortcutCreate:
 	ifnotinstring, shortcut, \
 		return
 		
-	pw := MD5_( user.pw , StrLen( user.pw ))
+	pw := MD5( user.pw , StrLen( user.pw ))
 	
 	params := """" user.name """ " pw " " referer.name " " server.name " " gui_runas " """ gui_runas_name """ """ gui_runas_pw """"
 	if(a_iscompiled) {
@@ -452,13 +452,9 @@ setupParams:
 	user := users[gui_userlist]
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
-	run_pw := MD5_( user.pw , StrLen( user.pw ))
+	run_pw := MD5( user.pw , StrLen( user.pw ))
 	run_name := user.name
 	run_referername := referer.name
-	if(run_pw==-1) {
-		msgbox, Fehler beim Login: 20
-		return
-	}
 	run_servername := server.name
 	run_runas := gui_runas
 	run_runas_name := gui_runas_name
@@ -565,9 +561,7 @@ return
 
 
 
-; /////////////////////
-
-
+; ///// make gui moveable:
 ~LButton::
 errorlevel_safe := errorlevel
 MouseGetPos, MouseStartX, MouseStartY, MouseWin, MouseControl
@@ -629,7 +623,7 @@ return
 
 
 
-md5_(string, case := False)    ; by SKAN | rewritten by jNizM
+md5(string, case := False)    ; by SKAN | rewritten by jNizM
 {
     static MD5_DIGEST_LENGTH := 16
     hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
