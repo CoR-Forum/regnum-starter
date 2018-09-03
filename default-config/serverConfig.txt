@@ -2,16 +2,16 @@
 # www.cor-forum.de/regnum/schnellstarter/serverConfig.txt
 [version]
 # version: if ++, notify user & reload IPs + referers
-version=2
+version=3
 program_version=1
 # update-info: if ! empty, will be prompted to user on program_version++
 update_info=
 [servers]
 # name , ip , port , retriever_ip
-Valhalla,104.155.0.10,48000,91.123.197.143:80
-Ra,104.196.13.153,48000,91.123.197.143:80
-Haven,104.196.26.228,48000,91.123.197.143:80
-Amun,104.196.19.207,48000,91.123.197.143:80
+Valhalla,104.155.0.10,48000,104.196.149.195:80
+Ra,104.196.13.153,48000,104.196.149.195:80
+Haven,104.196.26.228,48000,104.196.149.195:80
+Amun,104.196.19.207,48000,104.196.149.195:80
 [referers]
 # name , token
 GamigoDE,gmg
