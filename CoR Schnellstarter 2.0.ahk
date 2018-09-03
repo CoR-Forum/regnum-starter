@@ -557,7 +557,7 @@ run:
 		run "%live%ROClientGame.exe" %run_name% %run_pw%, %live%, UseErrorLevel
 	}
 	if(errorlevel == "ERROR") {
-		msgbox, Falsche Windows-Benutzeraccount-Daten!
+		msgbox, Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?
 		return
 	}
 
@@ -638,7 +638,9 @@ md5_(string, case := False)    ; by SKAN | rewritten by jNizM
     , DllCall("advapi32\MD5Final", "Ptr", &MD5_CTX)
     loop % MD5_DIGEST_LENGTH
         o .= Format("{:02" (case ? "X" : "x") "}", NumGet(MD5_CTX, 87 + A_Index, "UChar"))
-    return o, DllCall("FreeLibrary", "Ptr", hModule)
+    DllCall("FreeLibrary", "Ptr", hModule)
+	StringLower, o,o
+	return o
 } ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
 
 
