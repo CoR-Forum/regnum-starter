@@ -6,7 +6,7 @@ Mit diesem Tool kannst du dich im Spiel [Champions of Regnum](https://www.champi
 
 ### Benutzung
 
-Die letzte Version kann [hier](https://github.com/phil294/cor-schnellstarter/releases/) heruntergeladen werden.
+Die letzte Version kann [hier](https://github.com/phil294/cor-schnellstarter/releases/) heruntergeladen werden. Die .exe ist einfach ausführbar. Alternativ kannst du auch [AutoHotkey](https://autohotkey.com/download/1.1/) installieren und dann das .ahk Skript direkt ausführen.
 
 ### Accounts
 
