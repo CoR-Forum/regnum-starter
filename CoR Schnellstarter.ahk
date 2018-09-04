@@ -540,6 +540,10 @@ run:
 	  
 	if run_runas = 1
 	{
+		if(empty(run_runas_name) || empty(run_runas_pw)) {
+			msgbox, Windowsnutzer-Daten dürfen nicht leer sein!
+			return
+		}
 		runas, %run_runas_name%, %run_runas_pw%
 	}
 	else
