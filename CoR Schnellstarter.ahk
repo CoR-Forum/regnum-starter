@@ -42,7 +42,7 @@ return
 ; //
 updateServerConfig:
 	tooltip, Hole Update Info...
-	urldownloadtofile, http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
+	urldownloadtofile, https://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
 		msgbox, ,"CoR Schnellstarter - Metaupdate", "Server und Publisher wurden erfolgreich aktualisiert."
