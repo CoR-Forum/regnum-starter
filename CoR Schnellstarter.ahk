@@ -7,19 +7,14 @@ if(!fileexist("data")) {
 }
 menu, tray, icon, data/icon.ico
 coordmode,mouse,screen
-	
-users := Array()
+
 goSub, readUsers
-
-gosub, readConfig
-
-servers := Array()
-referers := Array()
+gosub, readUserConfig
 gosub, readServerConfig
 iniread, server_version, data/serverConfig.txt, version, version, -1
 iniread, program_version, data/serverConfig.txt, version, program_version, -1
 
-gosub GUI_
+gosub make_gui
 
 argc = %0%
 if(argc >= 4) {
@@ -34,14 +29,15 @@ if(argc >= 4) {
 	gosub run
 	
 	exitapp
+} else {
+	tooltip, Checke Schnellstarter Updates...
+	settimer, updateServerConfig, -10
+	tooltip
 }
-
-settimer, updateServerConfig, -10
 
 return
 ; //
 updateServerConfig:
-	tooltip, Hole Update Info...
 	urldownloadtofile, https://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
@@ -57,10 +53,10 @@ updateServerConfig:
 			msgbox, ,CoR Schnellstarter - Programmupdate", "Ein neues Update für den CoR-Schnellstarter ist verfügbar: `n" update_info
 		}
 	}
-	tooltip
 return
 ; ////
 readUsers:
+	users := Array()
 	loop, read, data/users.txt
 		{
 			blub := strsplit(a_loopreadline,":")
@@ -76,42 +72,24 @@ writeUsers:
 	}
 return
 ; ///
-readConfig:
-	user_last 		:= config_read("user_last",1)
-		if(empty(user_last))
-			user_last:=1
-	server_last 	:= config_read("server_last",1)
-	referer_last 	:= config_read("referer_last",1)
-	skip_logo 		:= config_read("skip_logo",1)
-	hide_loading_screen := config_read("hide_loading_screen",1)
-	width 			:= config_read("width",1366)
-	height			:=config_read("height",768)
-	regnum_path		:=config_read("regnum_path","C:\Games\NGD Studios\Regnum Online\")
-	runas			:=config_read("runas",-1)
-	runas_name		:=config_read("runas_name",a_space)
-	runas_pw		:=config_read("runas_pw",a_space)
-	PosGuiX			:=config_read("PosGuiX",-1)
-	PosGuiY			:=config_read("PosGuiY",-1)
-	shortcut_last	:=config_read("shortcut_last",a_space)
+readUserConfig:
+	; name: defaultvalue
+	configEntries := {user_last: 1,server_last: 1,referer_last: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: -1,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	for k,default in configEntries {
+		%k% := config_read(k, default)
+	}
+	if(empty(user_last))
+		user_last:=1
 return
 writeConfig:
-	config_write("user_last",gui_userlist)
-	config_write("server_last",gui_serverlist)
-	config_write("referer_last",gui_refererlist)
-	config_write("skip_logo",gui_skip_logo)
-	config_write("hide_loading_screen",gui_hide_loading_screen)
-	config_write("width",gui_width)
-	config_write("height",gui_height)
-	config_write("regnum_path",regnum_path)
-	config_write("runas",gui_runas)
-	config_write("runas_name",gui_runas_name)
-	config_write("runas_pw",gui_runas_pw)
-	config_write("PosGuiX",PosGuiX)
-	config_write("PosGuiY",PosGuiY)
-	config_write("shortcut_last",shortcut_last)
+	for k,v in configEntries {
+		config_write(k, %k%)
+	}
 return
 ; ////
 readServerConfig:
+	servers := Array()
+	referers := Array()
 	loop, read, data/serverConfig.txt
 		{
 			line := a_loopreadline
@@ -191,7 +169,7 @@ empty(v) {
 ; //////////////////////////////////
 ; //////////////////////////////////
 ; //////////////////////////////////
-GUI_:
+make_gui:
 	SysGet, CBW, 71
 	SysGet, CBH, 72
 	cbw -= 2
