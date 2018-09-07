@@ -39,7 +39,7 @@ if(argc >= 4) {
 return
 ; //
 updateServerConfig:
-	urldownloadtofile, *0 https://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
+	urldownloadtofile, *0 http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
 		msgbox, ,"CoR Schnellstarter - Metaupdate", "Server und Publisher wurden erfolgreich aktualisiert."
