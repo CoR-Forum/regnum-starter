@@ -560,16 +560,31 @@ run:
 		runas
 	 
 	if(server.name == "Amun") {
-		run "%test%ROClientGame.exe" %run_name% %run_pw%, %test%, UseErrorLevel
+		runwait "%test%ROClientGame.exe" %run_name% %run_pw%, %test%, UseErrorLevel
 	}
 	else
 	{
-		run "%live%ROClientGame.exe" %run_name% %run_pw%, %live%, UseErrorLevel
+		runwait "%live%ROClientGame.exe" %run_name% %run_pw%, %live%, UseErrorLevel
 	}
 	if(errorlevel == "ERROR") {
 		msgbox, Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?
 		return
 	}
+
+	Loop, Read, %live%log.txt
+	{
+		IfInString, A_LoopReadLine, % "Connection error: "
+		{
+			connection_error := RegExReplace(A_LoopReadLine, "^.*Connection error: (.+)$", "$1")
+			connection_error_extra =
+			ifinstring, connection_error, % "not found"
+			{
+				connection_error_extra := "`nMögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+			}
+			msgbox % "Regnum connection error sagt: `n" connection_error connection_error_extra
+		}
+	}
+	log=
 
 return
 
