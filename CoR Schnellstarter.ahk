@@ -13,6 +13,7 @@ gosub, readUserConfig
 gosub, readServerConfig
 iniread, server_version, data/serverConfig.txt, version, version, -1
 iniread, program_version, data/serverConfig.txt, version, program_version, -1
+iniread, autopatch_server, data/serverConfig.txt, general, autopatch_server
 
 gosub make_gui
 
@@ -38,7 +39,7 @@ if(argc >= 4) {
 return
 ; //
 updateServerConfig:
-	urldownloadtofile, https://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt, data/serverConfig.txt
+	urldownloadtofile, *0 https://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
 		msgbox, ,"CoR Schnellstarter - Metaupdate", "Server und Publisher wurden erfolgreich aktualisiert."
@@ -53,6 +54,33 @@ updateServerConfig:
 			msgbox, ,CoR Schnellstarter - Programmupdate", "Ein neues Update für den CoR-Schnellstarter ist verfügbar: `n" update_info
 		}
 	}
+return
+; //
+updateGamefiles:
+	tooltip, Checke Spielversion...
+	fileRead, current_build, %live%current_build
+	autopatch_base_url = %autopatch_server%/autopatch/autopatch_files_rgn/
+	urldownloadtofile, *0 %autopatch_base_url%current_build?nocache, %live%current_build
+	fileRead, current_build_new, %live%current_build
+	if(!empty(current_build_new) && current_build != current_build_new) {
+		msgbox, 1, Regnum Update, Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten.
+		IfMsgBox, Cancel
+		{
+			FileDelete, %live%current_build
+			exitapp
+		}
+		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"] {
+			url = %autopatch_base_url%%file%
+			livefile = %live%%file%
+			tooltip, Downloade %url%...
+			urldownloadtofile, % url, % livefile
+			if(errorlevel) {
+				msgbox, Dowload von %url% nach %livefile% fehlgeschlagen.
+			}
+		}
+		msgbox, Updateprozess abgeschlossen.
+	}
+	tooltip
 return
 ; ////
 readUsers:
@@ -515,6 +543,10 @@ run:
 			return
 		}
 	}
+
+	gui, 1:+disabled
+	gosub updateGamefiles
+	gui, 1:-disabled
 	  
 	if run_runas = 1
 	{
