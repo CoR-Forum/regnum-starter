@@ -651,19 +651,19 @@ translations["REGNUM_PATH"] := { de: "Regnum-Pfad"
     , en: ""
     , es: "" }
 translations["CHANGE"] := { de: "ändern"
-    , en: ""
+    , en: "change"
     , es: "" }
 translations["RUN_AS"] := { de: "als anderer Win-Nutzer ausführen"
-    , en: ""
+    , en: "run as other windows user"
     , es: "" }
 translations["USER"] := { de: "Nutzer"
-    , en: ""
+    , en: "User"
     , es: "" }
 translations["PASSWORD"] := { de: "Passwort"
-    , en: ""
+    , en: "Password"
     , es: "" }
-translations["REQUIRED"] := { de: "benötigt"
-    , en: ""
+translations["REQUIRED"] := { de: "erforderlich"
+    , en: "required"
     , es: "" }
 translations["SELECT_PATH"] := { de: "Bitte wähle das den Speicherort der Regnumdateien aus!"
     , en: ""
