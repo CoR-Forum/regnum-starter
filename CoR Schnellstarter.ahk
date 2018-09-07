@@ -1,8 +1,12 @@
 ﻿#persistent
 #singleinstance off
 setworkingdir %a_scriptDir%
+
+language = de
+gosub, setTranslations
+
 if(!fileexist("data")) {
-	msgbox, data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehörige "data" Ordner.
+	msgbox, % T.DATA_FOLDER_MISSING
 	exitapp
 }
 menu, tray, icon, data/icon.ico
@@ -31,7 +35,7 @@ if(argc >= 4) {
 	
 	exitapp
 } else {
-	tooltip, Checke Schnellstarter Updates...
+	tooltip, % T.CHECKING_UPDATES
 	settimer, updateServerConfig, -10
 	tooltip
 }
@@ -42,7 +46,7 @@ updateServerConfig:
 	urldownloadtofile, *0 http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
-		msgbox, ,"CoR Schnellstarter - Metaupdate", "Server und Publisher wurden erfolgreich aktualisiert."
+		msgbox, ,"CoR Schnellstarter - Metaupdate", T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
 	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
@@ -51,19 +55,19 @@ updateServerConfig:
 		if(update_info==-1 || empty(update_info)) {
 		
 		} else {
-			msgbox, ,CoR Schnellstarter - Programmupdate", "Ein neues Update für den CoR-Schnellstarter ist verfügbar: `n" update_info
+			msgbox, ,CoR Schnellstarter - Programmupdate, % T.NEW_UPDATE_AVAILABLE ": `n" update_info
 		}
 	}
 return
 ; //
 updateGamefiles:
-	tooltip, Checke Spielversion...
+	tooltip, % T.CHECKING_GAME_UPDATES
 	fileRead, current_build, %live%current_build
 	autopatch_base_url = %autopatch_server%/autopatch/autopatch_files_rgn/
 	urldownloadtofile, *0 %autopatch_base_url%current_build?nocache, %live%current_build
 	fileRead, current_build_new, %live%current_build
 	if(!empty(current_build_new) && current_build != current_build_new) {
-		msgbox, 1, Regnum Update, Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten.
+		msgbox, 1, Regnum Update, % T.NOTICED_NEW_UPDATE
 		IfMsgBox, Cancel
 		{
 			FileDelete, %live%current_build
@@ -72,13 +76,13 @@ updateGamefiles:
 		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"] {
 			url = %autopatch_base_url%%file%
 			livefile = %live%%file%
-			tooltip, Downloade %url%...
+			tooltip, Downloading %url%...
 			urldownloadtofile, % url, % livefile
 			if(errorlevel) {
-				msgbox, Dowload von %url% nach %livefile% fehlgeschlagen.
+				msgbox, % "Downloading " url " --> " livefile " " T.FAILED "."
 			}
 		}
-		msgbox, Updateprozess abgeschlossen.
+		msgbox, % T.UPDATING_FINISHED
 	}
 	tooltip
 return
@@ -155,9 +159,9 @@ config_write(key,val) {
 }
 ; ///
 class User {
-	name := "(empty)"
-	pw := "(empty)"
-	comment := "(empty)"
+	name := "(" T.EMPTY ")"
+	pw := "(" T.EMPTY ")"
+	comment := "(" T.EMPTY ")"
 	
 	__New(name,pw,comment) {
 		this.name := name
@@ -166,10 +170,10 @@ class User {
 	}
 }
 class Server {
-	name := "(empty)"
-	ip := "(empty)"
-	port := "(empty)"
-	retr := "(empty)"
+	name := "(" T.EMPTY ")"
+	ip := "(" T.EMPTY ")"
+	port := "(" T.EMPTY ")"
+	retr := "(" T.EMPTY ")"
 	
 	__New(name,ip,port,retr) {
 		this.name := name
@@ -179,8 +183,8 @@ class Server {
 	}
 }
 class Referer {
-	name := "(empty)"
-	token := "(empty)"
+	name := "(" T.EMPTY ")"
+	token := "(" T.EMPTY ")"
 	
 	__New(name,token) {
 		this.name := name
@@ -210,41 +214,41 @@ make_gui:
 	gui, add, picture, x0 y0, data\bckg.png
 
 	Gui, Font, s8 bold, Verdana
-	gui, add, button, w70 x36 y136 glogin, Login
+	gui, add, button, w70 x36 y136 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
 	gui, add, dropdownlist, x11 y105 w125 vgui_userlist altsubmit
 	goSub updateUserlist
 
-	gui, add, button, x11 y77 w125 gaccounts_edit, Accounts verwalten
+	gui, add, button, x11 y77 w125 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 	gui, add, dropdownlist, x157 y77 w80 vgui_serverlist altsubmit
 	gosub updateServerlist
 
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x272 y90 backgroundtrans, Publisher:
+	gui, add, text, x272 y90 backgroundtrans, % T.PUBLISHER ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x256 y105 w80 vgui_refererlist altsubmit
 	gosub updateRefererlist
 
 	Gui, Font, s7 c000000, Verdana
-	gui, add, button, w70 x36 y165 gshortcutCreate, Direktlink`nerstellen
+	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
 
 	Gui, Font, s7 norm cD8D8D8, Verdana
 	checked=
 	if skip_logo = 1
 		checked = checked
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 %checked% backgroundtrans vgui_skip_logo
-	gui, add, text, x+3 yp backgroundtrans, NGD-Vorspann löschen
+	gui, add, text, x+3 yp backgroundtrans, T.DELETE_SPLASH
 	
 	checked=
 	if hide_loading_screen = 1
 		checked = checked
 	gui, add, checkbox, w%CBW% h%CBH% x11 y237 %checked% backgroundtrans vgui_hide_loading_screen
-	gui, add, text, x+3 yp backgroundtrans, Ladescreen ausblenden
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	
-	gui, add, text, x238 y259 backgroundtrans, Regnum-Auflösung:
+	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vgui_width, %width%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -253,14 +257,14 @@ make_gui:
 	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vgui_height, %height%
 
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui add,text, backgroundtrans x260 y145, Regnum-Pfad:
+	gui add,text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
 	Gui, Font, s7 bold cD8D8D8, Verdana
 	gui, add, text, x256 w80 r2 y160 backgroundtrans vgui_regnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x256 w80 y189 gpath_edit, ändern
+	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x117 center y136 w130 h100 backgroundtrans, Mit diesem Programm wird der Update-Server umgangen! Neue Inhalte können nur über den normalen Launcher geladen werden!
+	gui, add, text, x117 center y136 w130 h100 backgroundtrans, .
 	Gui, Font, s8 c000000, Verdana
 
 	checked=
@@ -268,17 +272,17 @@ make_gui:
 		checked = checked
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x11 y257 %checked% w%CBW% h%CBH% grunasGuiToggled vgui_runas
-	gui, add, text, x29 y257 backgroundtrans, als anderer Win-Nutzer ausführen:
+	gui, add, text, x29 y257 backgroundtrans, % T.RUN_AS ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vgui_runas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x18 y295 backgroundtrans vgui_runas02, Windows User
+	gui, add, text, x18 y295 backgroundtrans vgui_runas02, % "Windows " T.USER
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x109 y275 w85 h18 -multi vgui_runas_pw, %runas_pw%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x118 y295 backgroundtrans vgui_runas03, Win Passwort
+	gui, add, text, x118 y295 backgroundtrans vgui_runas03, % "Win " T.PASSWORD
 	Gui, Font, s5 cD8D8D8, Verdana
-	gui, add, text, x133 y305 backgroundtrans vgui_runas04, (benötigt)
+	gui, add, text, x133 y305 backgroundtrans vgui_runas04, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
@@ -292,7 +296,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, CoR Schnellstarter
+	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE
 
 	WinGet, GuiID, ID, A
 
@@ -341,7 +345,7 @@ return
 
 ; //////////////////
 path_edit:
-	fileselectfolder, p, *%regnum_path%,, Bitte wähle das den Hauptordner von Regnum aus! zB. "Regnum Online", oder "Realms Online", evtl. "Champions of Regnum", ...
+	fileselectfolder, p, *%regnum_path%,, % T.SELECT_PATH
 	ifnotinstring, p, \
 		return
 	regnum_path = %p%\
@@ -362,11 +366,11 @@ shortcutCreate:
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
 	
-	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % "Wähle den Speicherort für die Verknüpfung für " user.name " " server.name " aus!"
+	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
 	ifnotinstring, shortcut, \
 		return
 		
-	pw := MD5( user.pw , StrLen( user.pw ))
+	pw := MD5(user.pw)
 	
 	params := """" user.name """ " pw " " referer.name " " server.name " " gui_runas " """ gui_runas_name """ """ gui_runas_pw """"
 	if(a_iscompiled) {
@@ -378,12 +382,12 @@ shortcutCreate:
 	}
 	
 	if(errorlevel) {
-		msgbox, Erstellung des Direktlinks war nicht erfolgreich.
+		msgbox, % T.CREATE_LINK_FAILED
 	} else {
 		wat :=  user.name " " pw " " referer.name " " server.name
 		if(gui_runas==1)
 			wat .= " " gui_runas_name " " gui_runas_pw
-		msgbox, Erstellung des Direktlinks erfolgreich erstellt für folgende Werte:`n%wat%
+		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
 	}
 	
 	shortcut_last := shortcut
@@ -394,7 +398,7 @@ return
 accounts_edit:
 	gui, 1:+disabled
 	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, Name`t`t`tPasswort`t`tKommentar
+	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t" T.COMMENT
 	if(users.Length()==0)
 		users.push(new User("","",""))
 	for i,user in users {
@@ -458,7 +462,7 @@ setupParams:
 	user := users[gui_userlist]
 	server := servers[gui_serverlist]
 	referer := referers[gui_refererlist]
-	run_pw := MD5( user.pw , StrLen( user.pw ))
+	run_pw := MD5(user.pw)
 	run_name := user.name
 	run_referername := referer.name
 	run_servername := server.name
@@ -472,16 +476,16 @@ run:
 	test = %regnum_path%TestServer\
 	ifnotexist, %regnum_path%game.cfg
 	{
-		msgbox, Regnum-Ordnerpfad ungültig! (keine game.cfg gefunden)
+		msgbox, % T.PATH_INVALID " - " T.NO_CFG_FOUND
 		return
 	}
 	filegetsize, size, %regnum_path%game.cfg, K
 	if(size<0.5) {
-		msgbox, Regnum-Ordnerpfad ungültig! (game.cfg gefunden, aber kleiner als 0.1 KB)
+		msgbox, % T.PATH_INVALID " - " T.CFG_TOO_SMALL
 		return
 	}
 	if(empty(gui_width) || empty(gui_height)){
-		msgbox, Bitte wähle eine Auflösung!
+		msgbox, % T.CHOOSE_RESOLUTION
 		return
 	}
 	server := -1
@@ -492,7 +496,7 @@ run:
 		}
 	}
 	if(server==-1) {
-		msgbox Server "%run_servername%" nicht vorhanden!
+		msgbox, % T.NO_SUCH_SERVER ": " run_servername
 		return
 	}
 	referer := -1
@@ -503,12 +507,12 @@ run:
 		}
 	}
 	if(referer==-1) {
-		msgbox Referer "%run_referername%" nicht vorhanden!
+		msgbox % T.NO_SUCH_PUBLISHER ": " run_referername
 		return
 	}
 	
 	if(empty(run_pw) || empty(run_name)) {
-		msgbox Du hast keinen Account ausgewählt! Wähle zuerst "Accounts verwalten" aus!
+		msgbox % T.NO_ACCOUNT_CHOSEN
 		return
 	}
 	
@@ -533,13 +537,13 @@ run:
 	if(server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im TestServer-Ordner gefunden) [Amun]
+			msgbox, % T.NO_GAME_FOUND " [/TestServer/] - AMUN"
 			return
 		}
 	} else {
 		ifnotexist, %live%ROClientGame.exe
 		{
-			msgbox, Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im LiveServer-Ordner gefunden)
+			msgbox, % T.NO_GAME_FOUND " [/LiveServer/]"
 			return
 		}
 	}
@@ -551,7 +555,7 @@ run:
 	if run_runas = 1
 	{
 		if(empty(run_runas_name) || empty(run_runas_pw)) {
-			msgbox, Windowsnutzer-Daten dürfen nicht leer sein!
+			msgbox, % T.EMPTY_WINDOWS_CREDENTIALS
 			return
 		}
 		runas, %run_runas_name%, %run_runas_pw%
@@ -567,7 +571,7 @@ run:
 		runwait "%live%ROClientGame.exe" %run_name% %run_pw%, %live%, UseErrorLevel
 	}
 	if(errorlevel == "ERROR") {
-		msgbox, Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?
+		msgbox, % T.RUN_ERROR
 		return
 	}
 
@@ -579,16 +583,148 @@ run:
 			connection_error_extra =
 			ifinstring, connection_error, % "not found"
 			{
-				connection_error_extra := "`nMögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+				connection_error_extra := "`n" T.NOT_FOUND_POSSIBLE_REASONS
 			}
-			msgbox % "Regnum connection error sagt: `n" connection_error connection_error_extra
+			msgbox % "Regnum connection error " T.SAYS ": `n" connection_error connection_error_extra
 		}
 	}
 	log=
 
 return
 
+; //////
 
+setTranslations:
+translations := []
+translations["WINDOW_TITLE"] := { de: "CoR Schnellstarter"
+    , en: ""
+    , es: "" }
+translations["DATA_FOLDER_MISSING"] := { de: "data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehörige 'data' Ordner." 
+    , en: ""
+    , es: "" }
+translations["CHECKING_UPDATES"] := { de: "Checke Schnellstarter Updates..."
+    , en: ""
+    , es: "" }
+translations["SERVERS_PUBLISHERS_UPDATED"] := { de: "Server und Publisher wurden erfolgreich aktualisiert."
+    , en: ""
+    , es: "" }
+translations["NEW_UPDATE_AVAILABLE"] := { de: "Ein neues Update für den CoR-Schnellstarter ist verfügbar"
+    , en: ""
+    , es: "" }
+translations["CHECKING_GAME_UPDATES"] := { de: "Checke Spielversion..."
+    , en: ""
+    , es: "" }
+translations["NOTICED_NEW_UPDATE"] := { de: "Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten."
+    , en: ""
+    , es: "" }
+translations["FAILED"] := { de: "fehlgeschlagen"
+    , en: ""
+    , es: "" }
+translations["UPDATING_FINISHED"] := { de: "Updateprozess abgeschlossen."
+    , en: ""
+    , es: "" }
+translations["EMPTY"] := { de: "leer"
+    , en: ""
+    , es: "" }
+translations["LOGIN"] := { de: "Login"
+	, en: "Login"
+	, es: "Login" }
+translations["MANAGE_ACCOUNTS"] := { de: "Accounts verwalten"
+    , en: ""
+    , es: "" }
+translations["PUBLISHER"] := { de: "Publisher"
+    , en: ""
+    , es: "" }
+translations["CREATE_SHORTCUT"] := { de: "Direktlink`nerstellen"
+    , en: ""
+    , es: "" }
+translations["DELETE_SPLASH"] := { de: "Vorspann löschen"
+    , en: ""
+    , es: "" }
+translations["HIDE_LOADING_SCREEN"] := { de: "Ladescreen ausblenden"
+    , en: ""
+    , es: "" }
+translations["WINDOW_RESOLUTION"] := { de: "Fenster-Auflösung"
+    , en: ""
+    , es: "" }
+translations["REGNUM_PATH"] := { de: "Regnum-Pfad"
+    , en: ""
+    , es: "" }
+translations["CHANGE"] := { de: "ändern"
+    , en: ""
+    , es: "" }
+translations["RUN_AS"] := { de: "als anderer Win-Nutzer ausführen"
+    , en: ""
+    , es: "" }
+translations["USER"] := { de: "Nutzer"
+    , en: ""
+    , es: "" }
+translations["PASSWORD"] := { de: "Passwort"
+    , en: ""
+    , es: "" }
+translations["REQUIRED"] := { de: "benötigt"
+    , en: ""
+    , es: "" }
+translations["SELECT_PATH"] := { de: "Bitte wähle das den Speicherort der Regnumdateien aus!"
+    , en: ""
+    , es: "" }
+translations["CHOOSE_LINK_DESTINATION_FOR"] := { de: "Wähle den Speicherort aus für die Verknüpfung für"
+    , en: ""
+    , es: "" }
+translations["CREATE_LINK_FAILED"] := { de: "Erstellung der Verknüpfung war nicht erfolgreich."
+    , en: ""
+    , es: "" }
+translations["CREATE_LINK_SUCCESS_FOR"] := { de: "Erstellung des Direktlinks erfolgreich erstellt für"
+    , en: ""
+    , es: "" }
+translations["NAME"] := { de: "Name"
+    , en: ""
+    , es: "" }
+translations["COMMENT"] := { de: "Kommentar"
+    , en: ""
+    , es: "" }
+translations["PATH_INVALID"] := { de: "Regnum-Ordnerpfad ungültig!"
+    , en: ""
+    , es: "" }
+translations["NO_CFG_FOUND"] := { de: "keine game.cfg gefunden"
+    , en: ""
+    , es: "" }
+translations["CFG_TOO_SMALL"] := { de: "game.cfg gefunden, aber kleiner als 0.5 kB"
+    , en: ""
+    , es: "" }
+translations["CHOOSE_RESOLUTION"] := { de: "Bitte wähle eine Auflösung!"
+    , en: ""
+    , es: "" }
+translations["NO_SUCH_SERVER"] := { de: "Server nicht vorhanden"
+    , en: ""
+    , es: "" }
+translations["NO_SUCH_PUBLISHER"] := { de: "Publisher nicht vorhanden"
+    , en: ""
+    , es: "" }
+translations["NO_ACCOUNT_CHOSEN"] := { de: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
+    , en: ""
+    , es: "" }
+translations["NO_GAME_FOUND"] := { de: "Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im TestServer-Ordner gefunden)"
+    , en: ""
+    , es: "" }
+translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
+    , en: ""
+    , es: "" }
+translations["RUN_ERROR"] := { de: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
+    , en: ""
+    , es: "" }
+translations["SAYS"] := { de: "sagt"
+    , en: ""
+    , es: "" }
+translations["NOT_FOUND_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+    , en: ""
+    , es: "" }
+T := []
+for k,v in translations {
+    T[k] := v[language]
+}
+translations=
+return
 
 ; ///// make gui moveable:
 ~LButton::
@@ -652,7 +788,7 @@ return
 
 
 
-md5(string, case := False)    ; by SKAN | rewritten by jNizM
+md5(string)    ; by SKAN | rewritten by jNizM
 {
     static MD5_DIGEST_LENGTH := 16
     hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
