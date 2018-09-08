@@ -101,7 +101,7 @@ updateGamefiles:
 			goto exitThread ; and I am sorry
 		if(!FileExist(live))
 			FileCreateDir, %live%
-		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll"]
+		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll", "openal.dll"] ; dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
 			if(!FileExist(file))
 				if(!patchLiveGamefile(file))
 					goto exitThread
@@ -625,7 +625,7 @@ run:
 			{
 				connection_error_extra := "`n" T.IS_DISABLED_POSSIBLE_REASONS
 			}
-			msgbox % "Regnum connection error " T.SAYS ": `n" connection_error connection_error_extra
+			msgbox % "Regnum connection error: `n" connection_error connection_error_extra
 		}
 	}
 	log=
@@ -762,13 +762,10 @@ translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen 
 translations["RUN_ERROR"] := { de: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
     , en: ""
     , es: "" }
-translations["SAYS"] := { de: "sagt"
-    , en: ""
-    , es: "" }
 translations["NOT_FOUND_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
     , en: ""
     , es: "" }
-translations["IS_DISABLED_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen, 2. Account gebannt" ; todo stimmt?
+translations["IS_DISABLED_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen (Spiel betreten nicht notwendig, nur Autorisierung), 2. Account gebannt" ; todo right?
     , en: ""
     , es: "" }
 global T := []
