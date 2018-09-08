@@ -621,6 +621,10 @@ run:
 			{
 				connection_error_extra := "`n" T.NOT_FOUND_POSSIBLE_REASONS
 			}
+			else ifinstring, connection_error, % "is disabled"
+			{
+				connection_error_extra := "`n" T.IS_DISABLED_POSSIBLE_REASONS
+			}
 			msgbox % "Regnum connection error " T.SAYS ": `n" connection_error connection_error_extra
 		}
 	}
@@ -762,6 +766,9 @@ translations["SAYS"] := { de: "sagt"
     , en: ""
     , es: "" }
 translations["NOT_FOUND_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+    , en: ""
+    , es: "" }
+translations["IS_DISABLED_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen, 2. Account gebannt" ; todo stimmt?
     , en: ""
     , es: "" }
 global T := []
