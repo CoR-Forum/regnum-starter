@@ -146,9 +146,6 @@ return
 onexit:
 guiClose:
 	gui,submit,nohide
-	
-	;configEntries := {user_last: 1,server_last: 1,referer_last: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: -1,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
-	
 	goSub writeUsers
 	goSub writeConfig
 exitapp
