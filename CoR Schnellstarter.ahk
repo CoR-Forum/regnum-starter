@@ -150,7 +150,7 @@ return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
