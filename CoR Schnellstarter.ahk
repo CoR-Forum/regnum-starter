@@ -106,12 +106,12 @@ return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {user_last: 1,server_last: 1,referer_last: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: -1,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
-	if(empty(user_last))
-		user_last:=1
+	if(empty(selected_user))
+		selected_user:=1
 return
 writeConfig:
 	for k,v in configEntries {
@@ -146,6 +146,9 @@ return
 onexit:
 guiClose:
 	gui,submit,nohide
+	
+	;configEntries := {user_last: 1,server_last: 1,referer_last: 1,skip_logo: 1,hide_loading_screen: 1,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: -1,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	
 	goSub writeUsers
 	goSub writeConfig
 exitapp
@@ -218,48 +221,42 @@ make_gui:
 
 	Gui, Font, s7 c000000, Verdana
 
-	gui, add, dropdownlist, x11 y105 w125 vgui_userlist altsubmit
+	gui, add, dropdownlist, x11 y105 w125 vselected_user altsubmit
 	goSub updateUserlist
 
 	gui, add, button, x11 y77 w125 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
-	gui, add, dropdownlist, x157 y77 w80 vgui_serverlist altsubmit
+	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
 	gosub updateServerlist
 
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x272 y90 backgroundtrans, % T.PUBLISHER ":"
 	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x256 y105 w80 vgui_refererlist altsubmit
+	gui, add, dropdownlist, x256 y105 w80 vselected_referer altsubmit
 	gosub updateRefererlist
 
 	Gui, Font, s7 c000000, Verdana
 	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
 
 	Gui, Font, s7 norm cD8D8D8, Verdana
-	checked=
-	if skip_logo = 1
-		checked = checked
-	gui, add, checkbox, w%CBW% h%CBH% x11 y217 %checked% backgroundtrans vgui_skip_logo
+	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 	
-	checked=
-	if hide_loading_screen = 1
-		checked = checked
-	gui, add, checkbox, w%CBW% h%CBH% x11 y237 %checked% backgroundtrans vgui_hide_loading_screen
+	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	
 	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vgui_width, %width%
+	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vwidth, %width%
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x282 y276 backgroundtrans, x
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vgui_height, %height%
+	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vheight, %height%
 
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui add,text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
 	Gui, Font, s7 bold cD8D8D8, Verdana
-	gui, add, text, x256 w80 r2 y160 backgroundtrans vgui_regnum_path, %regnum_path%
+	gui, add, text, x256 w80 r2 y160 backgroundtrans vregnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
 	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
@@ -267,22 +264,19 @@ make_gui:
 	gui, add, text, x117 center y136 w130 h100 backgroundtrans, .
 	Gui, Font, s8 c000000, Verdana
 
-	checked=
-	if runas = 1
-		checked = checked
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x11 y257 %checked% w%CBW% h%CBH% grunasGuiToggled vgui_runas
+	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x29 y257 backgroundtrans, % T.RUN_AS ":"
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x11 y275 w85 h18 -multi vgui_runas_name, %runas_name%
+	gui, add, edit, x11 y275 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x18 y295 backgroundtrans vgui_runas02, % "Windows " T.USER
+	gui, add, text, x18 y295 backgroundtrans vgui_runas_name_text, % "Windows " T.USER
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x109 y275 w85 h18 -multi vgui_runas_pw, %runas_pw%
+	gui, add, edit, x109 y275 w85 h18 -multi vrunas_pw, %runas_pw%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x118 y295 backgroundtrans vgui_runas03, % "Win " T.PASSWORD
+	gui, add, text, x118 y295 backgroundtrans vgui_runas_pw_text, % "Win " T.PASSWORD
 	Gui, Font, s5 cD8D8D8, Verdana
-	gui, add, text, x133 y305 backgroundtrans vgui_runas04, % "(" T.REQUIRED ")"
+	gui, add, text, x133 y305 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
@@ -304,15 +298,15 @@ return
 
 runasGuiToggled:
 	gui,submit,nohide
-	if(gui_runas)
+	if(runas)
 		wat:="show"
 	else
 		wat:="hide"
-	guicontrol,1:%wat%,gui_runas_name
-	guicontrol,1:%wat%,gui_runas_pw
-	guicontrol,1:%wat%,gui_runas02
-	guicontrol,1:%wat%,gui_runas03
-	guicontrol,1:%wat%,gui_runas04
+	guicontrol,1:%wat%,runas_name
+	guicontrol,1:%wat%,runas_pw
+	guicontrol,1:%wat%,gui_runas_name_text
+	guicontrol,1:%wat%,gui_runas_pw_text
+	guicontrol,1:%wat%,gui_runas_required_text
 return
 
 ; //////
@@ -321,8 +315,8 @@ updateUserlist:
 		for i,user in users {
 			userlist .= "|" user.name
 		}
-		guicontrol, 1:, gui_userlist, %userlist%
-		guicontrol, 1:choose, gui_userlist, %user_last%
+		guicontrol, 1:, selected_user, %userlist%
+		guicontrol, 1:choose, selected_user, %selected_user%
 return
 ; ///
 updateServerlist:
@@ -330,8 +324,8 @@ updateServerlist:
 		for i,server in servers {
 			serverlist .= "|" server.name
 		}
-		guicontrol, 1:, gui_serverlist, %serverlist%
-		guicontrol, 1:choose, gui_serverlist, %server_last%
+		guicontrol, 1:, selected_server, %serverlist%
+		guicontrol, 1:choose, selected_server, %selected_server%
 return
 ; ///
 updateRefererlist:
@@ -339,8 +333,8 @@ updateRefererlist:
 		for i,referer in referers {
 			refererlist .= "|" referer.name
 		}
-		guicontrol, 1:, gui_refererlist, %refererlist%
-		guicontrol, 1:choose, gui_refererlist, %referer_last%
+		guicontrol, 1:, selected_referer, %refererlist%
+		guicontrol, 1:choose, selected_referer, %selected_referer%
 return
 
 ; //////////////////
@@ -349,7 +343,7 @@ path_edit:
 	ifnotinstring, p, \
 		return
 	regnum_path = %p%\
-	guicontrol, 1:, gui_regnum_path, % regnum_path
+	guicontrol, 1:, regnum_path, % regnum_path
 return
 ; ///////////
 
@@ -362,9 +356,9 @@ return
 shortcutCreate:
 
 	gui, submit, nohide
-	user := users[gui_userlist]
-	server := servers[gui_serverlist]
-	referer := referers[gui_refererlist]
+	user := users[selected_user]
+	server := servers[selected_server]
+	referer := referers[selected_referer]
 	
 	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
 	ifnotinstring, shortcut, \
@@ -372,7 +366,7 @@ shortcutCreate:
 		
 	pw := MD5(user.pw)
 	
-	params := """" user.name """ " pw " " referer.name " " server.name " " gui_runas " """ gui_runas_name """ """ gui_runas_pw """"
+	params := """" user.name """ " pw " " referer.name " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
 		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, data\icon.ico
@@ -385,8 +379,8 @@ shortcutCreate:
 		msgbox, % T.CREATE_LINK_FAILED
 	} else {
 		wat :=  user.name " " pw " " referer.name " " server.name
-		if(gui_runas==1)
-			wat .= " " gui_runas_name " " gui_runas_pw
+		if(runas==1)
+			wat .= " " runas_name " " runas_pw
 		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
 	}
 	
@@ -404,11 +398,11 @@ accounts_edit:
 	for i,user in users {
 		y := 0 + a_index * 28
 		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi x20 y%y% w130 vgui_user%a_index%, % user.name
+		gui, 2:add, edit, -multi x20 y%y% w130 vuser%a_index%, % user.name
 		Gui, 2:Font, s8 c9B0000, Verdana
-		gui, 2:add, edit, -multi x160 y%y% w130 vgui_pw%a_index%, % user.pw
+		gui, 2:add, edit, -multi x160 y%y% w130 vpw%a_index%, % user.pw
 		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi r1 x300 y%y% w130 vgui_comment%a_index%, % user.comment
+		gui, 2:add, edit, -multi r1 x300 y%y% w130 vcomment%a_index%, % user.comment
 	}
 	gui, 2:add, button, ggui2_add x20,+
 	gui, 2:add, button, g2guiok x180, Ok
@@ -430,12 +424,9 @@ return
 	users := Array()
 	loop, % amnt
 	{
-		name:= gui_user%a_index%
-		pw:=gui_pw%a_index%
-		comment:=gui_comment%a_index%
-		if(empty(name) || empty(pw))
+		if(empty(user%a_index%) || empty(pw%a_index%))
 			continue
-		users.push(new User(name,pw,comment))
+		users.push(new User(user%a_index%,pw%a_index%,comment%a_index%))
 	}
 	
 	; apply users to gui1:
@@ -459,16 +450,16 @@ return
 
 setupParams:
 	gui,submit,nohide
-	user := users[gui_userlist]
-	server := servers[gui_serverlist]
-	referer := referers[gui_refererlist]
+	user := users[selected_user]
+	server := servers[selected_server]
+	referer := referers[selected_referer]
 	run_pw := MD5(user.pw)
 	run_name := user.name
 	run_referername := referer.name
 	run_servername := server.name
-	run_runas := gui_runas
-	run_runas_name := gui_runas_name
-	run_runas_pw := gui_runas_pw
+	run_runas := runas
+	run_runas_name := runas_name
+	run_runas_pw := runas_pw
 return
 
 run:	
@@ -484,7 +475,7 @@ run:
 		msgbox, % T.PATH_INVALID " - " T.CFG_TOO_SMALL
 		return
 	}
-	if(empty(gui_width) || empty(gui_height)){
+	if(empty(width) || empty(height)){
 		msgbox, % T.CHOOSE_RESOLUTION
 		return
 	}
@@ -520,12 +511,11 @@ run:
 	iniwrite,% server.port,%regnum_path%game.cfg,server,sv_game_server_tcp_port
 	iniwrite,% server.retr,%regnum_path%game.cfg,server,sv_retriever_host
 	iniwrite,% referer.token,%regnum_path%game.cfg,client,cl_referer
-	show := ! gui_hide_loading_screen
-	iniwrite,% show,%regnum_path%game.cfg,client,cl_show_loading_screen
-	iniwrite,% gui_width,%regnum_path%game.cfg,video_graphics,vg_screen_width
-	iniwrite,% gui_height,%regnum_path%game.cfg,video_graphics,vg_screen_height
+	iniwrite,% ! hide_loading_screen,%regnum_path%game.cfg,client,cl_show_loading_screen
+	iniwrite,% width,%regnum_path%game.cfg,video_graphics,vg_screen_width
+	iniwrite,% height,%regnum_path%game.cfg,video_graphics,vg_screen_height
 
-	if(gui_skip_logo==1) {
+	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
 		filedelete, %live%splash_gmg.png
