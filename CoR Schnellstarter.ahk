@@ -46,7 +46,7 @@ updateServerConfig:
 	urldownloadtofile, *0 http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
-		msgbox, ,"CoR Schnellstarter - Metaupdate", T.SERVERS_PUBLISHERS_UPDATED
+		msgbox, ,"CoR Schnellstarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
 	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
@@ -240,7 +240,7 @@ make_gui:
 	if skip_logo = 1
 		checked = checked
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 %checked% backgroundtrans vgui_skip_logo
-	gui, add, text, x+3 yp backgroundtrans, T.DELETE_SPLASH
+	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 	
 	checked=
 	if hide_loading_screen = 1
@@ -537,13 +537,13 @@ run:
 	if(server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
 		{
-			msgbox, % T.NO_GAME_FOUND " [/TestServer/] - AMUN"
+			msgbox, % T.NO_GAME_FOUND_IN " /TestServer (Amun)"
 			return
 		}
 	} else {
 		ifnotexist, %live%ROClientGame.exe
 		{
-			msgbox, % T.NO_GAME_FOUND " [/LiveServer/]"
+			msgbox, % T.NO_GAME_FOUND_IN " /LiveServer"
 			return
 		}
 	}
@@ -704,7 +704,7 @@ translations["NO_SUCH_PUBLISHER"] := { de: "Publisher nicht vorhanden"
 translations["NO_ACCOUNT_CHOSEN"] := { de: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
     , en: ""
     , es: "" }
-translations["NO_GAME_FOUND"] := { de: "Regnum-Ordnerpfad ungültig (keine ROClientGame.exe im TestServer-Ordner gefunden)"
+translations["NO_GAME_FOUND_IN"] := { de: "Regnum-Ordnerpfad ungültig: keine ROClientGame.exe gefunden in"
     , en: ""
     , es: "" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
