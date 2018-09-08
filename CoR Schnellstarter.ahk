@@ -2,14 +2,14 @@
 #singleinstance off
 setworkingdir %a_scriptDir%
 
+BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
+
 language = de
 gosub, setTranslations
 
-if(!fileexist("data")) {
-	msgbox, % T.DATA_FOLDER_MISSING
-	exitapp
-}
-menu, tray, icon, data/icon.ico
+gosub checkDataFolder
+
+try menu, tray, icon, data/icon.ico
 coordmode,mouse,screen
 
 goSub, readUsers
@@ -42,8 +42,26 @@ if(argc >= 4) {
 
 return
 ; //
+checkDataFolder:
+	if(!fileexist("data")) {
+		FileCreateDir, data
+		if(errorlevel) {
+			msgbox, % T.COULD_NOT_CREATE_DATA_FOLDER ": " errorlevel
+			exitapp
+		}
+	}
+	for k,v in ["data/bckg.png", "data/icon.ico"] {
+		if(!FileExist(v)) {
+			tooltip, Downloading %v%...
+			UrlDownloadToFile, %BASE_URL%%v%, %v%
+			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
+				msgbox, % "Downloading " v " " T.FAILED ": " errorlevel
+			}
+		}
+	}
+return
 updateServerConfig:
-	urldownloadtofile, *0 http://www.cor-forum.de/regnum/schnellstarter/serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
+	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
 	if(server_version_new > server_version) {
 		msgbox, ,"CoR Schnellstarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
@@ -586,9 +604,9 @@ translations := []
 translations["WINDOW_TITLE"] := { de: "CoR Schnellstarter"
     , en: ""
     , es: "" }
-translations["DATA_FOLDER_MISSING"] := { de: "data Ordner nicht gefunden! Bitte pack diese Datei in das gleiche Verzeichnis wie der zugehörige 'data' Ordner." 
-    , en: ""
-    , es: "" }
+translations["COULD_NOT_CREATE_DATA_FOLDER"] := { de: "Konnte Unterordner 'data' nicht erstellen. Das Programm kann nicht starten."
+	, en: ""
+	, es: "" }
 translations["CHECKING_UPDATES"] := { de: "Checke Schnellstarter Updates..."
     , en: ""
     , es: "" }

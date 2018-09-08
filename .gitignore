@@ -1,6 +1,4 @@
 test*
 todo*
-data/config.ini
-data/serverConfig.txt
-data/users.txt
+data
 .vscode
