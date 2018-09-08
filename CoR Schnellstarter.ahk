@@ -78,32 +78,58 @@ updateServerConfig:
 	}
 return
 ; //
-updateGamefiles:
-	tooltip, % T.CHECKING_GAME_UPDATES
-	fileRead, current_build, %live%current_build
-	autopatch_base_url = %autopatch_server%/autopatch/autopatch_files_rgn/
-	urldownloadtofile, *0 %autopatch_base_url%current_build?nocache, %live%current_build
-	fileRead, current_build_new, %live%current_build
-	if(!empty(current_build_new) && current_build != current_build_new) {
-		msgbox, 1, Regnum Update, % T.NOTICED_NEW_UPDATE
-		IfMsgBox, Cancel
-		{
-			FileDelete, %live%current_build
-			exitapp
-		}
-		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"] {
-			url = %autopatch_base_url%%file%
-			livefile = %live%%file%
-			tooltip, Downloading %url%...
-			urldownloadtofile, % url, % livefile
-			if(errorlevel) {
-				msgbox, % "Downloading " url " --> " livefile " " T.FAILED "."
-			}
-		}
-		msgbox, % T.UPDATING_FINISHED
+patchLiveGamefile(file) {
+	global autopatch_server
+	global live
+	url = %autopatch_server%/autopatch/autopatch_files_rgn/%file%?nocache
+	livefile = %live%%file%
+	tooltip, Downloading %url%...
+	urldownloadtofile, % "*0 " url, % livefile
+	if(errorlevel) {
+		msgbox, % "Downloading " url " --> " livefile " " T.FAILED "."
+		return false
 	}
 	tooltip
+	return true
+}
+updateGamefiles:
+	ifnotexist, %live%ROClientGame.exe
+	{
+		; Download all necessary files if not present
+		msgbox, 4, Regnum Download, % T.LIVE_GAME_MISSING ":`n" regnum_path "`n" T.DOWNLOAD_LIVE_GAME_NOW
+		ifmsgbox, No
+			goto exitThread ; and I am sorry
+		if(!FileExist(live))
+			FileCreateDir, %live%
+		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll"]
+			if(!FileExist(file))
+				if(!patchLiveGamefile(file))
+					goto exitThread
+		msgbox, % T.DOWNLOADING_LIVE_GAME_FINISHED
+	} else {
+		; Check if update available, then download and overwrite those files that might contain changes
+		tooltip, % T.CHECKING_GAME_UPDATES
+		fileRead, current_build, %live%current_build
+		patchLiveGamefile("current_build")
+		fileRead, current_build_new, %live%current_build
+		if(!empty(current_build_new) && current_build != current_build_new) {
+			msgbox, 1, Regnum Update, % T.NOTICED_NEW_UPDATE
+			IfMsgBox, Cancel
+			{
+				FileDelete, %live%current_build
+				goto exitThread
+			}
+			for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"]
+				patchLiveGamefile(file)
+			msgbox, % T.UPDATING_FINISHED
+		}
+		tooltip
+	}
 return
+exitThread:
+	gui, 1:-disabled
+	tooltip
+exit
 ; ////
 readUsers:
 	users := Array()
@@ -128,8 +154,6 @@ readUserConfig:
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
-	if(empty(selected_user))
-		selected_user:=1
 return
 writeConfig:
 	for k,v in configEntries {
@@ -331,6 +355,8 @@ updateUserlist:
 			userlist .= "|" user.name
 		}
 		guicontrol, 1:, selected_user, %userlist%
+		if(empty(selected_user))
+			selected_user:=1
 		guicontrol, 1:choose, selected_user, %selected_user%
 return
 ; ///
@@ -480,16 +506,9 @@ return
 run:	
 	live = %regnum_path%LiveServer\
 	test = %regnum_path%TestServer\
-	ifnotexist, %regnum_path%game.cfg
-	{
-		msgbox, % T.PATH_INVALID " - " T.NO_CFG_FOUND
-		return
-	}
-	filegetsize, size, %regnum_path%game.cfg, K
-	if(size<0.5) {
-		msgbox, % T.PATH_INVALID " - " T.CFG_TOO_SMALL
-		return
-	}
+
+	;;;;;;;; USER INPUT VALIDATION
+
 	if(empty(width) || empty(height)){
 		msgbox, % T.CHOOSE_RESOLUTION
 		return
@@ -521,14 +540,40 @@ run:
 		msgbox % T.NO_ACCOUNT_CHOSEN
 		return
 	}
-	
-	iniwrite,% server.ip,%regnum_path%game.cfg,server,sv_game_server_host
-	iniwrite,% server.port,%regnum_path%game.cfg,server,sv_game_server_tcp_port
-	iniwrite,% server.retr,%regnum_path%game.cfg,server,sv_retriever_host
-	iniwrite,% referer.token,%regnum_path%game.cfg,client,cl_referer
-	iniwrite,% ! hide_loading_screen,%regnum_path%game.cfg,client,cl_show_loading_screen
-	iniwrite,% width,%regnum_path%game.cfg,video_graphics,vg_screen_width
-	iniwrite,% height,%regnum_path%game.cfg,video_graphics,vg_screen_height
+
+	;;;;;;;; CHECK / DOWNLOAD / UPDATE LIVESERVER
+
+	gui, 1:+disabled
+	gosub updateGamefiles
+	gui, 1:-disabled
+
+	;;;;;;;; CHECK AMUN
+
+	if(server.name == "Amun") {
+		ifnotexist, %test%ROClientGame.exe
+		{
+			msgbox, % T.TEST_GAME_MISSING
+			return
+		}
+	}
+
+	;;;;;;;; GAME.CFG
+
+	gamecfg := regnum_path "game.cfg"
+	if(!FileExist(gamecfg)) {
+		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
+		iniwrite, .., %gamecfg%, client, cl_sdb_path ; would otherwise wrongly be set to "." afterwards, when the file is being filled up by the game itself (as apposed to the one included in the installers where it is ".."). For compatibility's sake, set it to ".." here.)
+	}
+
+	iniwrite,% server.ip,%gamecfg%,server,sv_game_server_host
+	iniwrite,% server.port,%gamecfg%,server,sv_game_server_tcp_port
+	iniwrite,% server.retr,%gamecfg%,server,sv_retriever_host
+	iniwrite,% referer.token,%gamecfg%,client,cl_referer
+	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
+	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
+	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
+
+	;;;;;;;; SPLASHES
 
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
@@ -539,24 +584,8 @@ run:
 		filedelete, %live%splash_gmg.png
 	}
 
-	if(server.name == "Amun") {
-		ifnotexist, %test%ROClientGame.exe
-		{
-			msgbox, % T.NO_GAME_FOUND_IN " /TestServer (Amun)"
-			return
-		}
-	} else {
-		ifnotexist, %live%ROClientGame.exe
-		{
-			msgbox, % T.NO_GAME_FOUND_IN " /LiveServer"
-			return
-		}
-	}
-
-	gui, 1:+disabled
-	gosub updateGamefiles
-	gui, 1:-disabled
-	  
+	;;;;;;;; RUN
+	
 	if run_runas = 1
 	{
 		if(empty(run_runas_name) || empty(run_runas_pw)) {
@@ -579,6 +608,8 @@ run:
 		msgbox, % T.RUN_ERROR
 		return
 	}
+
+	;;;;;;; PROMPT LOG.TXT CONNECTION ERROR
 
 	Loop, Read, %live%log.txt
 	{
@@ -709,9 +740,18 @@ translations["NO_SUCH_PUBLISHER"] := { de: "Publisher nicht vorhanden"
 translations["NO_ACCOUNT_CHOSEN"] := { de: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
     , en: ""
     , es: "" }
-translations["NO_GAME_FOUND_IN"] := { de: "Regnum-Ordnerpfad ungültig: keine ROClientGame.exe gefunden in"
+translations["TEST_GAME_MISSING"] := { de: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
     , en: ""
     , es: "" }
+translations["LIVE_GAME_MISSING"] := { de: "Keine Spieldaten im angegeben Ordner gefunden"
+	, en: ""
+	, es: "" }
+translations["DOWNLOAD_LIVE_GAME_NOW"] := { de: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nur ca. 1 Minute."
+	, en: ""
+	, es: "" }
+translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { de: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel wird jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
+	, en: ""
+	, es: "" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
     , en: ""
     , es: "" }
@@ -724,7 +764,7 @@ translations["SAYS"] := { de: "sagt"
 translations["NOT_FOUND_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
     , en: ""
     , es: "" }
-T := []
+global T := []
 for k,v in translations {
     T[k] := v[language]
 }
