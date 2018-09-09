@@ -663,7 +663,7 @@ checkLanguage:
 			language = spa
 	}
 return
-checkLanguageMessageBoxUpdateText:
+selectLanguageMessageBoxUpdateText:
 	controlsettext, Button1, English, %selectLanguageMessageBoxTitle%
 	controlsettext, Button2, Deutsch, %selectLanguageMessageBoxTitle%
 	controlsettext, Button3, Español, %selectLanguageMessageBoxTitle%
