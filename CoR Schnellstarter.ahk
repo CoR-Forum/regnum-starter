@@ -753,7 +753,7 @@ translations["LIVE_GAME_MISSING"] := { de: "Keine Spieldaten im angegeben Ordner
 translations["DOWNLOAD_LIVE_GAME_NOW"] := { de: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nur ca. 1 Minute."
 	, en: ""
 	, es: "" }
-translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { de: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel wird jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
+translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { de: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
 	, en: ""
 	, es: "" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
