@@ -1,28 +1,23 @@
 ﻿#persistent
 #singleinstance off
 setworkingdir %a_scriptDir%
-
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
-
-language = de
+gosub, readUserConfig
+gosub, checkLanguage
 gosub, setTranslations
-
-gosub checkDataFolder
-
+gosub, checkDataFolder
 try menu, tray, icon, data/icon.ico
 coordmode,mouse,screen
-
 goSub, readUsers
-gosub, readUserConfig
 gosub, readServerConfig
 iniread, server_version, data/serverConfig.txt, version, version, -1
 iniread, program_version, data/serverConfig.txt, version, program_version, -1
 iniread, autopatch_server, data/serverConfig.txt, general, autopatch_server
-
-gosub make_gui
+gosub, make_gui
 
 argc = %0%
 if(argc >= 4) {
+	; program is being run from a shortcut: run game & exit
 	gui,submit
 	run_name = %1%
 	run_pw = %2%
@@ -39,6 +34,8 @@ if(argc >= 4) {
 	settimer, updateServerConfig, -10
 	tooltip
 }
+
+OnExit, ExitSub
 
 return
 ; //
@@ -150,12 +147,12 @@ return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {language: a_space,selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
 return
-writeConfig:
+writeUserConfig:
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
@@ -185,15 +182,22 @@ readServerConfig:
 		}
 return
 ; ///
-onexit:
+
 guiClose:
+exitapp
+
+ExitSub:
 	gui,submit,nohide
 	goSub writeUsers
-	goSub writeConfig
+	goSub writeUserConfig
 exitapp
+
 ; ///
 config_read(key,default) {
 	iniread,tmp1,data/config.ini,config,%key%,%default%
+	if(tmp1==a_space) { ; blank value, as suggested by the documentation, does not work here (maybe due to wine?)
+		tmp1=
+	}
 	return tmp1
 }
 config_write(key,val) {
@@ -320,6 +324,10 @@ make_gui:
 	
 	gosub, runasGuiToggled
 
+	Gui, Font, s7 c000000, Verdana
+	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
+	gosub, updateLanguageList
+
 	Gui, Font, s13 bold cD8D8D8, Verdana
 	gui, add, text, x320 backgroundtrans y4 gguiclose, X
 
@@ -347,6 +355,9 @@ runasGuiToggled:
 	guicontrol,1:%wat%,gui_runas_pw_text
 	guicontrol,1:%wat%,gui_runas_required_text
 return
+
+language_changed:
+reload
 
 ; //////
 updateUserlist:
@@ -376,6 +387,10 @@ updateRefererlist:
 		}
 		guicontrol, 1:, selected_referer, %refererlist%
 		guicontrol, 1:choose, selected_referer, %selected_referer%
+return
+; ///
+updateLanguageList:
+	guicontrol, 1:choose, language, %language%
 return
 
 ; //////////////////
@@ -570,6 +585,7 @@ run:
 	iniwrite,% server.retr,%gamecfg%,server,sv_retriever_host
 	iniwrite,% referer.token,%gamecfg%,client,cl_referer
 	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
+	iniwrite,% language,%gamecfg%,client,cl_language
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 
@@ -634,140 +650,159 @@ return
 
 ; //////
 
+checkLanguage:
+	selectLanguageMessageBoxTitle = Language - Idioma - Sprache
+	if(empty(language)) {
+		settimer, checkLanguageMessageBoxUpdateText, -1
+		msgbox, 2, %selectLanguageMessageBoxTitle%, Please select a language.`n`nBitte wähle eine Sprache.`n`nPor favor elija un idioma.
+		IfMsgBox, Abort
+			language = eng
+		ifmsgbox, Retry
+			language = deu
+		ifmsgbox, Ignore
+			language = spa
+	}
+return
+checkLanguageMessageBoxUpdateText:
+	controlsettext, Button1, English, %selectLanguageMessageBoxTitle%
+	controlsettext, Button2, Deutsch, %selectLanguageMessageBoxTitle%
+	controlsettext, Button3, Español, %selectLanguageMessageBoxTitle%
+return
+
 setTranslations:
 translations := []
-translations["WINDOW_TITLE"] := { de: "CoR Schnellstarter"
-    , en: ""
-    , es: "" }
-translations["COULD_NOT_CREATE_DATA_FOLDER"] := { de: "Konnte Unterordner 'data' nicht erstellen. Das Programm kann nicht starten."
-	, en: ""
-	, es: "" }
-translations["CHECKING_UPDATES"] := { de: "Checke Schnellstarter Updates..."
-    , en: ""
-    , es: "" }
-translations["SERVERS_PUBLISHERS_UPDATED"] := { de: "Server und Publisher wurden erfolgreich aktualisiert."
-    , en: ""
-    , es: "" }
-translations["NEW_UPDATE_AVAILABLE"] := { de: "Ein neues Update für den CoR-Schnellstarter ist verfügbar"
-    , en: ""
-    , es: "" }
-translations["CHECKING_GAME_UPDATES"] := { de: "Checke Spielversion..."
-    , en: ""
-    , es: "" }
-translations["NOTICED_NEW_UPDATE"] := { de: "Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten."
-    , en: ""
-    , es: "" }
-translations["FAILED"] := { de: "fehlgeschlagen"
-    , en: ""
-    , es: "" }
-translations["UPDATING_FINISHED"] := { de: "Updateprozess abgeschlossen."
-    , en: ""
-    , es: "" }
-translations["EMPTY"] := { de: "leer"
-    , en: ""
-    , es: "" }
-translations["LOGIN"] := { de: "Login"
-	, en: "Login"
-	, es: "Login" }
-translations["MANAGE_ACCOUNTS"] := { de: "Accounts verwalten"
-    , en: ""
-    , es: "" }
-translations["PUBLISHER"] := { de: "Publisher"
-    , en: ""
-    , es: "" }
-translations["CREATE_SHORTCUT"] := { de: "Direktlink`nerstellen"
-    , en: ""
-    , es: "" }
-translations["DELETE_SPLASH"] := { de: "Vorspann löschen"
-    , en: ""
-    , es: "" }
-translations["HIDE_LOADING_SCREEN"] := { de: "Ladescreen ausblenden"
-    , en: ""
-    , es: "" }
-translations["WINDOW_RESOLUTION"] := { de: "Fenster-Auflösung"
-    , en: ""
-    , es: "" }
-translations["REGNUM_PATH"] := { de: "Regnum-Pfad"
-    , en: ""
-    , es: "" }
-translations["CHANGE"] := { de: "ändern"
-    , en: "change"
-    , es: "" }
-translations["RUN_AS"] := { de: "als anderer Win-Nutzer ausführen"
-    , en: "run as other windows user"
-    , es: "" }
-translations["USER"] := { de: "Nutzer"
-    , en: "User"
-    , es: "" }
-translations["PASSWORD"] := { de: "Passwort"
-    , en: "Password"
-    , es: "" }
-translations["REQUIRED"] := { de: "erforderlich"
-    , en: "required"
-    , es: "" }
-translations["SELECT_PATH"] := { de: "Bitte wähle das den Speicherort der Regnumdateien aus!"
-    , en: ""
-    , es: "" }
-translations["CHOOSE_LINK_DESTINATION_FOR"] := { de: "Wähle den Speicherort aus für die Verknüpfung für"
-    , en: ""
-    , es: "" }
-translations["CREATE_LINK_FAILED"] := { de: "Erstellung der Verknüpfung war nicht erfolgreich."
-    , en: ""
-    , es: "" }
-translations["CREATE_LINK_SUCCESS_FOR"] := { de: "Erstellung des Direktlinks erfolgreich erstellt für"
-    , en: ""
-    , es: "" }
-translations["NAME"] := { de: "Name"
-    , en: ""
-    , es: "" }
-translations["COMMENT"] := { de: "Kommentar"
-    , en: ""
-    , es: "" }
-translations["PATH_INVALID"] := { de: "Regnum-Ordnerpfad ungültig!"
-    , en: ""
-    , es: "" }
-translations["NO_CFG_FOUND"] := { de: "keine game.cfg gefunden"
-    , en: ""
-    , es: "" }
-translations["CFG_TOO_SMALL"] := { de: "game.cfg gefunden, aber kleiner als 0.5 kB"
-    , en: ""
-    , es: "" }
-translations["CHOOSE_RESOLUTION"] := { de: "Bitte wähle eine Auflösung!"
-    , en: ""
-    , es: "" }
-translations["NO_SUCH_SERVER"] := { de: "Server nicht vorhanden"
-    , en: ""
-    , es: "" }
-translations["NO_SUCH_PUBLISHER"] := { de: "Publisher nicht vorhanden"
-    , en: ""
-    , es: "" }
-translations["NO_ACCOUNT_CHOSEN"] := { de: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
-    , en: ""
-    , es: "" }
-translations["TEST_GAME_MISSING"] := { de: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
-    , en: ""
-    , es: "" }
-translations["LIVE_GAME_MISSING"] := { de: "Keine Spieldaten im angegeben Ordner gefunden"
-	, en: ""
-	, es: "" }
-translations["DOWNLOAD_LIVE_GAME_NOW"] := { de: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nur ca. 1 Minute."
-	, en: ""
-	, es: "" }
-translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { de: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
-	, en: ""
-	, es: "" }
-translations["EMPTY_WINDOWS_CREDENTIALS"] := { de: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
-    , en: ""
-    , es: "" }
-translations["RUN_ERROR"] := { de: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
-    , en: ""
-    , es: "" }
-translations["NOT_FOUND_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
-    , en: ""
-    , es: "" }
-translations["IS_DISABLED_POSSIBLE_REASONS"] := { de: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen (Spiel betreten nicht notwendig, nur Autorisierung), 2. Account gebannt" ; todo right?
-    , en: ""
-    , es: "" }
+translations["WINDOW_TITLE"] := { deu: "CoR Schnellstarter"
+    , eng: ""
+    , spa: "" }
+translations["COULD_NOT_CREATE_DATA_FOLDER"] := { deu: "Konnte Unterordner 'data' nicht erstellen. Das Programm kann nicht starten."
+	, eng: ""
+	, spa: "" }
+translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
+    , eng: ""
+    , spa: "" }
+translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
+    , eng: ""
+    , spa: "" }
+translations["NEW_UPDATE_AVAILABLE"] := { deu: "Ein neues Update für den CoR-Schnellstarter ist verfügbar"
+    , eng: ""
+    , spa: "" }
+translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
+    , eng: ""
+    , spa: "" }
+translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten."
+    , eng: ""
+    , spa: "" }
+translations["FAILED"] := { deu: "fehlgeschlagen"
+    , eng: ""
+    , spa: "" }
+translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
+    , eng: ""
+    , spa: "" }
+translations["EMPTY"] := { deu: "leer"
+    , eng: ""
+    , spa: "" }
+translations["LOGIN"] := { deu: "Login"
+	, eng: "Login"
+	, spa: "Login" }
+translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
+    , eng: ""
+    , spa: "" }
+translations["PUBLISHER"] := { deu: "Publisher"
+    , eng: ""
+    , spa: "" }
+translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
+    , eng: ""
+    , spa: "" }
+translations["DELETE_SPLASH"] := { deu: "Vorspann löschen"
+    , eng: ""
+    , spa: "" }
+translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
+    , eng: ""
+    , spa: "" }
+translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
+    , eng: ""
+    , spa: "" }
+translations["REGNUM_PATH"] := { deu: "Regnum-Pfad"
+    , eng: ""
+    , spa: "" }
+translations["CHANGE"] := { deu: "ändern"
+    , eng: "change"
+    , spa: "" }
+translations["RUN_AS"] := { deu: "als anderer Win-Nutzer ausführen"
+    , eng: "run as other windows user"
+    , spa: "" }
+translations["USER"] := { deu: "Nutzer"
+    , eng: "User"
+    , spa: "" }
+translations["PASSWORD"] := { deu: "Passwort"
+    , eng: "Password"
+    , spa: "" }
+translations["REQUIRED"] := { deu: "erforderlich"
+    , eng: "required"
+    , spa: "" }
+translations["SELECT_PATH"] := { deu: "Bitte wähle das den Speicherort der Regnumdateien aus!"
+    , eng: ""
+    , spa: "" }
+translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort aus für die Verknüpfung für"
+    , eng: ""
+    , spa: "" }
+translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
+    , eng: ""
+    , spa: "" }
+translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich erstellt für"
+    , eng: ""
+    , spa: "" }
+translations["NAME"] := { deu: "Name"
+    , eng: ""
+    , spa: "" }
+translations["COMMENT"] := { deu: "Kommentar"
+    , eng: ""
+    , spa: "" }
+translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
+    , eng: ""
+    , spa: "" }
+translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
+    , eng: ""
+    , spa: "" }
+translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
+    , eng: ""
+    , spa: "" }
+translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Auflösung!"
+    , eng: ""
+    , spa: "" }
+translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
+    , eng: ""
+    , spa: "" }
+translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
+    , eng: ""
+    , spa: "" }
+translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
+    , eng: ""
+    , spa: "" }
+translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
+    , eng: ""
+    , spa: "" }
+translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
+	, eng: ""
+	, spa: "" }
+translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nur ca. 1 Minute."
+	, eng: ""
+	, spa: "" }
+translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
+	, eng: ""
+	, spa: "" }
+translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
+    , eng: ""
+    , spa: "" }
+translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
+    , eng: ""
+    , spa: "" }
+translations["NOT_FOUND_POSSIBLE_REASONS"] := { deu: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+    , eng: ""
+    , spa: "" }
+translations["IS_DISABLED_POSSIBLE_REASONS"] := { deu: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen (Spiel betreten nicht notwendig, nur Autorisierung), 2. Account gebannt" ; todo right?
+    , eng: ""
+    , spa: "" }
 global T := []
 for k,v in translations {
     T[k] := v[language]
