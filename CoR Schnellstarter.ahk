@@ -2,14 +2,15 @@
 #singleinstance off
 setworkingdir %a_scriptDir%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
+OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
 gosub, checkDataFolder
 try menu, tray, icon, data/icon.ico
 coordmode,mouse,screen
+gosub, readServerConfig ; servers and referers
 goSub, readUsers
-gosub, readServerConfig
 iniread, server_version, data/serverConfig.txt, version, version, -1
 iniread, program_version, data/serverConfig.txt, version, program_version, -1
 iniread, autopatch_server, data/serverConfig.txt, general, autopatch_server
@@ -19,21 +20,24 @@ argc = %0%
 if(argc >= 4) {
 	; program is being run from a shortcut: run game & exit
 	gui,submit
-	run_name = %1%
-	run_pw = %2%
-	run_referername = %3%
-	run_servername = %4%
+	name = %1%
+	referertoken = %3%
+	referer := referer_by_token(referertoken)
+	pw_hashed = %2%
+	run_user := new User(name,,referer,pw_hashed)
+	servername = %4%
+	server := server_by_name(servername)
+	run_server := server
 	run_runas = %5%
 	run_runas_name = %6%
 	run_runas_pw = %7%
 	gosub run
 	
 	exitapp
-} else {
-	tooltip, % T.CHECKING_UPDATES
-	settimer, updateServerConfig, -10
-	tooltip
 }
+tooltip, % T.CHECKING_UPDATES
+settimer, updateServerConfig, -10 ; todo .. ? - do not block the gui
+tooltip
 
 OnExit, ExitSub
 
@@ -98,7 +102,7 @@ updateGamefiles:
 			goto exitThread ; and I am sorry
 		if(!FileExist(live))
 			FileCreateDir, %live%
-		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll"] ; openal.dll, dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
+		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll", "openal.dll"] ; dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
 			if(!FileExist(file))
 				if(!patchLiveGamefile(file))
 					goto exitThread
@@ -133,7 +137,21 @@ readUsers:
 	loop, read, data/users.txt
 		{
 			blub := strsplit(a_loopreadline,":")
-			users.push(new User(blub[1],blub[2],blub[3]))
+			name := blub[1]
+			pw_hashed := blub[2]
+			comment := blub[3]
+			try {
+				referer := referer_by_token(blub[4])
+			} catch {
+				referer := referers[1]
+			}
+			if(StrLen(pw_hashed) != 32 || RegExMatch(pw_hashed, "i)[^a-f0-9]")) { ; not an md5 hash
+				; -> running >= v2.1.0 for the first time with old users.txt
+				pw := pw_hashed ; backwards-compatibility: transform cleartext password (old) into md5hash password (new)
+				users.push(new User(name,comment,referer,,pw))
+			} else {
+				users.push(new User(name,comment,referer,pw_hashed))
+			}
 		}
 return
 writeUsers:
@@ -141,13 +159,13 @@ writeUsers:
 	for i,user in users {
 		if(a_index>1)
 			fileappend, `r`n, data/users.txt
-		fileappend, % user.name ":" user.pw ":" user.comment, data/users.txt
+		fileappend, % user.name ":" user.pw_hashed ":" user.comment ":" user.referer.token, data/users.txt
 	}
 return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {language: a_space,selected_user: 1,selected_server: 1,selected_referer: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {language: a_space,selected_user: 1,selected_server: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
@@ -192,6 +210,11 @@ ExitSub:
 	goSub writeUserConfig
 exitapp
 
+ErrorFunc(e) {
+	msgbox % e e.Message
+	exitapp
+}
+
 ; ///
 config_read(key,default) {
 	iniread,tmp1,data/config.ini,config,%key%,%default%
@@ -205,22 +228,24 @@ config_write(key,val) {
 }
 ; ///
 class User {
-	name := "(" T.EMPTY ")"
-	pw := "(" T.EMPTY ")"
-	comment := "(" T.EMPTY ")"
-	
-	__New(name,pw,comment) {
+	__New(name:="", comment:="", referer:="", pw_hashed:="", pw:="") {
+		global referers
 		this.name := name
-		this.pw := pw
 		this.comment := comment
+		if(empty(referer.token))
+			this.referer := referers[1]
+		else
+			this.referer := referer
+		if(!empty(pw)) {
+			this.pw := pw
+			this.pw_hashed := md5(this.pw)
+		} else {
+			this.pw := ""
+			this.pw_hashed := pw_hashed
+		}
 	}
 }
 class Server {
-	name := "(" T.EMPTY ")"
-	ip := "(" T.EMPTY ")"
-	port := "(" T.EMPTY ")"
-	retr := "(" T.EMPTY ")"
-	
 	__New(name,ip,port,retr) {
 		this.name := name
 		this.ip := ip
@@ -229,13 +254,28 @@ class Server {
 	}
 }
 class Referer {
-	name := "(" T.EMPTY ")"
-	token := "(" T.EMPTY ")"
-	
 	__New(name,token) {
 		this.name := name
 		this.token := token
 	}
+}
+server_by_name(name) {
+	global servers
+	for i,s in servers {
+		if(s.name == name) {
+			return s
+		}
+	}
+	throw % T.NO_SUCH_SERVER ": " name
+}
+referer_by_token(token) {
+	global referers
+	for i,s in referers {
+		if(s.token == token || s.name == token) { ; .name: backwards-compatibility
+			return s
+		}
+	}
+	throw % T.NO_SUCH_PUBLISHER ": " token
 }
 ; /////
 empty(v) {
@@ -272,12 +312,6 @@ make_gui:
 	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
 	gosub updateServerlist
 
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x272 y90 backgroundtrans, % T.PUBLISHER ":"
-	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x256 y105 w80 vselected_referer altsubmit
-	gosub updateRefererlist
-
 	Gui, Font, s7 c000000, Verdana
 	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
 
@@ -309,7 +343,7 @@ make_gui:
 
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
-	gui, add, text, x29 y257 backgroundtrans, % T.RUN_AS ":"
+	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -380,15 +414,6 @@ updateServerlist:
 		guicontrol, 1:choose, selected_server, %selected_server%
 return
 ; ///
-updateRefererlist:
-		refererlist := ""
-		for i,referer in referers {
-			refererlist .= "|" referer.name
-		}
-		guicontrol, 1:, selected_referer, %refererlist%
-		guicontrol, 1:choose, selected_referer, %selected_referer%
-return
-; ///
 updateLanguageList:
 	guicontrol, 1:choose, language, %language%
 return
@@ -414,15 +439,12 @@ shortcutCreate:
 	gui, submit, nohide
 	user := users[selected_user]
 	server := servers[selected_server]
-	referer := referers[selected_referer]
 	
 	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
 	ifnotinstring, shortcut, \
 		return
-		
-	pw := MD5(user.pw)
 	
-	params := """" user.name """ " pw " " referer.name " " server.name " " runas " """ runas_name """ """ runas_pw """"
+	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
 		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, data\icon.ico
@@ -434,7 +456,7 @@ shortcutCreate:
 	if(errorlevel) {
 		msgbox, % T.CREATE_LINK_FAILED
 	} else {
-		wat :=  user.name " " pw " " referer.name " " server.name
+		wat :=  user.name " " user.pw_hashed " " user.referer.name " " server.name
 		if(runas==1)
 			wat .= " " runas_name " " runas_pw
 		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
@@ -446,45 +468,58 @@ return
 
 ; ////////////////////////
 accounts_edit:
+	refererlist =
+	for i,referer in referers {
+		refererlist .= "|" referer.name
+	}
+	placeholder := "   "
 	gui, 1:+disabled
 	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t" T.COMMENT
+	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t`t" T.PUBLISHER "`t`t" T.COMMENT
 	if(users.Length()==0)
-		users.push(new User("","",""))
+		users.push(new User())
 	for i,user in users {
 		y := 0 + a_index * 28
 		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi x20 y%y% w130 vuser%a_index%, % user.name
+		gui, 2:add, edit, -multi r1 x20 y%y% w130 vname%a_index%, % user.name
 		Gui, 2:Font, s8 c9B0000, Verdana
-		gui, 2:add, edit, -multi x160 y%y% w130 vpw%a_index%, % user.pw
+		gui, 2:add, edit, -multi r1 x160 y%y% w130 vpw%a_index% password, %placeholder%
 		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi r1 x300 y%y% w130 vcomment%a_index%, % user.comment
+		gui, 2:add, dropdownlist, x300 y%y% w100 vreferer%a_index% altsubmit
+		guicontrol, 2:, referer%a_index%, %refererlist%
+		guicontrol, 2:choose, referer%a_index%, % referer_by_token(user.referer.token).name
+		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
 	}
 	gui, 2:add, button, ggui2_add x20,+
-	gui, 2:add, button, g2guiok x180, Ok
+	gui, 2:add, button, g2guiok x235, Ok
 	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
 	gui, 2:show	
 return
 
 gui2_add:
 	gosub 2guiok
-	users.push(new User("","",""))
+	users.push(new User())
 	gosub accounts_edit
 return
 
 2guiok:
 	gui, 2:submit, nohide
-	gui, 2:+disabled
 	; Update users:
 	amnt := users.Length()
-	users := Array()
+	new_users := Array()
 	loop, % amnt
 	{
-		if(empty(user%a_index%) || empty(pw%a_index%))
+		if(empty(name%a_index%) || empty(referer%a_index%))
 			continue
-		users.push(new User(user%a_index%,pw%a_index%,comment%a_index%))
+		if(pw%a_index% == placeholder) {
+			; no (new) password entered: use new values, but old pw hash
+			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], users[a_index].pw_hashed))
+		} else {
+			; also override pw: generate new pw hash
+			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], , pw%a_index%))
+		}
 	}
-	
+	users := new_users
 	; apply users to gui1:
 	goSub updateUserlist
 	gosub 2guiclose
@@ -493,7 +528,6 @@ return
 2guiclose:
 2guicancel:	
 	gui, 1:-disabled
-	gui, 2:-disabled
 	gui, 2:destroy
 	winactivate, ahk_id %GUIID%
 return
@@ -506,13 +540,8 @@ return
 
 setupParams:
 	gui,submit,nohide
-	user := users[selected_user]
-	server := servers[selected_server]
-	referer := referers[selected_referer]
-	run_pw := MD5(user.pw)
-	run_name := user.name
-	run_referername := referer.name
-	run_servername := server.name
+	run_user := users[selected_user]
+	run_server := servers[selected_server]
 	run_runas := runas
 	run_runas_name := runas_name
 	run_runas_pw := runas_pw
@@ -524,35 +553,13 @@ run:
 
 	;;;;;;;; USER INPUT VALIDATION
 
+    if(empty(run_user.name) || empty(run_user.pw_hashed)) {
+		msgbox % T.NO_ACCOUNT_CHOSEN
+		return
+	}
+
 	if(empty(width) || empty(height)){
 		msgbox, % T.CHOOSE_RESOLUTION
-		return
-	}
-	server := -1
-	for i,s in servers {
-		if(s.name == run_servername) {
-			server := s
-			break
-		}
-	}
-	if(server==-1) {
-		msgbox, % T.NO_SUCH_SERVER ": " run_servername
-		return
-	}
-	referer := -1
-	for i,s in referers {
-		if(s.name == run_referername) {
-			referer := s
-			break
-		}
-	}
-	if(referer==-1) {
-		msgbox % T.NO_SUCH_PUBLISHER ": " run_referername
-		return
-	}
-	
-	if(empty(run_pw) || empty(run_name)) {
-		msgbox % T.NO_ACCOUNT_CHOSEN
 		return
 	}
 
@@ -564,7 +571,7 @@ run:
 
 	;;;;;;;; CHECK AMUN
 
-	if(server.name == "Amun") {
+	if(run_server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
 		{
 			msgbox, % T.TEST_GAME_MISSING
@@ -580,10 +587,10 @@ run:
 		iniwrite, .., %gamecfg%, client, cl_sdb_path ; would otherwise wrongly be set to "." afterwards, when the file is being filled up by the game itself (as apposed to the one included in the installers where it is ".."). For compatibility's sake, set it to ".." here.)
 	}
 
-	iniwrite,% server.ip,%gamecfg%,server,sv_game_server_host
-	iniwrite,% server.port,%gamecfg%,server,sv_game_server_tcp_port
-	iniwrite,% server.retr,%gamecfg%,server,sv_retriever_host
-	iniwrite,% referer.token,%gamecfg%,client,cl_referer
+	iniwrite,% run_server.ip,%gamecfg%,server,sv_game_server_host
+	iniwrite,% run_server.port,%gamecfg%,server,sv_game_server_tcp_port
+	iniwrite,% run_server.retr,%gamecfg%,server,sv_retriever_host
+	iniwrite,% run_user.referer.token,%gamecfg%,client,cl_referer
 	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
 	iniwrite,% language,%gamecfg%,client,cl_language
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
@@ -613,12 +620,12 @@ run:
 	else
 		runas
 	 
-	if(server.name == "Amun") {
-		runwait "%test%ROClientGame.exe" %run_name% %run_pw%, %test%, UseErrorLevel
+	if(run_server.name == "Amun") {
+		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
 	}
 	else
 	{
-		runwait "%live%ROClientGame.exe" %run_name% %run_pw%, %live%, UseErrorLevel
+		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
 	}
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
@@ -722,7 +729,7 @@ translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: ""
     , spa: "" }
-translations["REGNUM_PATH"] := { deu: "Regnum-Pfad"
+translations["REGNUM_PATH"] := { deu: "Regnumpfad"
     , eng: ""
     , spa: "" }
 translations["CHANGE"] := { deu: "ändern"
@@ -749,7 +756,7 @@ translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort au
 translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
     , eng: ""
     , spa: "" }
-translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich erstellt für"
+translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
     , eng: ""
     , spa: "" }
 translations["NAME"] := { deu: "Name"
@@ -874,12 +881,11 @@ return
 
 md5(string)    ; by SKAN | rewritten by jNizM
 {
-    static MD5_DIGEST_LENGTH := 16
     hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
     , VarSetCapacity(MD5_CTX, 104, 0), DllCall("advapi32\MD5Init", "Ptr", &MD5_CTX)
     , DllCall("advapi32\MD5Update", "Ptr", &MD5_CTX, "AStr", string, "UInt", StrLen(string))
     , DllCall("advapi32\MD5Final", "Ptr", &MD5_CTX)
-    loop % MD5_DIGEST_LENGTH
+    loop, 16
         o .= Format("{:02" (case ? "X" : "x") "}", NumGet(MD5_CTX, 87 + A_Index, "UChar"))
     DllCall("FreeLibrary", "Ptr", hModule)
 	StringLower, o,o
