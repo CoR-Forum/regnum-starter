@@ -679,59 +679,59 @@ return
 
 setTranslations:
 translations := []
-translations["WINDOW_TITLE"] := { deu: "CoR Schnellstarter"
-    , eng: ""
+translations["WINDOW_TITLE"] := { deu: "Regnum Schnellstarter"
+    , eng: "Regnum Quickstarter"
     , spa: "" }
 translations["COULD_NOT_CREATE_DATA_FOLDER"] := { deu: "Konnte Unterordner 'data' nicht erstellen. Das Programm kann nicht starten."
-	, eng: ""
+	, eng: "Clien't create 'data' folder. Can't startup."
 	, spa: "" }
 translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
-    , eng: ""
+    , eng: "Checking for Quickstarter updates..."
     , spa: "" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
-    , eng: ""
+    , eng: "Server and Publisher updated successfully."
     , spa: "" }
 translations["NEW_UPDATE_AVAILABLE"] := { deu: "Ein neues Update für den CoR-Schnellstarter ist verfügbar"
-    , eng: ""
+    , eng: "A new Update is available."
     , spa: "" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
-    , eng: ""
+    , eng: "Checking Game Version..."
     , spa: "" }
 translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten."
-    , eng: ""
+    , eng: "New Regnum Update: Regnum Starter will now update the game files."
     , spa: "" }
 translations["FAILED"] := { deu: "fehlgeschlagen"
-    , eng: ""
+    , eng: "failed"
     , spa: "" }
 translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
-    , eng: ""
+    , eng: "Update completed."
     , spa: "" }
 translations["EMPTY"] := { deu: "leer"
-    , eng: ""
+    , eng: "empty"
     , spa: "" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
 	, spa: "Login" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
-    , eng: ""
+    , eng: "Manage Accounts"
     , spa: "" }
 translations["PUBLISHER"] := { deu: "Publisher"
     , eng: ""
     , spa: "" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
-    , eng: ""
+    , eng: "Create Shortcut"
     , spa: "" }
-translations["DELETE_SPLASH"] := { deu: "Vorspann löschen"
-    , eng: ""
+translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
+    , eng: "Hide NGD-Intro"
     , spa: "" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
-    , eng: ""
+    , eng: "Hide Loading Screen"
     , spa: "" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
-    , eng: ""
+    , eng: "Screen Resolution"
     , spa: "" }
 translations["REGNUM_PATH"] := { deu: "Regnumpfad"
-    , eng: ""
+    , eng: "Regnum path"
     , spa: "" }
 translations["CHANGE"] := { deu: "ändern"
     , eng: "change"
@@ -748,62 +748,62 @@ translations["PASSWORD"] := { deu: "Passwort"
 translations["REQUIRED"] := { deu: "erforderlich"
     , eng: "required"
     , spa: "" }
-translations["SELECT_PATH"] := { deu: "Bitte wähle das den Speicherort der Regnumdateien aus!"
-    , eng: ""
+translations["SELECT_PATH"] := { deu: "Bitte wähle den Speicherort der Regnumdateien aus!"
+    , eng: "Select the path of your regnum files!"
     , spa: "" }
-translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort aus für die Verknüpfung für"
-    , eng: ""
+translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
+    , eng: "Select where to create the Shortcut"
     , spa: "" }
 translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
-    , eng: ""
+    , eng: "Couldn't create shortcut."
     , spa: "" }
 translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
-    , eng: ""
+    , eng: "Creation of direct link successfull for"
     , spa: "" }
 translations["NAME"] := { deu: "Name"
-    , eng: ""
+    , eng: "Name"
     , spa: "" }
 translations["COMMENT"] := { deu: "Kommentar"
-    , eng: ""
+    , eng: "Comment"
     , spa: "" }
 translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
-    , eng: ""
+    , eng: "Invalid Regnum-Path!"
     , spa: "" }
 translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
-    , eng: ""
+    , eng: "game.cfg not found"
     , spa: "" }
 translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
-    , eng: ""
+    , eng: "game.cfg was found, but it's smaller than 0.5 kB"
     , spa: "" }
-translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Auflösung!"
-    , eng: ""
+translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Bildschirm-Auflösung!"
+    , eng: "Please choose a screen resolution!"
     , spa: "" }
 translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
-    , eng: ""
+    , eng: "Server not found"
     , spa: "" }
 translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
-    , eng: ""
+    , eng: "Publisher not found"
     , spa: "" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
-    , eng: ""
+    , eng: "You didn't select any account! Go to 'Manage Accounts' first!"
     , spa: "" }
 translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
-    , eng: ""
+    , eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
     , spa: "" }
 translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
-	, eng: ""
+	, eng: "No game files found in the specified folder"
 	, spa: "" }
-translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nur ca. 1 Minute."
-	, eng: ""
+translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange."
+	, eng: "Shall we download the game to this folder now? This doesn't take long."
 	, spa: "" }
 translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
-	, eng: ""
+	, eng: "Download completed.`nIf the login succeeds, Regnum will start downloading all game files which may take some time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded."
 	, spa: "" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
-    , eng: ""
+    , eng: "Please fill out your windows login details or disable the usage of another windows user."
     , spa: "" }
 translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
-    , eng: ""
+    , eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
     , spa: "" }
 translations["NOT_FOUND_POSSIBLE_REASONS"] := { deu: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
     , eng: ""
