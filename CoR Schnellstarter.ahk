@@ -671,6 +671,7 @@ checkLanguage:
 	}
 return
 selectLanguageMessageBoxUpdateText:
+	WinWait, %selectLanguageMessageBoxTitle%
 	controlsettext, Button1, English, %selectLanguageMessageBoxTitle%
 	controlsettext, Button2, Deutsch, %selectLanguageMessageBoxTitle%
 	controlsettext, Button3, Español, %selectLanguageMessageBoxTitle%
