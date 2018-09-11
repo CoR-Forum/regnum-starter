@@ -171,6 +171,8 @@ readUserConfig:
 	}
 return
 writeUserConfig:
+	if(selected_server=="")
+		selected_server := 1
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
