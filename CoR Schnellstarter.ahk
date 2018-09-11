@@ -641,16 +641,21 @@ run:
 		IfInString, A_LoopReadLine, % "Connection error: "
 		{
 			connection_error := RegExReplace(A_LoopReadLine, "^.*Connection error: (.+)$", "$1")
-			connection_error_extra =
+			connection_error_custom =
 			ifinstring, connection_error, % "not found"
 			{
-				connection_error_extra := "`n" T.NOT_FOUND_POSSIBLE_REASONS
+				msgbox % T.CONNECTION_ERROR_USER_NOT_FOUND
 			}
 			else ifinstring, connection_error, % "is disabled"
 			{
-				connection_error_extra := "`n" T.IS_DISABLED_POSSIBLE_REASONS
+				msgbox % T.CONNECTION_ERROR_USER_IS_DISABLED
 			}
-			msgbox % "Regnum connection error: `n" connection_error connection_error_extra
+			else ifinstring, connection_error, % "already logged in"
+			{
+				msgbox  % T.CONNECTION_ERROR_USER_ALREADY_LOGGED_IN
+			}
+			else 
+				msgbox % "Regnum connection error: `n" connection_error
 		}
 	}
 	log=
@@ -807,10 +812,13 @@ translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen
 translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
     , eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
     , spa: "" }
-translations["NOT_FOUND_POSSIBLE_REASONS"] := { deu: "Mögliche Gründe hierfür: 1. falscher Publisher ausgewählt, 2. falscher Benutzername, 3. falsches Passwort"
+translations["CONNECTION_ERROR_USER_NOT_FOUND"] := { deu: "Accountdaten falsch:`nFalscher Username, falsches Passwort oder falscher Publisher angegeben."
     , eng: ""
     , spa: "" }
-translations["IS_DISABLED_POSSIBLE_REASONS"] := { deu: "Mögliche Gründe hierfür: 1. Account nicht autorisiert. Hierfür bitte einmalig den normalen Launcher von NGD benutzen (Spiel betreten nicht notwendig, nur Autorisierung), 2. Account gebannt" ; todo right?
+translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrekt, aber der Account ist entweder`n`n1. ...nicht autorisiert: Hierfür bitte einmalig den normalen Launcher von NGD benutzen (Spiel betreten nicht notwendig, nur Autorisierung). Oder`n`n2. ...gebannt" ; todo right?
+    , eng: ""
+    , spa: "" }
+translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins müssen mindestens 5 Sekunden vergangen sein)"
     , eng: ""
     , spa: "" }
 global T := []
