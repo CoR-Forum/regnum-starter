@@ -6,6 +6,8 @@ version=3
 program_version=1
 # update-info: if ! empty, will be prompted to user on program_version++
 update_info=
+[general]
+autopatch_server=http://104.196.149.195
 [servers]
 # name , ip , port , retriever_ip
 Valhalla,104.155.0.10,48000,104.196.149.195:80
