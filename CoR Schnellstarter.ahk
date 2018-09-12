@@ -2,6 +2,7 @@
 #singleinstance off
 setworkingdir %a_scriptDir%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
+; BASE_URL = http://localhost:1234/
 OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
@@ -51,31 +52,49 @@ checkDataFolder:
 			exitapp
 		}
 	}
-	for k,v in ["data/bckg.png", "data/icon.ico"] {
+	for k,v in ["bckg.png", "icon.ico"] {
 		if(!FileExist(v)) {
 			tooltip, Downloading %v%...
-			UrlDownloadToFile, %BASE_URL%%v%, %v%
+			UrlDownloadToFile, %BASE_URL%%v%, data/%v%
 			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
-				msgbox, % "Downloading " v " " T.FAILED ": " errorlevel
+				; who cares
 			}
 		}
 	}
 return
 updateServerConfig:
 	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
+	
+	; main program update?
+	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
+	if(program_version > -1 && program_version_new > program_version) { ; is not first program start and update
+		if(program_version_new < 1000) {
+			; ignore in new versions. old versions: popup with update message: "new update available: blabla".
+		} else {
+			iniread, update_info, data/serverConfig.txt, version, update_info, -1
+			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla"
+			urldownloadtofile, *0 %BASE_URL%CoRSchnellstarter.ahk, CorSchnellstarter.ahk
+			urldownloadtofile, *0 %BASE_URL%CoRSchnellstarter.exe, CorSchnellstarter.exe ; FIXME says errorlevel, but works..??
+			if(errorlevel) {
+				msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
+			} else {
+				if(update_info>-1 && !empty(update_info)) {
+					msgbox, ,CoR Schnellstarter - Programmupdate, % T.NEW_UPDATE_DOWNLOADED ": `n" update_info
+				}
+				reload
+			}
+		}
+	}
+	
+	; otherwise, metaupdate?
 	iniread, server_version_new, data/serverConfig.txt, version, version, -1
+	if(server_version_new == -1) {
+		msgbox, % T.INVALID_SERVER_CONFIG
+		exitapp
+	}
 	if(server_version_new > server_version) {
 		msgbox, ,"CoR Schnellstarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
 		reload
-	}
-	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
-	if(program_version_new > program_version && program_version_new > 10000) {
-		iniread, update_info, data/serverConfig.txt, version, update_info, -1
-		if(update_info==-1 || empty(update_info)) {
-		
-		} else {
-			msgbox, ,CoR Schnellstarter - Programmupdate, % T.NEW_UPDATE_AVAILABLE ": `n" update_info
-		}
 	}
 return
 ; //
@@ -489,7 +508,12 @@ accounts_edit:
 		Gui, 2:Font, s8 c000000, Verdana
 		gui, 2:add, dropdownlist, x300 y%y% w100 vreferer%a_index% altsubmit
 		guicontrol, 2:, referer%a_index%, %refererlist%
-		guicontrol, 2:choose, referer%a_index%, % referer_by_token(user.referer.token).name
+		try 
+			referer := referer_by_token(user.referer.token)
+		catch {
+			referer := referers[0]
+		}
+		guicontrol, 2:choose, referer%a_index%, % referer.name
 		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
 	}
 	gui, 2:add, button, ggui2_add x20,+
@@ -698,8 +722,11 @@ translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
     , eng: "Server and Publisher updated successfully."
     , spa: "" }
-translations["NEW_UPDATE_AVAILABLE"] := { deu: "Ein neues Update für den CoR-Schnellstarter ist verfügbar"
-    , eng: "A new Update is available."
+translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den CoR-Schnellstarter wurde automatisch heruntergeladen"
+    , eng: "A new Update has been downloaded automatically"
+    , spa: "" }
+translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den CoR-Schnellstarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
+    , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
     , spa: "" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
     , eng: "Checking Game Version..."
@@ -820,6 +847,9 @@ translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrek
     , spa: "" }
 translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins mit demselben Account müssen mindestens 5 Sekunden vergangen sein)"
     , eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cooldown))"
+    , spa: "" }
+translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
+    , eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
     , spa: "" }
 global T := []
 for k,v in translations {
