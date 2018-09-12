@@ -1,20 +1,21 @@
 ﻿#persistent
 #singleinstance off
-setworkingdir %a_scriptDir%
+APPDATA := A_AppData "\regnum-starter"
+setworkingdir %APPDATA%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
 OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-gosub, checkDataFolder
-try menu, tray, icon, data/icon.ico
+gosub, checkAppdata
+try menu, tray, icon, %APPDATA%/icon.ico
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
-iniread, server_version, data/serverConfig.txt, version, version, -1
-iniread, program_version, data/serverConfig.txt, version, program_version, -1
-iniread, autopatch_server, data/serverConfig.txt, general, autopatch_server
+iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
+iniread, program_version, %APPDATA%/serverConfig.txt, version, program_version, -1
+iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 gosub, make_gui
 
 argc = %0%
@@ -44,18 +45,18 @@ OnExit, ExitSub
 
 return
 ; //
-checkDataFolder:
-	if(!fileexist("data")) {
-		FileCreateDir, data
+checkAppdata:
+	if(!fileexist(APPDATA)) {
+		FileCreateDir, %APPDATA%
 		if(errorlevel) {
-			msgbox, % T.COULD_NOT_CREATE_DATA_FOLDER ": " errorlevel
+			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
 			exitapp
 		}
 	}
 	for k,v in ["bckg.png", "icon.ico"] {
 		if(!FileExist(v)) {
 			tooltip, Downloading %v%...
-			UrlDownloadToFile, %BASE_URL%%v%, data/%v%
+			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
 			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
 				; who cares
 			}
@@ -63,15 +64,15 @@ checkDataFolder:
 	}
 return
 updateServerConfig:
-	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, data/serverConfig.txt
+	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
 	
 	; main program update?
-	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
+	iniread, program_version_new, %APPDATA%/serverConfig.txt, version, program_version, -1
 	if(program_version > -1 && program_version_new > program_version) { ; is not first program start and update
 		if(program_version_new < 1000) {
 			; ignore in new versions. old versions: popup with update message: "new update available: blabla".
 		} else {
-			iniread, update_info, data/serverConfig.txt, version, update_info, -1
+			iniread, update_info, %APPDATA%/serverConfig.txt, version, update_info, -1
 			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla":
 			for k,f in [ "CoRSchnellstarter.ahk", "CoRSchnellstarter.exe" ] {
 				tooltip, New update found. Downloading %f%_new...
@@ -105,7 +106,7 @@ Del `%0
 	}
 	
 	; otherwise, metaupdate?
-	iniread, server_version_new, data/serverConfig.txt, version, version, -1
+	iniread, server_version_new, %APPDATA%/serverConfig.txt, version, version, -1
 	if(server_version_new == -1) {
 		msgbox, % T.INVALID_SERVER_CONFIG
 		exitapp
@@ -179,7 +180,7 @@ exit
 ; ////
 readUsers:
 	users := Array()
-	loop, read, data/users.txt
+	loop, read, %APPDATA%/users.txt
 		{
 			blub := strsplit(a_loopreadline,":")
 			name := blub[1]
@@ -200,11 +201,11 @@ readUsers:
 		}
 return
 writeUsers:
-	filedelete, data/users.txt
+	filedelete, %APPDATA%/users.txt
 	for i,user in users {
 		if(a_index>1)
-			fileappend, `r`n, data/users.txt
-		fileappend, % user.name ":" user.pw_hashed ":" user.comment ":" user.referer.token, data/users.txt
+			fileappend, `r`n, %APPDATA%/users.txt
+		fileappend, % user.name ":" user.pw_hashed ":" user.comment ":" user.referer.token, %APPDATA%/users.txt
 	}
 return
 ; ///
@@ -226,7 +227,7 @@ return
 readServerConfig:
 	servers := Array()
 	referers := Array()
-	loop, read, data/serverConfig.txt
+	loop, read, %APPDATA%/serverConfig.txt
 		{
 			line := a_loopreadline
 			if(instr(line,"#"))
@@ -264,14 +265,14 @@ ErrorFunc(e) {
 
 ; ///
 config_read(key,default) {
-	iniread,tmp1,data/config.ini,config,%key%,%default%
+	iniread,tmp1,%APPDATA%/config.ini,config,%key%,%default%
 	if(tmp1==a_space) { ; blank value, as suggested by the documentation, does not work here (maybe due to wine?)
 		tmp1=
 	}
 	return tmp1
 }
 config_write(key,val) {
-	iniwrite,%val%,data/config.ini,config,%key%
+	iniwrite,%val%,%APPDATA%/config.ini,config,%key%
 }
 ; ///
 class User {
@@ -344,7 +345,7 @@ make_gui:
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
 	
-	gui, add, picture, x0 y0, data\bckg.png
+	gui, add, picture, x0 y0, %APPDATA%\bckg.png
 
 	Gui, Font, s8 bold, Verdana
 	gui, add, button, w70 x36 y136 glogin, % T.LOGIN
@@ -494,10 +495,10 @@ shortcutCreate:
 	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
-		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, data\icon.ico
+		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.ico
 	} else {
 		script = "%A_ScriptFullPath%"
-		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, data\icon.ico
+		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.ico
 	}
 	
 	if(errorlevel) {
@@ -739,8 +740,8 @@ translations := []
 translations["WINDOW_TITLE"] := { deu: "Regnum Schnellstarter"
     , eng: "Regnum Quickstarter"
     , spa: "" }
-translations["COULD_NOT_CREATE_DATA_FOLDER"] := { deu: "Konnte Unterordner 'data' nicht erstellen. Das Programm kann nicht starten."
-	, eng: "Clien't create 'data' folder. Can't startup."
+translations["COULD_NOT_CREATE_APPDATA"] := { deu: "Konnte " APPDATA " nicht erstellen. Das Programm kann nicht starten."
+	, eng: "Couldn't create " APPDATA " folder. Can't startup."
 	, spa: "" }
 translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
     , eng: "Checking for Quickstarter updates..."
