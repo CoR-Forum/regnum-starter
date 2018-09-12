@@ -1,7 +1,6 @@
 ﻿#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
-setworkingdir %APPDATA%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
 OnError("ErrorFunc")
