@@ -112,7 +112,8 @@ Del `%0
 		exitapp
 	}
 	if(server_version_new > server_version) {
-		msgbox, ,"RegnumStarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
+		if(server_version > -1)
+			msgbox, ,RegnumStarter - Metaupdate, % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
 return
@@ -419,7 +420,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE
+	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" program_version
 
 	WinGet, GuiID, ID, A
 
@@ -726,6 +727,8 @@ checkLanguage:
 			language = deu
 		ifmsgbox, Ignore
 			language = spa
+		ifmsgbox, Cancel
+			language = eng
 	}
 return
 selectLanguageMessageBoxUpdateText:
