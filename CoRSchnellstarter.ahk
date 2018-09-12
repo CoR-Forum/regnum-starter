@@ -2,7 +2,7 @@
 #singleinstance off
 setworkingdir %a_scriptDir%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
-; BASE_URL = http://localhost:1234/
+;BASE_URL = http://localhost:1234/
 OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
@@ -72,17 +72,35 @@ updateServerConfig:
 			; ignore in new versions. old versions: popup with update message: "new update available: blabla".
 		} else {
 			iniread, update_info, data/serverConfig.txt, version, update_info, -1
-			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla"
-			urldownloadtofile, *0 %BASE_URL%CoRSchnellstarter.ahk, CorSchnellstarter.ahk
-			urldownloadtofile, *0 %BASE_URL%CoRSchnellstarter.exe, CorSchnellstarter.exe ; FIXME says errorlevel, but works..??
-			if(errorlevel) {
-				msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
-			} else {
-				if(update_info>-1 && !empty(update_info)) {
-					msgbox, ,CoR Schnellstarter - Programmupdate, % T.NEW_UPDATE_DOWNLOADED ": `n" update_info
-				}
-				reload
+			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla":
+			for k,f in [ "CoRSchnellstarter.ahk", "CoRSchnellstarter.exe" ] {
+				tooltip, New update found. Downloading %f%_new...
+				urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
+				if(errorlevel)
+					gosub autoUpdateFailed
+				FileGetSize, size, %f%_new, K
+				if(size < 10)
+					gosub autoUpdateFailed
 			}
+			fc=
+			tooltip
+			updateBat =
+(
+Del CoRSchnellstarter.ahk
+Del CoRSchnellstarter.exe
+Rename CoRSchnellstarter.ahk_new CoRSchnellstarter.ahk
+Rename CoRSchnellstarter.exe_new CoRSchnellstarter.exe
+%A_ScriptFullPath%
+Del `%0
+)
+			filedelete, update.bat
+			fileAppend, %updateBat%, update.bat
+			if(errorlevel)
+				gosub autoUpdateFailed
+			msgbox, ,CoR Schnellstarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" update_info
+			run, update.bat,, hide
+			onExit
+			exitapp
 		}
 	}
 	
@@ -97,6 +115,14 @@ updateServerConfig:
 		reload
 	}
 return
+autoUpdateFailed:
+	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
+	tooltip
+	fc=
+	filedelete updateBat
+	filedelete CoRSchnellstarter.ahk_new
+	filedelete CoRSchnellstarter.exe_new
+exit
 ; //
 patchLiveGamefile(file) {
 	global autopatch_server
@@ -722,8 +748,8 @@ translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
     , eng: "Server and Publisher updated successfully."
     , spa: "" }
-translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den CoR-Schnellstarter wurde automatisch heruntergeladen"
-    , eng: "A new Update has been downloaded automatically"
+translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den CoR-Schnellstarter wurde automatisch heruntergeladen und wird jetzt die aktuelle Version ersetzen. Änderungen:"
+    , eng: "A new Update has been downloaded automatically and will now replace the current one. Changelog:"
     , spa: "" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den CoR-Schnellstarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
     , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
