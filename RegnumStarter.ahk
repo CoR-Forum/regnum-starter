@@ -14,7 +14,7 @@ coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
-iniread, program_version, %APPDATA%/serverConfig.txt, version, program_version, -1
+iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 gosub, make_gui
 
@@ -67,25 +67,21 @@ updateServerConfig:
 	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
 	
 	; main program update?
-	iniread, program_version_new, %APPDATA%/serverConfig.txt, version, program_version, -1
-	if(program_version > -1 && program_version_new > program_version) { ; is not first program start and update
-		if(program_version_new < 1000) {
-			; ignore in new versions. old versions: popup with update message: "new update available: blabla".
-		} else {
-			iniread, update_info, %APPDATA%/serverConfig.txt, version, update_info, -1
-			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla":
-			for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
-				tooltip, New update found. Downloading %f%_new...
-				urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
-				if(errorlevel)
-					gosub autoUpdateFailed
-				FileGetSize, size, %f%_new, K
-				if(size < 10)
-					gosub autoUpdateFailed
-			}
-			fc=
-			tooltip
-			updateBat =
+	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
+	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
+		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
+		for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
+			tooltip, New update found. Downloading %f%_new...
+			urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
+			if(errorlevel)
+				gosub autoUpdateFailed
+			FileGetSize, size, %f%_new, K
+			if(size < 10)
+				gosub autoUpdateFailed
+		}
+		fc=
+		tooltip
+		updateBat =
 (
 Del RegnumStarter.ahk
 Del RegnumStarter.exe
@@ -94,15 +90,14 @@ Rename RegnumStarter.exe_new RegnumStarter.exe
 %A_ScriptFullPath%
 Del `%0
 )
-			filedelete, update.bat
-			fileAppend, %updateBat%, update.bat
-			if(errorlevel)
-				gosub autoUpdateFailed
-			msgbox, ,RegnumStarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" update_info
-			run, update.bat,, hide
-			onExit
-			exitapp
-		}
+		filedelete, update.bat
+		fileAppend, %updateBat%, update.bat
+		if(errorlevel)
+			gosub autoUpdateFailed
+		msgbox, ,RegnumStarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" rs_update_info
+		run, update.bat,, hide
+		onExit
+		exitapp
 	}
 	
 	; otherwise, metaupdate?
@@ -420,7 +415,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" program_version
+	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version
 
 	WinGet, GuiID, ID, A
 
