@@ -1,6 +1,6 @@
 ﻿#persistent
 #singleinstance off
-APPDATA := A_AppData "\regnum-starter"
+APPDATA := A_AppData "\RegnumStarter"
 setworkingdir %APPDATA%
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
@@ -74,7 +74,7 @@ updateServerConfig:
 		} else {
 			iniread, update_info, %APPDATA%/serverConfig.txt, version, update_info, -1
 			; old versions: popup with update message. new version: auto-update, then popup: "update auto-downloaded: blabbla":
-			for k,f in [ "CoRSchnellstarter.ahk", "CoRSchnellstarter.exe" ] {
+			for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
 				tooltip, New update found. Downloading %f%_new...
 				urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
 				if(errorlevel)
@@ -87,10 +87,10 @@ updateServerConfig:
 			tooltip
 			updateBat =
 (
-Del CoRSchnellstarter.ahk
-Del CoRSchnellstarter.exe
-Rename CoRSchnellstarter.ahk_new CoRSchnellstarter.ahk
-Rename CoRSchnellstarter.exe_new CoRSchnellstarter.exe
+Del RegnumStarter.ahk
+Del RegnumStarter.exe
+Rename RegnumStarter.ahk_new RegnumStarter.ahk
+Rename RegnumStarter.exe_new RegnumStarter.exe
 %A_ScriptFullPath%
 Del `%0
 )
@@ -98,7 +98,7 @@ Del `%0
 			fileAppend, %updateBat%, update.bat
 			if(errorlevel)
 				gosub autoUpdateFailed
-			msgbox, ,CoR Schnellstarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" update_info
+			msgbox, ,RegnumStarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" update_info
 			run, update.bat,, hide
 			onExit
 			exitapp
@@ -112,7 +112,7 @@ Del `%0
 		exitapp
 	}
 	if(server_version_new > server_version) {
-		msgbox, ,"CoR Schnellstarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
+		msgbox, ,"RegnumStarter - Metaupdate", % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
 return
@@ -121,8 +121,8 @@ autoUpdateFailed:
 	tooltip
 	fc=
 	filedelete updateBat
-	filedelete CoRSchnellstarter.ahk_new
-	filedelete CoRSchnellstarter.exe_new
+	filedelete RegnumStarter.ahk_new
+	filedelete RegnumStarter.exe_new
 exit
 ; //
 patchLiveGamefile(file) {
@@ -737,28 +737,28 @@ return
 
 setTranslations:
 translations := []
-translations["WINDOW_TITLE"] := { deu: "Regnum Schnellstarter"
+translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
     , eng: "Regnum Quickstarter"
     , spa: "" }
 translations["COULD_NOT_CREATE_APPDATA"] := { deu: "Konnte " APPDATA " nicht erstellen. Das Programm kann nicht starten."
 	, eng: "Couldn't create " APPDATA " folder. Can't startup."
 	, spa: "" }
-translations["CHECKING_UPDATES"] := { deu: "Checke Schnellstarter Updates..."
+translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
     , eng: "Checking for Quickstarter updates..."
     , spa: "" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
     , eng: "Server and Publisher updated successfully."
     , spa: "" }
-translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den CoR-Schnellstarter wurde automatisch heruntergeladen und wird jetzt die aktuelle Version ersetzen. Änderungen:"
+translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt die aktuelle Version ersetzen. Änderungen:"
     , eng: "A new Update has been downloaded automatically and will now replace the current one. Changelog:"
     , spa: "" }
-translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den CoR-Schnellstarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
+translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
     , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
     , spa: "" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
     , eng: "Checking Game Version..."
     , spa: "" }
-translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Schnellstarter wird jetzt die Spieldateien updaten."
+translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: RegnumStarter wird jetzt die Spieldateien updaten."
     , eng: "New Regnum Update: Regnum Starter will now update the game files."
     , spa: "" }
 translations["FAILED"] := { deu: "fehlgeschlagen"
