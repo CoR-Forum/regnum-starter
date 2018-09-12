@@ -69,7 +69,7 @@ updateServerConfig:
 		reload
 	}
 	iniread, program_version_new, data/serverConfig.txt, version, program_version, -1
-	if(program_version_new > program_version) {
+	if(program_version_new > program_version && program_version_new > 10000) {
 		iniread, update_info, data/serverConfig.txt, version, update_info, -1
 		if(update_info==-1 || empty(update_info)) {
 		
