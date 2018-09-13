@@ -3,6 +3,7 @@
 APPDATA := A_AppData "\RegnumStarter"
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
+SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
@@ -52,6 +53,7 @@ checkAppdata:
 			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
 			exitapp
 		}
+
 	}
 	for k,v in ["bckg.png", "icon.ico"] {
 		if(!FileExist(v)) {
