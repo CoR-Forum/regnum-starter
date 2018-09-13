@@ -53,7 +53,10 @@ checkAppdata:
 			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
 			exitapp
 		}
-
+		if(FileExist("data") == "D") {
+			; change from v2.0 to v2.1
+			FileCopy, data\*, %APPDATA%
+		}
 	}
 	for k,v in ["bckg.png", "icon.ico"] {
 		if(!FileExist(v)) {
