@@ -712,7 +712,7 @@ return
 ; //////
 
 checkLanguage:
-	selectLanguageMessageBoxTitle = Language - Idioma - Sprache
+	selectLanguageMessageBoxTitle = Language - Sprache - Idioma
 	if(empty(language)) {
 		settimer, selectLanguageMessageBoxUpdateText, -1
 		msgbox, 2, %selectLanguageMessageBoxTitle%, Please select a language.`n`nBitte wähle eine Sprache.`n`nPor favor elija un idioma.
