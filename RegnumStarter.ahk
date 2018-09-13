@@ -15,6 +15,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
+rs_version_release = v2.1.0
 gosub, make_gui
 
 argc = %0%
@@ -414,7 +415,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version
+	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
 
 	WinGet, GuiID, ID, A
 
