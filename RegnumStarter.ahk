@@ -3,6 +3,7 @@
 APPDATA := A_AppData "\RegnumStarter"
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
+SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, readUserConfig
 gosub, checkLanguage
@@ -15,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = v2.1.0
+rs_version_release = v2.1.1
 gosub, make_gui
 
 argc = %0%
@@ -52,9 +53,13 @@ checkAppdata:
 			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
 			exitapp
 		}
+		if(FileExist("data") == "D") {
+			; change from v2.0 to v2.1
+			FileCopy, data\*, %APPDATA%
+		}
 	}
 	for k,v in ["bckg.png", "icon.ico"] {
-		if(!FileExist(v)) {
+		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
 			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
@@ -145,7 +150,7 @@ updateGamefiles:
 		if(!FileExist(live))
 			FileCreateDir, %live%
 		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll", "openal.dll"] ; dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
-			if(!FileExist(file))
+			if(!FileExist(live file))
 				if(!patchLiveGamefile(file))
 					goto exitThread
 		msgbox, % T.DOWNLOADING_LIVE_GAME_FINISHED
@@ -712,7 +717,7 @@ return
 ; //////
 
 checkLanguage:
-	selectLanguageMessageBoxTitle = Language - Idioma - Sprache
+	selectLanguageMessageBoxTitle = Language - Sprache - Idioma
 	if(empty(language)) {
 		settimer, selectLanguageMessageBoxUpdateText, -1
 		msgbox, 2, %selectLanguageMessageBoxTitle%, Please select a language.`n`nBitte wähle eine Sprache.`n`nPor favor elija un idioma.
