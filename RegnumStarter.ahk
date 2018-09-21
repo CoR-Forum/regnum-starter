@@ -150,7 +150,7 @@ updateGamefiles:
 		if(!FileExist(live))
 			FileCreateDir, %live%
 		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll", "openal.dll"] ; dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
-			if(!FileExist(file))
+			if(!FileExist(live file))
 				if(!patchLiveGamefile(file))
 					goto exitThread
 		msgbox, % T.DOWNLOADING_LIVE_GAME_FINISHED
