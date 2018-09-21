@@ -59,7 +59,7 @@ checkAppdata:
 		}
 	}
 	for k,v in ["bckg.png", "icon.ico"] {
-		if(!FileExist(APPDATA v)) {
+		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
 			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
