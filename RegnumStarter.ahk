@@ -729,6 +729,10 @@ checkLanguage:
 			language = spa
 		ifmsgbox, Cancel
 			language = eng
+		if(language == "spa") {
+			msgbox, % "Spanish not supported yet! If you can contribute to the Spanish translations, we'll be happy if you contact us. For now, the RegnumStarter will stay English."
+			language = eng
+		}
 	}
 return
 selectLanguageMessageBoxUpdateText:
@@ -749,8 +753,8 @@ translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
     , eng: "Server and Publisher updated successfully."
     , spa: "" }
-translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt die aktuelle Version ersetzen. Änderungen:"
-    , eng: "A new Update has been downloaded automatically and will now replace the current one. Changelog:"
+translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
+    , eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
     , spa: "" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
     , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
