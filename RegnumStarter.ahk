@@ -5,10 +5,10 @@ BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
+gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-gosub, checkAppdata
 try menu, tray, icon, %APPDATA%/icon.ico
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
@@ -50,7 +50,7 @@ checkAppdata:
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
 		if(errorlevel) {
-			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
+			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
 			exitapp
 		}
 		if(FileExist("data") == "D") {
@@ -743,9 +743,6 @@ translations := []
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
     , eng: "Regnum Quickstarter"
     , spa: "" }
-translations["COULD_NOT_CREATE_APPDATA"] := { deu: "Konnte " APPDATA " nicht erstellen. Das Programm kann nicht starten."
-	, eng: "Couldn't create " APPDATA " folder. Can't startup."
-	, spa: "" }
 translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
     , eng: "Checking for Quickstarter updates..."
     , spa: "" }
