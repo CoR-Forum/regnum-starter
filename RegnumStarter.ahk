@@ -17,7 +17,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = v2.1.1
+rs_version_release = v2.2.0
 gosub, make_gui
 
 argc = %0%
@@ -213,7 +213,7 @@ return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {language: a_space,selected_user: 1,selected_server: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {language: a_space,selected_user: 1,selected_server: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,hide_window_border:0,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
@@ -411,6 +411,10 @@ make_gui:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
+
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x256 y243 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
 	Gui, Font, s13 bold cD8D8D8, Verdana
 	gui, add, text, x320 backgroundtrans y4 gguiclose, X
@@ -662,6 +666,11 @@ run:
 		filedelete, %live%splash_gmg.png
 	}
 
+	;;;;;;;; REMOVE WINDOW BORDER OPTION
+
+	if(hide_window_border)
+		settimer, removeRegnumWindowBorder, -1000
+
 	;;;;;;;; RUN
 	
 	if run_runas = 1
@@ -715,6 +724,12 @@ run:
 
 return
 
+; //////
+
+removeRegnumWindowBorder:
+	WinWaitActive, ahk_class Regnum,,3
+	WinSet, style, -0xC00000, ahk_class Regnum
+return
 ; //////
 
 checkLanguage:
@@ -793,6 +808,9 @@ translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
     , spa: "FALTAN" }
+translations["HIDE_WINDOW_BORDER"] := { deu: "Balken ausblenden"
+    , eng: "Hide window border"
+    , spa: "" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: "Screen Resolution"
     , spa: "" }
