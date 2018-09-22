@@ -1,6 +1,7 @@
 ﻿#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
+global APPDATA
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
 SetWorkingDir, %A_ScriptDir%
