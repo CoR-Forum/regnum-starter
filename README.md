@@ -1,22 +1,25 @@
 # CoR Schnellstarter
 
-![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-59-53_F102WB3ehR42Q1oCOM9y.png)
+![](https://i.imgur.com/hBmN6Lo.png)
 
-Mit diesem Tool kannst du dich im Spiel [Champions of Regnum](https://www.championsofregnum.com/) in wenigen Sekunden einloggen und die Eingabe von Benutzername und Passwort überspringen.
+With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within few seconds and skip the input of username and password.
 
-### Benutzung
+### Usage
 
-Die letzte Version kann [hier](https://github.com/phil294/cor-schnellstarter/releases/) heruntergeladen werden. Die .exe ist einfach ausführbar. Alternativ kannst du auch [AutoHotkey](https://autohotkey.com/download/1.1/) installieren und dann das .ahk Skript direkt ausführen.
+Download the latest version [here](https://github.com/phil294/cor-schnellstarter/releases/). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk Skript directly.
 
 ### Accounts
 
-Es können beliebig viele Regnum-Accounts hinzugefügt werden.
+Add as many accounts as you like.
 
 ![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-33-53_xrQ2dH80gQ26hjPvpUPN.png)
 
 ### Updates
 
-Der Schnellstarter aktualisiert eigenständig die Liste der Server und Publisher.
+RegnumStarter automatically updates
+- *itself*
+- *Regnum gamefiles*: Whenever there is a new update. You dont even need to have Regnum installed beforehand.
+- *List of servers and publishers*
 
 ![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-04-11_EdXEcPV99rWSxYX6v9pJ.png)
 
