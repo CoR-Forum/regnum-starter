@@ -746,7 +746,7 @@ return
 setTranslations:
 translations := []
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
-    , eng: "Regnum Quickstarter"
+    , eng: "RegnumStarter"
     , spa: "" }
 translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
     , eng: "Checking for Quickstarter updates..."
@@ -777,22 +777,22 @@ translations["EMPTY"] := { deu: "leer"
     , spa: "" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
-	, spa: "Login" }
+	, spa: "HOLAS SENORITANANAS" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
     , eng: "Manage Accounts"
-    , spa: "" }
+    , spa: "PARLIL'ITALIANO???" }
 translations["PUBLISHER"] := { deu: "Publisher"
     , eng: ""
     , spa: "" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
     , eng: "Create Shortcut"
-    , spa: "" }
+    , spa: "JAJAJAJAJA" }
 translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
     , eng: "Hide NGD-Intro"
-    , spa: "" }
+    , spa: "TRADUCCIONES" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
-    , spa: "" }
+    , spa: "FALTAN" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: "Screen Resolution"
     , spa: "" }
@@ -804,7 +804,7 @@ translations["CHANGE"] := { deu: "ändern"
     , spa: "" }
 translations["RUN_AS"] := { deu: "als anderer Win-Nutzer ausführen"
     , eng: "run as other windows user"
-    , spa: "" }
+    , spa: "CAMBIAR_A_INGLÉS" }
 translations["USER"] := { deu: "Nutzer"
     , eng: "User"
     , spa: "" }
