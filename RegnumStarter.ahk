@@ -1,14 +1,15 @@
 ﻿#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
+global APPDATA
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
 ;BASE_URL = http://localhost:1234/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
+gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-gosub, checkAppdata
 try menu, tray, icon, %APPDATA%/icon.ico
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
@@ -50,7 +51,7 @@ checkAppdata:
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
 		if(errorlevel) {
-			msgbox, % T.COULD_NOT_CREATE_APPDATA ": " errorlevel
+			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
 			exitapp
 		}
 		if(FileExist("data") == "D") {
@@ -729,6 +730,10 @@ checkLanguage:
 			language = spa
 		ifmsgbox, Cancel
 			language = eng
+		if(language == "spa") {
+			msgbox, % "Spanish not supported yet! If you can contribute to the Spanish translations, we'll be happy if you contact us. For now, the RegnumStarter will stay English."
+			language = eng
+		}
 	}
 return
 selectLanguageMessageBoxUpdateText:
@@ -741,19 +746,16 @@ return
 setTranslations:
 translations := []
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
-    , eng: "Regnum Quickstarter"
+    , eng: "RegnumStarter"
     , spa: "" }
-translations["COULD_NOT_CREATE_APPDATA"] := { deu: "Konnte " APPDATA " nicht erstellen. Das Programm kann nicht starten."
-	, eng: "Couldn't create " APPDATA " folder. Can't startup."
-	, spa: "" }
 translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
     , eng: "Checking for Quickstarter updates..."
     , spa: "" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
     , eng: "Server and Publisher updated successfully."
     , spa: "" }
-translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt die aktuelle Version ersetzen. Änderungen:"
-    , eng: "A new Update has been downloaded automatically and will now replace the current one. Changelog:"
+translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
+    , eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
     , spa: "" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
     , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
@@ -775,22 +777,22 @@ translations["EMPTY"] := { deu: "leer"
     , spa: "" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
-	, spa: "Login" }
+	, spa: "HOLAS SENORITANANAS" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
     , eng: "Manage Accounts"
-    , spa: "" }
+    , spa: "PARLIL'ITALIANO???" }
 translations["PUBLISHER"] := { deu: "Publisher"
     , eng: ""
     , spa: "" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
     , eng: "Create Shortcut"
-    , spa: "" }
+    , spa: "JAJAJAJAJA" }
 translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
     , eng: "Hide NGD-Intro"
-    , spa: "" }
+    , spa: "TRADUCCIONES" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
-    , spa: "" }
+    , spa: "FALTAN" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: "Screen Resolution"
     , spa: "" }
@@ -802,7 +804,7 @@ translations["CHANGE"] := { deu: "ändern"
     , spa: "" }
 translations["RUN_AS"] := { deu: "als anderer Win-Nutzer ausführen"
     , eng: "run as other windows user"
-    , spa: "" }
+    , spa: "CAMBIAR_A_INGLÉS" }
 translations["USER"] := { deu: "Nutzer"
     , eng: "User"
     , spa: "" }
