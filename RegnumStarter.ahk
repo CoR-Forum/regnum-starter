@@ -882,25 +882,25 @@ translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin h
 	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo." }
 translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
 	, eng: "Download completed.`nIf the login succeeds, Regnum will start downloading all game files which may take some time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded."
-	, spa: "" }
+	, spa: "Descarga completada. Si el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
     , eng: "Please fill out your windows login details or disable the usage of another windows user."
-    , spa: "" }
+    , spa: "Complete los detalles de inicio de sesión de Windows o deshabilite el uso de otro usuario de Windows." }
 translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
     , eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
-    , spa: "" }
+    , spa: "No se pudo iniciar ROClientGame.exe! Datos de inicio de sesión incorrectos de Windows o permisos perdidos" }
 translations["CONNECTION_ERROR_USER_NOT_FOUND"] := { deu: "Logindaten falsch:`nFalschen Username, falsches Passwort oder falschen Publisher für diesen Account angegeben."
     , eng: "Wrong credentials:`nWrong username, wrong password or wrong publisher configured for this account."
-    , spa: "" }
+    , spa: "Credenciales incorrectas: nombre de usuario `nWrong, contraseña incorrecta o editor incorrecto configurado para esta cuenta." }
 translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrekt, aber der Account ist entweder`n`n1. ...nicht autorisiert: Hierfür bitte einmalig den normalen, offiziellen Launcher benutzen (Spiel betreten nicht notwendig, nur Autorisierung). Oder`n`n2. ...gebannt" ; todo right?
     , eng: "Credentials are correct, but the account is either`n`n1. ...not authorized. To solve this, please for once use the normal, official Regnum Launcher (no need to actually enter the game, just authorize it). Or`n`n2. ...banned"
-    , spa: "" }
+    , spa: "Las credenciales son correctas, pero la cuenta es o bien `n`n1. ...no autorizado. Para resolver esto, por favor, por una vez, utilice el Regnum Launcher normal y oficial (no es necesario que ingrese al juego, solo autorícelo). O`n`n2. ... prohibido" }
 translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins mit demselben Account müssen mindestens 5 Sekunden vergangen sein)"
     , eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cooldown))"
-    , spa: "" }
+    , spa: "La cuenta ya ha iniciado sesión. `n (Entre dos inicios de sesión con la misma cuenta debe haber pasado 5 segundos como mínimo (tiempo de reutilización de inicio de sesión))" }
 translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
     , eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
-    , spa: "" }
+    , spa: "serverConfig.txt contiene datos inválidos. Esta es probablemente la primera vez que ejecuta Quickstarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
 global T := []
 for k,v in translations {
     T[k] := v[language]
