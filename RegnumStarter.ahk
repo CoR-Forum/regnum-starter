@@ -832,54 +832,54 @@ translations["PASSWORD"] := { deu: "Passwort"
 translations["REQUIRED"] := { deu: "erforderlich"
     , eng: "required"
     , spa: "necesario" }
-translations["SELECT_PATH"] := { deu: "Bitte wähle den Speicherort der Regnumdateien aus!"
-    , eng: "Select the path of your regnum files!"
-    , spa: "" }
+translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht konfiguriert!"
+    , eng: "Path to Game Installation has not been configured!"
+    , spa: "Ruta de instalación del juego no se ha configurado!" }
 translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
     , eng: "Select where to create the Shortcut"
-    , spa: "" }
+    , spa: "Seleccione dónde crear el atajo" }
 translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
     , eng: "Couldn't create shortcut."
-    , spa: "" }
+    , spa: "No se pudo crear el acceso directo." }
 translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
     , eng: "Creation of direct link successfull for"
-    , spa: "" }
+    , spa: "Creación de enlace directo exitoso para" }
 translations["NAME"] := { deu: "Name"
     , eng: "Name"
-    , spa: "" }
-translations["COMMENT"] := { deu: "Kommentar"
-    , eng: "Comment"
-    , spa: "" }
+    , spa: "Nombre" }
+translations["COMMENT"] := { deu: "Notitz"
+    , eng: "Note"
+    , spa: "Nota" }
 translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
     , eng: "Invalid Regnum-Path!"
-    , spa: "" }
+    , spa: "Ruta de registro no válida!" }
 translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
     , eng: "game.cfg not found"
-    , spa: "" }
+    , spa: "game.cfg no encontrado" }
 translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
     , eng: "game.cfg was found, but it's smaller than 0.5 kB"
-    , spa: "" }
+    , spa: "Se encontró game.cfg, pero es más pequeño que 0.5 kB" }
 translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Bildschirm-Auflösung!"
     , eng: "Please choose a screen resolution!"
-    , spa: "" }
+    , spa: "Por favor, elija una resolución de pantalla!" }
 translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
     , eng: "Server not found"
-    , spa: "" }
+    , spa: "Servidor no encontrado" }
 translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
     , eng: "Publisher not found"
-    , spa: "" }
+    , spa: "Editor no encontrado" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
     , eng: "You didn't select any account! Go to 'Manage Accounts' first!"
-    , spa: "" }
+    , spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
 translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
     , eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
-    , spa: "" }
+    , spa: "Falta TestServer\ROClientGame.exe (Amun-Integration es experimental)" }
 translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
 	, eng: "No game files found in the specified folder"
-	, spa: "" }
+	, spa: "No se encontraron archivos del juego en la carpeta especificada" }
 translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange."
 	, eng: "Shall we download the game to this folder now? This doesn't take long."
-	, spa: "" }
+	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo." }
 translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
 	, eng: "Download completed.`nIf the login succeeds, Regnum will start downloading all game files which may take some time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded."
 	, spa: "" }
