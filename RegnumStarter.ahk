@@ -745,7 +745,6 @@ checkLanguage:
 			language = spa
 		ifmsgbox, Cancel
 			language = eng
-		}
 	}
 return
 selectLanguageMessageBoxUpdateText:
