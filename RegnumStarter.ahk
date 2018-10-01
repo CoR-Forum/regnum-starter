@@ -762,28 +762,28 @@ setTranslations:
 translations := []
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
     , eng: "RegnumStarter"
-    , spa: "" }
-translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
-    , eng: "Checking for Quickstarter updates..."
-    , spa: "" }
-translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
-    , eng: "Server and Publisher updated successfully."
-    , spa: "" }
+    , spa: "RegnumStarter" }
+translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
+    , eng: "Checking for RegnumStarter updates..."
+    , spa: "Comprobando actualizaciones de RegnumStarter" }
+translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
+    , eng: "List of servers and publishers updated successfully."
+    , spa: "Lista de servidores y editores actualizados con éxito." }
 translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
     , eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
-    , spa: "" }
+    , spa: "Una nueva actualización se ha descargado automáticamente y ahora reemplazará la actual como RegnumStarter.exe / RegnumStarter.ahk. Registro de cambios:" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
-    , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
-    , spa: "" }
+    , eng: "Error when trying to download and apply the auto-update for RegnumStarter! You can still download it manually. This is the changelog:"
+    , spa: "¡Error al intentar descargar y aplicar la actualización automática para RegnumStarter! Todavía puedes descargarlo manualmente. Este es el registro de cambios:" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
     , eng: "Checking Game Version..."
-    , spa: "" }
-translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: RegnumStarter wird jetzt die Spieldateien updaten."
-    , eng: "New Regnum Update: Regnum Starter will now update the game files."
-    , spa: "" }
+    , spa: "Revisando la versión del juego ..." }
+translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Der RegnumStarter wird jetzt die Spieldateien aktualisieren."
+    , eng: "New Regnum Update: RegnumStarter will now update the game files."
+    , spa: "Nueva actualización de Regnum: RegnumStarter ahora actualizará los archivos del juego." }
 translations["FAILED"] := { deu: "fehlgeschlagen"
     , eng: "failed"
-    , spa: "" }
+    , spa: "ha fallado" }
 translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
     , eng: "Update completed."
     , spa: "" }
