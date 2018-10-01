@@ -786,52 +786,52 @@ translations["FAILED"] := { deu: "fehlgeschlagen"
     , spa: "ha fallado" }
 translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
     , eng: "Update completed."
-    , spa: "" }
+    , spa: "Actualización completada." }
 translations["EMPTY"] := { deu: "leer"
     , eng: "empty"
-    , spa: "" }
+    , spa: "vacío" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
-	, spa: "HOLAS SENORITANANAS" }
+	, spa: "Iniciar sesión" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
     , eng: "Manage Accounts"
-    , spa: "PARLIL'ITALIANO???" }
+    , spa: "Cuentas de administración" }
 translations["PUBLISHER"] := { deu: "Publisher"
-    , eng: ""
-    , spa: "" }
+    , eng: "Publisher"
+    , spa: "Referente" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
     , eng: "Create Shortcut"
-    , spa: "JAJAJAJAJA" }
+    , spa: "Crear acceso directo" }
 translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
     , eng: "Hide NGD-Intro"
-    , spa: "TRADUCCIONES" }
+    , spa: "Ocultar NGD-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
-    , spa: "FALTAN" }
+    , spa: "Ocultar pantalla de carga" }
 translations["HIDE_WINDOW_BORDER"] := { deu: "Balken ausblenden"
     , eng: "Hide window border"
-    , spa: "" }
+    , spa: "Ocultar el borde de la ventana" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: "Screen Resolution"
-    , spa: "" }
-translations["REGNUM_PATH"] := { deu: "Regnumpfad"
-    , eng: "Regnum path"
-    , spa: "" }
+    , spa: "Resolución de la pantalla" }
+translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
+    , eng: "Game Folder"
+    , spa: "Carpeta de juego" }
 translations["CHANGE"] := { deu: "ändern"
     , eng: "change"
-    , spa: "" }
-translations["RUN_AS"] := { deu: "als anderer Win-Nutzer ausführen"
-    , eng: "run as other windows user"
-    , spa: "CAMBIAR_A_INGLÉS" }
+    , spa: "cambio" }
+translations["RUN_AS"] := { deu: "Als anderer Win-Nutzer ausführen"
+    , eng: "Run as other windows user"
+    , spa: "ejecutar como otro usuario de Windows" }
 translations["USER"] := { deu: "Nutzer"
     , eng: "User"
-    , spa: "" }
+    , spa: "Usuario" }
 translations["PASSWORD"] := { deu: "Passwort"
     , eng: "Password"
-    , spa: "" }
+    , spa: "Contraseña" }
 translations["REQUIRED"] := { deu: "erforderlich"
     , eng: "required"
-    , spa: "" }
+    , spa: "necesario" }
 translations["SELECT_PATH"] := { deu: "Bitte wähle den Speicherort der Regnumdateien aus!"
     , eng: "Select the path of your regnum files!"
     , spa: "" }
