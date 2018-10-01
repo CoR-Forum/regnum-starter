@@ -745,9 +745,6 @@ checkLanguage:
 			language = spa
 		ifmsgbox, Cancel
 			language = eng
-		if(language == "spa") {
-			msgbox, % "Spanish not supported yet! If you can contribute to the Spanish translations, we'll be happy if you contact us. For now, the RegnumStarter will stay English."
-			language = eng
 		}
 	}
 return
