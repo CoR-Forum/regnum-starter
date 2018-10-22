@@ -347,18 +347,23 @@ make_gui:
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
 	
+; 	// background image	
 	gui, add, picture, x0 y0, %APPDATA%\bckg.png
 
+; 	// login button
 	Gui, Font, s8 bold, Verdana
 	gui, add, button, w70 x36 y136 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
+; 	// user selection
 	gui, add, dropdownlist, x11 y105 w125 vselected_user altsubmit
 	goSub updateUserlist
 
+; 	// account management
 	gui, add, button, x11 y77 w125 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
+; 	// server selection
 	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
 	gosub updateServerlist
 
@@ -366,12 +371,6 @@ make_gui:
 	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
 
 	Gui, Font, s7 norm cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
-	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
-	
-	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
-	
 	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vwidth, %width%
@@ -388,12 +387,17 @@ make_gui:
 	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x117 center y136 w130 h100 backgroundtrans, .
+	gui, add, text, x200 center y32 w100 h25 backgroundtrans, Version v2.3.3
 	Gui, Font, s8 c000000, Verdana
 
 	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
+	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
+	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
+	
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
