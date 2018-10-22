@@ -381,7 +381,7 @@ make_gui:
 	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vheight, %height%
 
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui add,text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
+	gui  add, text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
 	Gui, Font, s7 bold cD8D8D8, Verdana
 	gui, add, text, x256 w80 r2 y160 backgroundtrans vregnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
