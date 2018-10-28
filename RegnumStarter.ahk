@@ -347,18 +347,23 @@ make_gui:
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
 	
+; 	// background image	
 	gui, add, picture, x0 y0, %APPDATA%\bckg.png
 
+; 	// login button
 	Gui, Font, s8 bold, Verdana
 	gui, add, button, w70 x36 y136 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
+; 	// user selection
 	gui, add, dropdownlist, x11 y105 w125 vselected_user altsubmit
 	goSub updateUserlist
 
+; 	// account management
 	gui, add, button, x11 y77 w125 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
+; 	// server selection
 	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
 	gosub updateServerlist
 
@@ -366,12 +371,6 @@ make_gui:
 	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
 
 	Gui, Font, s7 norm cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
-	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
-	
-	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
-	
 	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vwidth, %width%
@@ -381,19 +380,24 @@ make_gui:
 	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vheight, %height%
 
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui add,text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
+	gui  add, text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
 	Gui, Font, s7 bold cD8D8D8, Verdana
 	gui, add, text, x256 w80 r2 y160 backgroundtrans vregnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
 	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x117 center y136 w130 h100 backgroundtrans, .
+	gui, add, text, x245 center y90 w100 h25 backgroundtrans, Version v2.3.3
 	Gui, Font, s8 c000000, Verdana
 
 	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
+	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
+	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
+	
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x11 y275 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -752,145 +756,145 @@ setTranslations:
 translations := []
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
     , eng: "RegnumStarter"
-    , spa: "" }
-translations["CHECKING_UPDATES"] := { deu: "Checke RegnumStarter Updates..."
-    , eng: "Checking for Quickstarter updates..."
-    , spa: "" }
-translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Server und Publisher wurden erfolgreich aktualisiert."
-    , eng: "Server and Publisher updated successfully."
-    , spa: "" }
+    , spa: "RegnumStarter" }
+translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
+    , eng: "Checking for RegnumStarter updates..."
+    , spa: "Comprobando actualizaciones de RegnumStarter" }
+translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
+    , eng: "List of servers and publishers updated successfully."
+    , spa: "Lista de servidores y editores actualizados con éxito." }
 translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
     , eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
-    , spa: "" }
+    , spa: "Una nueva actualización se ha descargado automáticamente y ahora reemplazará la actual como RegnumStarter.exe / RegnumStarter.ahk. Registro de cambios:" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
-    , eng: "The new update for the Quickstarter could not be downloaded automatically! You can still download it manually, however. This is the changelog:"
-    , spa: "" }
+    , eng: "Error when trying to download and apply the auto-update for RegnumStarter! You can still download it manually. This is the changelog:"
+    , spa: "¡Error al intentar descargar y aplicar la actualización automática para RegnumStarter! Todavía puedes descargarlo manualmente. Este es el registro de cambios:" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
     , eng: "Checking Game Version..."
-    , spa: "" }
-translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: RegnumStarter wird jetzt die Spieldateien updaten."
-    , eng: "New Regnum Update: Regnum Starter will now update the game files."
-    , spa: "" }
+    , spa: "Revisando la versión del juego ..." }
+translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Der RegnumStarter wird jetzt die Spieldateien aktualisieren."
+    , eng: "New Regnum Update: RegnumStarter will now update the game files."
+    , spa: "Nueva actualización de Regnum: RegnumStarter ahora actualizará los archivos del juego." }
 translations["FAILED"] := { deu: "fehlgeschlagen"
     , eng: "failed"
-    , spa: "" }
+    , spa: "ha fallado" }
 translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
     , eng: "Update completed."
-    , spa: "" }
+    , spa: "Actualización completada." }
 translations["EMPTY"] := { deu: "leer"
     , eng: "empty"
-    , spa: "" }
+    , spa: "vacío" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
-	, spa: "HOLAS SENORITANANAS" }
+	, spa: "Iniciar sesión" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
     , eng: "Manage Accounts"
-    , spa: "PARLIL'ITALIANO???" }
+    , spa: "Cuentas de administración" }
 translations["PUBLISHER"] := { deu: "Publisher"
-    , eng: ""
-    , spa: "" }
+    , eng: "Publisher"
+    , spa: "Referente" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
     , eng: "Create Shortcut"
-    , spa: "JAJAJAJAJA" }
+    , spa: "Crear acceso directo" }
 translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
     , eng: "Hide NGD-Intro"
-    , spa: "TRADUCCIONES" }
+    , spa: "Ocultar NGD-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
-    , spa: "FALTAN" }
+    , spa: "Ocultar pantalla de carga" }
 translations["HIDE_WINDOW_BORDER"] := { deu: "Balken ausblenden"
     , eng: "Hide window border"
-    , spa: "" }
+    , spa: "Ocultar el borde de la ventana" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
     , eng: "Screen Resolution"
-    , spa: "" }
-translations["REGNUM_PATH"] := { deu: "Regnumpfad"
-    , eng: "Regnum path"
-    , spa: "" }
+    , spa: "Resolución de la pantalla" }
+translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
+    , eng: "Game Folder"
+    , spa: "Carpeta de juego" }
 translations["CHANGE"] := { deu: "ändern"
     , eng: "change"
-    , spa: "" }
-translations["RUN_AS"] := { deu: "als anderer Win-Nutzer ausführen"
-    , eng: "run as other windows user"
-    , spa: "CAMBIAR_A_INGLÉS" }
+    , spa: "cambio" }
+translations["RUN_AS"] := { deu: "Als anderer Win-Nutzer ausführen"
+    , eng: "Run as other windows user"
+    , spa: "ejecutar como otro usuario de Windows" }
 translations["USER"] := { deu: "Nutzer"
     , eng: "User"
-    , spa: "" }
+    , spa: "Usuario" }
 translations["PASSWORD"] := { deu: "Passwort"
     , eng: "Password"
-    , spa: "" }
+    , spa: "Contraseña" }
 translations["REQUIRED"] := { deu: "erforderlich"
     , eng: "required"
-    , spa: "" }
-translations["SELECT_PATH"] := { deu: "Bitte wähle den Speicherort der Regnumdateien aus!"
-    , eng: "Select the path of your regnum files!"
-    , spa: "" }
+    , spa: "necesario" }
+translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht konfiguriert!"
+    , eng: "Path to Game Installation has not been configured!"
+    , spa: "Ruta de instalación del juego no se ha configurado!" }
 translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
     , eng: "Select where to create the Shortcut"
-    , spa: "" }
+    , spa: "Seleccione dónde crear el atajo" }
 translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
     , eng: "Couldn't create shortcut."
-    , spa: "" }
+    , spa: "No se pudo crear el acceso directo." }
 translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
     , eng: "Creation of direct link successfull for"
-    , spa: "" }
+    , spa: "Creación de enlace directo exitoso para" }
 translations["NAME"] := { deu: "Name"
     , eng: "Name"
-    , spa: "" }
-translations["COMMENT"] := { deu: "Kommentar"
-    , eng: "Comment"
-    , spa: "" }
+    , spa: "Nombre" }
+translations["COMMENT"] := { deu: "Notitz"
+    , eng: "Note"
+    , spa: "Nota" }
 translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
     , eng: "Invalid Regnum-Path!"
-    , spa: "" }
+    , spa: "Ruta de registro no válida!" }
 translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
     , eng: "game.cfg not found"
-    , spa: "" }
+    , spa: "game.cfg no encontrado" }
 translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
     , eng: "game.cfg was found, but it's smaller than 0.5 kB"
-    , spa: "" }
+    , spa: "Se encontró game.cfg, pero es más pequeño que 0.5 kB" }
 translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Bildschirm-Auflösung!"
     , eng: "Please choose a screen resolution!"
-    , spa: "" }
+    , spa: "Por favor, elija una resolución de pantalla!" }
 translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
     , eng: "Server not found"
-    , spa: "" }
+    , spa: "Servidor no encontrado" }
 translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
     , eng: "Publisher not found"
-    , spa: "" }
+    , spa: "Editor no encontrado" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
     , eng: "You didn't select any account! Go to 'Manage Accounts' first!"
-    , spa: "" }
+    , spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
 translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
     , eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
-    , spa: "" }
+    , spa: "Falta TestServer\ROClientGame.exe (Amun-Integration es experimental)" }
 translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
 	, eng: "No game files found in the specified folder"
-	, spa: "" }
+	, spa: "No se encontraron archivos del juego en la carpeta especificada" }
 translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange."
 	, eng: "Shall we download the game to this folder now? This doesn't take long."
-	, spa: "" }
+	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo." }
 translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
 	, eng: "Download completed.`nIf the login succeeds, Regnum will start downloading all game files which may take some time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded."
-	, spa: "" }
+	, spa: "Descarga completada. Si el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
     , eng: "Please fill out your windows login details or disable the usage of another windows user."
-    , spa: "" }
+    , spa: "Complete los detalles de inicio de sesión de Windows o deshabilite el uso de otro usuario de Windows." }
 translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
     , eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
-    , spa: "" }
+    , spa: "No se pudo iniciar ROClientGame.exe! Datos de inicio de sesión incorrectos de Windows o permisos perdidos" }
 translations["CONNECTION_ERROR_USER_NOT_FOUND"] := { deu: "Logindaten falsch:`nFalschen Username, falsches Passwort oder falschen Publisher für diesen Account angegeben."
     , eng: "Wrong credentials:`nWrong username, wrong password or wrong publisher configured for this account."
-    , spa: "" }
+    , spa: "Credenciales incorrectas: nombre de usuario `nWrong, contraseña incorrecta o editor incorrecto configurado para esta cuenta." }
 translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrekt, aber der Account ist entweder`n`n1. ...nicht autorisiert: Hierfür bitte einmalig den normalen, offiziellen Launcher benutzen (Spiel betreten nicht notwendig, nur Autorisierung). Oder`n`n2. ...gebannt" ; todo right?
     , eng: "Credentials are correct, but the account is either`n`n1. ...not authorized. To solve this, please for once use the normal, official Regnum Launcher (no need to actually enter the game, just authorize it). Or`n`n2. ...banned"
-    , spa: "" }
+    , spa: "Las credenciales son correctas, pero la cuenta es o bien `n`n1. ...no autorizado. Para resolver esto, por favor, por una vez, utilice el Regnum Launcher normal y oficial (no es necesario que ingrese al juego, solo autorícelo). O`n`n2. ... prohibido" }
 translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins mit demselben Account müssen mindestens 5 Sekunden vergangen sein)"
     , eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cooldown))"
-    , spa: "" }
+    , spa: "La cuenta ya ha iniciado sesión. `n (Entre dos inicios de sesión con la misma cuenta debe haber pasado 5 segundos como mínimo (tiempo de reutilización de inicio de sesión))" }
 translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
     , eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
-    , spa: "" }
+    , spa: "serverConfig.txt contiene datos inválidos. Esta es probablemente la primera vez que ejecuta Quickstarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
 global T := []
 for k,v in translations {
     T[k] := v[language]

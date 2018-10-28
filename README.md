@@ -1,12 +1,14 @@
 # CoR Schnellstarter
 
-![](https://i.imgur.com/hBmN6Lo.png)
+![](https://cdn.treudler.net/shared/screenshots/2018_10_01_22-37-30_aRFzkq7tdc73MT6ZWyLO.png)
 
 With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within few seconds and skip the input of username and password.
 
 ### Usage
 
 Download the latest version [here](https://github.com/phil294/cor-schnellstarter/releases/). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk Skript directly.
+
+![](https://cdn.treudler.net/shared/screenshots/2018_09_13_00-48-17_730HVVGVxWCKEiI668Wm.gif)
 
 ### Accounts
 
@@ -18,7 +20,7 @@ Add as many accounts as you like.
 
 RegnumStarter automatically updates
 - *itself*
-- *Regnum gamefiles*: Whenever there is a new update. You dont even need to have Regnum installed beforehand.
+- *Regnum gamefiles*: Whenever there is a new update. You dont even need to have Regnum installed already.
 - *List of servers and publishers*
 
 ![](https://cdn.treudler.net/shared/screenshots/2018_08_31_22-04-11_EdXEcPV99rWSxYX6v9pJ.png)
@@ -36,8 +38,10 @@ Choose Unicode 64-bit as your basefile.
 
 ### Authors
 
-* **Blauhirn** - *Head Development* - [@phil294](https://github.com/phil294)
-* **Francis** - *GitHub maintenance* - [@joshua2504](https://github.com/joshua2504)
+* **Blauhirn** - [@phil294](https://github.com/phil294)
+* **Francis** - [@joshua2504](https://github.com/joshua2504)
+
+We've been playing Regnum for many years but both not playing anymore.
 
 ### License
 
