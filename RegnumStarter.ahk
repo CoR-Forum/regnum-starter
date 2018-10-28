@@ -733,29 +733,19 @@ return
 ; //////
 
 checkLanguage:
-	selectLanguageMessageBoxTitle = Language - Sprache - Idioma
-	if(empty(language)) {
-		settimer, selectLanguageMessageBoxUpdateText, -1
-		msgbox, 2, %selectLanguageMessageBoxTitle%, Please select a language.`n`nBitte wähle eine Sprache.`n`nPor favor elija un idioma.
-		IfMsgBox, Abort
-			language = eng
-		ifmsgbox, Retry
+	while(empty(language)) {
+		InputBox, language, Language - Sprache - Idioma, Please select a language - Bitte wähle eine Sprache - Por favor elija un idioma.`n`neng deu spa,,,,,,,, deu
+		if(RegExMatch(language, "i)de|ger"))
 			language = deu
-		ifmsgbox, Ignore
+		else if(RegExMatch(language, "i)en|usa|gb"))
+			language = eng
+		else if(RegExMatch(language, "i)es|sp|ar"))
 			language = spa
-		ifmsgbox, Cancel
-			language = eng
-		if(language == "spa") {
-			msgbox, % "Spanish not supported yet! If you can contribute to the Spanish translations, we'll be happy if you contact us. For now, the RegnumStarter will stay English."
-			language = eng
+		else {
+			msgbox, Failed to understand language.`n`nKonnte Sprache nicht feststellen.`n`nNo entendió el lenguaje.
+			language =
 		}
 	}
-return
-selectLanguageMessageBoxUpdateText:
-	WinWait, %selectLanguageMessageBoxTitle%
-	controlsettext, Button1, English, %selectLanguageMessageBoxTitle%
-	controlsettext, Button2, Deutsch, %selectLanguageMessageBoxTitle%
-	controlsettext, Button3, Español, %selectLanguageMessageBoxTitle%
 return
 
 setTranslations:
