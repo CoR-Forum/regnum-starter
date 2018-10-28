@@ -548,7 +548,7 @@ accounts_edit:
 		try 
 			referer := referer_by_token(user.referer.token)
 		catch {
-			referer := referers[0]
+			referer := referers[1]
 		}
 		guicontrol, 2:choose, referer%a_index%, % referer.name
 		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
