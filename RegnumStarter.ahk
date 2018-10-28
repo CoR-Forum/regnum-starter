@@ -412,8 +412,11 @@ make_gui:
 	Gui, Font, s7 c000000 norm, Verdana
 	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
-	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x245 center y90 w100 h25 backgroundtrans, Version v2.3.0
+	Gui, Font, s10 bold cD8D8D8, Verdana
+	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-beta1
+;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
 	Gui, Font, s8 c000000, Verdana
 
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -449,7 +452,7 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
 	Gui, Font, s13 bold cD8D8D8, Verdana
-	gui, add, text, x320 backgroundtrans y4 gguiclose, X
+	gui, add, text, x620 backgroundtrans y4 gguiclose, X
 
 	Gui, Margin , 0, 0
 	Gui -Caption
