@@ -376,6 +376,16 @@ make_gui:
 ; 	// background image	
 	gui, add, picture, x0 y0, %APPDATA%\background.png
 
+;	// Window title
+	Gui, Font, s10 bold cD8D8D8, Verdana
+	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
+	
+;	// version number
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-beta1
+;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
+	
+	
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
 	gui, add, button, w140 h30 x490 y290 glogin, % T.LOGIN
@@ -387,7 +397,7 @@ make_gui:
 	goSub updateUserlist
 
 ; 	// account management
-	gui, add, button, x420 y250 w60 gaccounts_edit, % T.MANAGE_ACCOUNTS
+	gui, add, button, x400 y250 w80 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// server selection
 	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
@@ -395,17 +405,24 @@ make_gui:
 
 ;	// create shortcut
 	Gui, Font, s6 c000000, Verdana
-	gui, add, button, w60 h30 x420 y290 gshortcutCreate, % T.CREATE_SHORTCUT
+	gui, add, button, w80 h30 x400 y290 gshortcutCreate, % T.CREATE_SHORTCUT
 
+;	// window resolution
 	Gui, Font, s7 norm cD8D8D8, Verdana
-	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
+	gui, add, text, x220 y260 backgroundtrans, % T.WINDOW_RESOLUTION ":"
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x237 y275 w42 h18 limit4 center number -multi vwidth, %width%
+	gui, add, edit, x225 y275 w42 h18 limit4 center number -multi vwidth, %width%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x282 y276 backgroundtrans, x
+	gui, add, text, x270 y275 backgroundtrans, x
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x293 y275 w42 h18 limit4 center number -multi vheight, %height%
+	gui, add, edit, x280 y275 w42 h18 limit4 center number -multi vheight, %height%
+	
+;	// hide window boarder
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
+;	// regnum path
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui  add, text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
 	Gui, Font, s7 bold cD8D8D8, Verdana
@@ -449,9 +466,7 @@ make_gui:
 	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
 
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x256 y243 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+
 
 	Gui, Font, s13 bold cD8D8D8, Verdana
 	gui, add, text, x620 backgroundtrans y4 gguiclose, X
