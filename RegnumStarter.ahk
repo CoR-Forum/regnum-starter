@@ -437,17 +437,20 @@ make_gui:
 ;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
 	Gui, Font, s8 c000000, Verdana
 
+;	// hide NGD intro
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
+	gui, add, checkbox, w%CBW% h%CBH% x400 y160 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
 	
-	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
+;	// hide loading screen	
+	gui, add, checkbox, w%CBW% h%CBH% x400 y180 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	
+;	// run as windows user	
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
 	
