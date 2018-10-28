@@ -245,6 +245,7 @@ readUserConfig:
 		, skip_logo: 1
 		, win64: 0
 		, hide_loading_screen: 0
+		, net_fake_lag: 0
 		, width: 1366
 		, height: 768
 		, hide_window_border:0
@@ -459,6 +460,10 @@ make_gui:
 ;	// hide loading screen	
 	gui, add, checkbox, w%CBW% h%CBH% x400 y180 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
+	
+;	// fake net lag
+	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
+	gui, add, edit, x150 y200 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
 	
 ;	// run as windows user	
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
@@ -720,6 +725,7 @@ run:
 	iniwrite,% run_server.retr,%gamecfg%,server,sv_retriever_host
 	iniwrite,% run_user.referer.token,%gamecfg%,client,cl_referer
 	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
+	iniwrite,% net_fake_lag,%gamecfg%,network,net_fake_lag
 	iniwrite,% language,%gamecfg%,client,cl_language
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
@@ -893,6 +899,9 @@ translations["PASSWORD"] := { deu: "Passwort"
 translations["REQUIRED"] := { deu: "erforderlich"
 	, eng: "required"
 	, spa: "necesario" }
+translations["NET_FAKE_LAG"] := { deu: "Künstliche Latenz"
+	, eng: "Emulate latency"
+	, spa: "Emulate latency" }
 translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht konfiguriert!"
 	, eng: "Path to Game Installation has not been configured!"
 	, spa: "Ruta de instalación del juego no se ha configurado!" }
