@@ -130,7 +130,9 @@ exit
 patchLiveGamefile(file) {
 	global autopatch_server
 	global live
-	url = %autopatch_server%/autopatch/autopatch_files_rgn/%file%?nocache
+	global win64
+	add := win64 ? "64" : ""
+	url := autopatch_server "/autopatch/autopatch_files" add "_rgn/" file "?nocache"
 	livefile = %live%%file%
 	tooltip, Downloading %url%...
 	urldownloadtofile, % "*0 " url, % livefile
@@ -142,19 +144,43 @@ patchLiveGamefile(file) {
 	return true
 }
 updateGamefiles:
+	launcherini := regnum_path "ROLauncher.ini"
+	iniread, current_win64, %launcherini%, build, win64
+	if(current_win64 != 1)
+		current_win64 := 0
 	ifnotexist, %live%ROClientGame.exe
 	{
 		; Download all necessary files if not present
 		msgbox, 4, Regnum Download, % T.LIVE_GAME_MISSING ":`n" regnum_path "`n" T.DOWNLOAD_LIVE_GAME_NOW
 		ifmsgbox, No
 			goto exitThread ; and I am sorry
+		downloadAll := true
+	} else if(win64 != current_win64) {
+		msgbox, 4, Regnum Download, % T.64_BIT_CHANGED
+		ifmsgbox, No
+			goto exitThread
+		downloadAll := true
+	} else {
+		downloadAll := false
+	}
+
+	if(downloadAll) {
 		if(!FileExist(live))
 			FileCreateDir, %live%
-		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "steam_api.dll", "openal.dll"] ; dbghelp.dll, libbz2.dll, libjpeg62.dll, libpng13.dll, libtheora.dll, libzip.dll, ngdlogo.png, ogg.dll, readme.txt, resources, splash_ngd.ogg, steamclient.dll, Steam.dll, tier0_s.dll, vorbis.dll, vorbisfile.dll, vstdlib_s.dll, zlib1.dll
-			if(!FileExist(live file))
-				if(!patchLiveGamefile(file))
-					goto exitThread
-		msgbox, % T.DOWNLOADING_LIVE_GAME_FINISHED
+		necessaryLiveFiles := ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "openal.dll"] ; minimally necessary files inside liveserver folder for the game to start. more or less coincidentally, these are also the ones that need to be downloaded when 32/64 mode changed (according to the normal launcher workflow, did not check if this is optimizable)
+		if(win64)
+			necessaryLiveFiles.Push("steam_api64.dll") ; the only file with a different name in 64 bit mode...
+		else
+			necessaryLiveFiles.Push("steam_api.dll")
+		;unnecessaryLiveFiles := [ "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+		for k,file in necessaryLiveFiles {
+			if(!patchLiveGamefile(file)) {
+				FileDelete, %live%ROClientGame.exe ; so downloadAll will surely be true next time
+				goto exitThread
+			}
+		}
+		IniWrite, %win64%, %launcherini%, build, win64
+		msgbox
 	} else {
 		; Check if update available, then download and overwrite those files that might contain changes
 		tooltip, % T.CHECKING_GAME_UPDATES
@@ -213,7 +239,7 @@ return
 ; ///
 readUserConfig:
 	; name: defaultvalue
-	configEntries := {language: a_space,selected_user: 1,selected_server: 1,skip_logo: 1,hide_loading_screen: 0,width: 1366,height: 768,hide_window_border:0,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
+	configEntries := {language: a_space,selected_user: 1,selected_server: 1,skip_logo: 1,win64: 0,hide_loading_screen: 0,width: 1366,height: 768,hide_window_border:0,regnum_path: "C:\Games\NGD Studios\Champions of Regnum\",runas: 0,runas_name: a_space,runas_pw: a_space,PosGuiX: -1,PosGuiY: -1,shortcut_last: a_space}
 	for k,default in configEntries {
 		%k% := config_read(k, default)
 	}
@@ -393,6 +419,8 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
+	gui, add, checkbox, w%CBW% h%CBH% x140 y217 checked%win64% backgroundtrans vwin64
+	gui, add, text, x+3 yp backgroundtrans, 64-bit-mode
 	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
@@ -870,12 +898,12 @@ translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (
 translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
 	, eng: "No game files found in the specified folder"
 	, spa: "No se encontraron archivos del juego en la carpeta especificada" }
-translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange."
-	, eng: "Shall we download the game to this folder now? This doesn't take long."
-	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo." }
-translations["DOWNLOADING_LIVE_GAME_FINISHED"] := { deu: "Downloadprozess abgeschlossen.`nWenn die Logindaten stimmen, wird das Spiel jetzt starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden."
-	, eng: "Download completed.`nIf the login succeeds, Regnum will start downloading all game files which may take some time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded."
-	, spa: "Descarga completada. Si el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
+translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange.`n`nWenn die Logindaten stimmen, wird das Spiel danach starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden, sobald es gestartet ist."
+	, eng: "Shall we download the game to this folder now? This doesn't take long.`n`nIf the login succeeds, Regnum will start downloading all game files which may take a long time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded, once it has started."
+	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo.`n`nSi el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
+translations["64_BIT_CHANGED"] := { deu: "64-bit-Modus wurde geändert. Deshalb werden jetzt ein paar Dateien aktualisiert. Fortfahren?"
+    , eng: "64-bit mode was changed. Thus, some files will be updated. Continue?"
+    , spa: "Se cambió el 64-bits-modo. Así, algunos archivos serán actualizados. ¿Continuar?" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
     , eng: "Please fill out your windows login details or disable the usage of another windows user."
     , spa: "Complete los detalles de inicio de sesión de Windows o deshabilite el uso de otro usuario de Windows." }
