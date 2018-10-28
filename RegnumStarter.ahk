@@ -59,7 +59,7 @@ checkAppdata:
 			FileCopy, data\*, %APPDATA%
 		}
 	}
-	for k,v in ["bckg.png", "icon.ico"] {
+	for k,v in ["background.png", "icon.ico"] {
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
@@ -374,7 +374,7 @@ make_gui:
 	WinSet, TransColor, EEAA99
 	
 ; 	// background image	
-	gui, add, picture, x0 y0, %APPDATA%\bckg.png
+	gui, add, picture, x0 y0, %APPDATA%\background.png
 
 ; 	// login button
 	Gui, Font, s8 bold, Verdana
@@ -457,7 +457,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w347 h317 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
+	gui, show, w646 h331 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
 
 	WinGet, GuiID, ID, A
 
