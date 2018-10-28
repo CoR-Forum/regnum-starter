@@ -387,7 +387,7 @@ make_gui:
 	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
 
 	Gui, Font, s7 c009000, Verdana
-	gui, add, text, x245 center y90 w100 h25 backgroundtrans, Version v2.3.3
+	gui, add, text, x245 center y90 w100 h25 backgroundtrans, Version v2.2.4
 	Gui, Font, s8 c000000, Verdana
 
 	Gui, Font, s7 cD8D8D8, Verdana
