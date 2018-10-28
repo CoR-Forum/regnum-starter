@@ -430,11 +430,6 @@ make_gui:
 	Gui, Font, s7 c000000 norm, Verdana
 	gui, add, button, x150 w80 y30 gpath_edit, % T.CHANGE
 
-	Gui, Font, s10 bold cD8D8D8, Verdana
-	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-beta1
-;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
 	Gui, Font, s8 c000000, Verdana
 
 ;	// hide NGD intro
