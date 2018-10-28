@@ -377,8 +377,8 @@ make_gui:
 	gui, add, picture, x0 y0, %APPDATA%\background.png
 
 ; 	// login button
-	Gui, Font, s8 bold, Verdana
-	gui, add, button, w70 x36 y136 glogin, % T.LOGIN
+	Gui, Font, s10 bold, Verdana
+	gui, add, button, w120 x510 y290 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
