@@ -707,7 +707,6 @@ run:
 		IfInString, A_LoopReadLine, % "Connection error: "
 		{
 			connection_error := RegExReplace(A_LoopReadLine, "^.*Connection error: (.+)$", "$1")
-			connection_error_custom =
 			ifinstring, connection_error, % "not found"
 			{
 				msgbox % T.CONNECTION_ERROR_USER_NOT_FOUND
