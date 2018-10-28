@@ -400,7 +400,7 @@ make_gui:
 	gui, add, button, x400 y250 w80 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// server selection
-	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
+	gui, add, dropdownlist, x400 y220 w120 vselected_server altsubmit
 	gosub updateServerlist
 
 ;	// create shortcut
@@ -423,12 +423,12 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
 ;	// regnum path
+	Gui, Font, s8 bold cD8D8D8, Verdana
+	gui  add, text, backgroundtrans x10 y30, % T.REGNUM_PATH ":"
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui  add, text, backgroundtrans x260 y145, % T.REGNUM_PATH ":"
-	Gui, Font, s7 bold cD8D8D8, Verdana
-	gui, add, text, x256 w80 r2 y160 backgroundtrans vregnum_path, %regnum_path%
+	gui, add, text, x10 w300 r2 y50 backgroundtrans vregnum_path, %regnum_path%
 	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x256 w80 y189 gpath_edit, % T.CHANGE
+	gui, add, button, x150 w80 y30 gpath_edit, % T.CHANGE
 
 	Gui, Font, s10 bold cD8D8D8, Verdana
 	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
@@ -440,10 +440,14 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x11 y217 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
-	gui, add, checkbox, w%CBW% h%CBH% x140 y217 checked%win64% backgroundtrans vwin64
-	gui, add, text, x+3 yp backgroundtrans, 64-bit-mode
+
+;	// change 64bit mode
+	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
+	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
+	
 	gui, add, checkbox, w%CBW% h%CBH% x11 y237 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
+	
 	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
 	
@@ -837,6 +841,9 @@ translations["LOGIN"] := { deu: "Login"
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
     , eng: "Manage Accounts"
     , spa: "Cuentas de administración" }
+translations["64BIT_MODE"] := { deu: "64bit-Client starten (experimentell)"
+    , eng: "start 64bit-Client (experimental)"
+    , spa: "start 64bit-Client (experimental)" }
 translations["PUBLISHER"] := { deu: "Publisher"
     , eng: "Publisher"
     , spa: "Referente" }
