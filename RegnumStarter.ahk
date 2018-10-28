@@ -849,7 +849,7 @@ translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
     , eng: "Hide Loading Screen"
     , spa: "Ocultar pantalla de carga" }
-translations["HIDE_WINDOW_BORDER"] := { deu: "Balken ausblenden"
+translations["HIDE_WINDOW_BORDER"] := { deu: "Fensterrahmen ausblenden"
     , eng: "Hide window border"
     , spa: "Ocultar el borde de la ventana" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
