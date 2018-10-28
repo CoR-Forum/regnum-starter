@@ -378,23 +378,24 @@ make_gui:
 
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
-	gui, add, button, w120 x510 y290 glogin, % T.LOGIN
+	gui, add, button, w140 h30 x490 y290 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
 ; 	// user selection
-	gui, add, dropdownlist, x11 y105 w125 vselected_user altsubmit
+	gui, add, dropdownlist, x490 y250 w140 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// account management
-	gui, add, button, x11 y77 w125 gaccounts_edit, % T.MANAGE_ACCOUNTS
+	gui, add, button, x420 y250 w60 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// server selection
 	gui, add, dropdownlist, x157 y77 w80 vselected_server altsubmit
 	gosub updateServerlist
 
-	Gui, Font, s7 c000000, Verdana
-	gui, add, button, w70 x36 y165 gshortcutCreate, % T.CREATE_SHORTCUT
+;	// create shortcut
+	Gui, Font, s6 c000000, Verdana
+	gui, add, button, w60 h30 x420 y290 gshortcutCreate, % T.CREATE_SHORTCUT
 
 	Gui, Font, s7 norm cD8D8D8, Verdana
 	gui, add, text, x238 y259 backgroundtrans, % T.WINDOW_RESOLUTION ":"
@@ -443,6 +444,7 @@ make_gui:
 	
 	gosub, runasGuiToggled
 
+	
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
