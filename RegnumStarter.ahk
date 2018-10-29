@@ -249,6 +249,7 @@ readUserConfig:
 		, width: 1366
 		, height: 768
 		, vg_fullscreen_mode: 0
+		, vg_screenshot_quality: 100
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -466,6 +467,11 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
+	
+;	// screenshot quality
+	Gui, Font, s7 cD8D8D8, Verdana
+;	// gui, add, checkbox, x400 y100 checked%vg_screenshot_quality% backgroundtrans w%CBW% h%CBH% vvg_screenshot_quality
+	gui, add, text, x400 y30 backgroundtrans, % "high quality screenshots"
 	
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
@@ -736,6 +742,7 @@ run:
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
+	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 
 	;;;;;;;; SPLASHES
 
