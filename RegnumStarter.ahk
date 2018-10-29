@@ -248,6 +248,7 @@ readUserConfig:
 		, net_fake_lag: 0
 		, width: 1366
 		, height: 768
+		, vg_fullscreen_mode: 0
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -450,7 +451,7 @@ make_gui:
 
 ;	// hide NGD intro
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x400 y160 checked%skip_logo% backgroundtrans vskip_logo
+	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
 ;	// change 64bit mode
@@ -458,8 +459,13 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
 	
 ;	// hide loading screen	
-	gui, add, checkbox, w%CBW% h%CBH% x400 y180 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
+	gui, add, checkbox, w%CBW% h%CBH% x10 y90 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
+
+;	// fullscreen mode
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
+	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
 	
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
@@ -729,6 +735,7 @@ run:
 	iniwrite,% language,%gamecfg%,client,cl_language
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
+	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
 
 	;;;;;;;; SPLASHES
 
@@ -884,6 +891,9 @@ translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
 translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
 	, eng: "Game Folder"
 	, spa: "Carpeta de juego" }
+translations["FULLSCREEN_MODE"] := { deu: "Vollbildmodus"
+	, eng: "Fulscreen mode"
+	, spa: "Fulscreen mode" }
 translations["CHANGE"] := { deu: "ändern"
 	, eng: "change"
 	, spa: "cambio" }
