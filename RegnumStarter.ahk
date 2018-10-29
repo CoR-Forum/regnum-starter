@@ -469,9 +469,11 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
 	
 ;	// screenshot quality
+	Gui, Font, s8 bold cD8D8D8, Verdana
+	gui, add, text, x400 y30 backgroundtrans, % "Automatic enhancements:"
 	Gui, Font, s7 cD8D8D8, Verdana
 ;	// gui, add, checkbox, x400 y100 checked%vg_screenshot_quality% backgroundtrans w%CBW% h%CBH% vvg_screenshot_quality
-	gui, add, text, x400 y30 backgroundtrans, % "high quality screenshots"
+	gui, add, text, x400 y45 backgroundtrans, % "- high quality screenshots (default is 80%)"
 	
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
