@@ -250,6 +250,8 @@ readUserConfig:
 		, height: 768
 		, vg_fullscreen_mode: 0
 		, vg_screenshot_quality: 100
+		, dbg_ignore_server_time: 0
+		, env_time_of_day: 12
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -467,6 +469,13 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
+	
+;	// time
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
+	gui, add, text, x+3 yp backgroundtrans, % "custom server time (in hours)"
+	gui, add, edit, x580 y150 w60 h15 -multi venv_time_of_day, %env_time_of_day%,
+	
 	
 ;	// screenshot quality
 	Gui, Font, s8 bold cD8D8D8, Verdana
@@ -745,6 +754,8 @@ run:
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
 	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
+	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
+	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
 
 	;;;;;;;; SPLASHES
 
