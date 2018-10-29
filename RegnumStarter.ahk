@@ -250,6 +250,7 @@ readUserConfig:
 		, height: 768
 		, vg_fullscreen_mode: 0
 		, vg_screenshot_quality: 100
+		, cl_crafting_show_min_level: 0
 		, dbg_ignore_server_time: 0
 		, env_time_of_day: 12
 		, hide_window_border:0
@@ -469,6 +470,11 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
+	
+;	// cl_crafting_show_min_level
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
+	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
 	
 ;	// time
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -750,6 +756,7 @@ run:
 	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
 	iniwrite,% net_fake_lag,%gamecfg%,network,net_fake_lag
 	iniwrite,% language,%gamecfg%,client,cl_language
+	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
