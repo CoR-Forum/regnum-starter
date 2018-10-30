@@ -937,7 +937,7 @@ translations["REQUIRED"] := { deu: "erforderlich"
 translations["NET_FAKE_LAG"] := { deu: "Künstliche Latenz"
 	, eng: "Emulate latency"
 	, spa: "Emulate latency" }
-translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht konfiguriert!"
+translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht korrekt konfiguriert!"
 	, eng: "Path to Game Installation has not been configured!"
 	, spa: "Ruta de instalación del juego no se ha configurado!" }
 translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
