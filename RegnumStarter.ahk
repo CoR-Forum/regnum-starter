@@ -405,7 +405,6 @@ make_gui:
 	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-beta1
 ;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
 	
-	
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
 	gui, add, button, w140 h30 x490 y290 glogin, % T.LOGIN
@@ -475,7 +474,7 @@ make_gui:
 	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
 	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
 	
-;	// time
+;	// server time
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
 	gui, add, text, x+3 yp backgroundtrans, % "custom server time (in hours)"
@@ -505,8 +504,8 @@ make_gui:
 	gui, add, edit, x109 y275 w85 h18 -multi vrunas_pw, %runas_pw%
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x118 y295 backgroundtrans vgui_runas_pw_text, % "Win " T.PASSWORD
-	Gui, Font, s5 cD8D8D8, Verdana
-	gui, add, text, x133 y305 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
+	Gui, Font, s6 cD8D8D8, Verdana
+	gui, add, text, x80 y310 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
