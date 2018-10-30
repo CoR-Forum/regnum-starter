@@ -251,7 +251,6 @@ readUserConfig:
 		, vg_screenshot_quality: 100
 		, cl_crafting_show_min_level: 0
 		, dbg_ignore_server_time: 0
-		, env_time_of_day: 12
 		, env_weather: clear
 		, debug_mode: 0
 		, hide_window_border:0
@@ -484,13 +483,13 @@ make_gui:
 ;	// server time
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
-	gui, add, text, x+3 yp backgroundtrans, % "custom server time (in hours)"
-	gui, add, edit, x580 y150 w60 h15 -multi venv_time_of_day, %env_time_of_day%,
+	gui, add, text, x+3 yp backgroundtrans, % "custom server time"
+	gui, add, dropdownlist, x550 y150 w50 vserver_time AltSubmit, morning|afternoon|evening|night
 
 ;	// weather
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x420 y170 backgroundtrans, % "weather (experimental)"
-	gui, add, dropdownlist, x550 y170 w50 venv_weather AltSubmit, % T.WEATHER_CLEAR "|" T.WEATHER_RAINY "|" T.WEATHER_SNOW
+	gui, add, dropdownlist, x550 y170 w50 vweather AltSubmit, clear|rainy|storm
 
 	
 ;	// screenshot quality
@@ -755,11 +754,11 @@ run:
 
 	;;;;;;;; GAME.CFG
 
-if(env_weather == 1) 
+if(weather == 1) 
    env_weather := "clear" 
-else if (env_weather == 2)
+else if (weather == 2)
    env_weather := "rainy" 
-else if (env_weather == 3)
+else if (weather == 3)
    env_weather := "snow"
 
 	gamecfg := regnum_path "game.cfg"
@@ -782,6 +781,18 @@ else if (env_weather == 3)
 	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
+	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
+
+if(dbg_ignore_server_time == 1)  {
+	if(server_time == 1) 
+	   env_time_of_day := "8" 
+	else if (server_time == 2)
+	   env_time_of_day := "13" 
+	else if (server_time == 3)
+	   env_time_of_day := "18"
+	else if (server_time == 4)
+	   env_time_of_day := "1"
+	}
 
 if(debug_mode)  {
  		iniwrite, 1, %gamecfg%, debug, dbg_action_system
