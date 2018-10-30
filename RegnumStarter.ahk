@@ -848,7 +848,7 @@ checkLanguage:
 		else if(RegExMatch(language, "i)es|sp|ar"))
 			language = spa
 		else {
-			msgbox, Failed to understand language.`n`nKonnte Sprache nicht feststellen.`n`nNo entendió el lenguaje.
+			msgbox, Failed to detect language.`n`nKonnte Sprache nicht erkennen.`n`nNo entendió el lenguaje.
 			language =
 		}
 	}
@@ -897,6 +897,7 @@ translations["64BIT_MODE"] := { deu: "64bit-Client starten (experimentell)"
 	, spa: "start 64bit-Client (experimental)" }
 translations["PUBLISHER"] := { deu: "Publisher"
 	, eng: "Publisher"
+	, agt: "hzi"
 	, spa: "Referente" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
 	, eng: "Create Shortcut"
