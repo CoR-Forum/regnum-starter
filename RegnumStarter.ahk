@@ -3,7 +3,6 @@
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
 BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
-;BASE_URL = http://localhost:1234/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -900,10 +899,10 @@ translations["64BIT_MODE"] := { deu: "64bit-Client starten (experimentell)"
 translations["PUBLISHER"] := { deu: "Publisher"
 	, eng: "Publisher"
 	, spa: "Referente" }
-translations["CREATE_SHORTCUT"] := { deu: "Direktlink`nerstellen"
+translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
 	, eng: "Create Shortcut"
 	, spa: "Crear acceso directo" }
-translations["DELETE_SPLASH"] := { deu: "NGD-Intro verbergen"
+translations["DELETE_SPLASH"] := { deu: "NGD-Intro ausblenden"
 	, eng: "Hide NGD-Intro"
 	, spa: "Ocultar NGD-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
