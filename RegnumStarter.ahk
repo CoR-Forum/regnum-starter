@@ -952,7 +952,7 @@ translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks er
 translations["NAME"] := { deu: "Name"
 	, eng: "Name"
 	, spa: "Nombre" }
-translations["COMMENT"] := { deu: "Notitz"
+translations["COMMENT"] := { deu: "Notiz"
 	, eng: "Note"
 	, spa: "Nota" }
 translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
