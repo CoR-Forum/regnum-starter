@@ -457,6 +457,11 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
+;	// hide NGD intro
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%debug_mode% backgroundtrans vdebug_mode
+	gui, add, text, x+3 yp backgroundtrans, "debug mode"
+
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
@@ -749,10 +754,9 @@ run:
 
 	;;;;;;;; GAME.CFG
 
-	
 if(env_weather == 1) 
    env_weather := "clear" 
-else if (env_weather == 2) 
+else if (env_weather == 2)
    env_weather := "rainy" 
 else if (env_weather == 3)
    env_weather := "snow"
@@ -777,6 +781,17 @@ else if (env_weather == 3)
 	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
+
+if(debug_mode)  {
+ 		iniwrite, 1, %gamecfg%, debug, dbg_action_system
+    	iniwrite, 1, %gamecfg%, debug, dbg_debug_movement_events
+	    iniwrite, 1, %gamecfg%, debug, dbg_debug_positions
+	}
+else {
+ 		iniwrite, 0, %gamecfg%, debug, dbg_action_system
+    	iniwrite, 0, %gamecfg%, debug, dbg_debug_movement_events
+	    iniwrite, 0, %gamecfg%, debug, dbg_debug_positions
+	}
 
 	;;;;;;;; SPLASHES
 
