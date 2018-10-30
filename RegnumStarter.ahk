@@ -252,6 +252,7 @@ readUserConfig:
 		, cl_crafting_show_min_level: 0
 		, dbg_ignore_server_time: 0
 		, env_time_of_day: 12
+		, env_weather: clear
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -479,7 +480,12 @@ make_gui:
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
 	gui, add, text, x+3 yp backgroundtrans, % "custom server time (in hours)"
 	gui, add, edit, x580 y150 w60 h15 -multi venv_time_of_day, %env_time_of_day%,
-	
+
+;	// weather
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, text, x420 y170 backgroundtrans, % "weather (experimental)"
+	gui, add, dropdownlist, x550 y170 w50 venv_weather AltSubmit, % T.WEATHER_CLEAR "|" T.WEATHER_RAINY "|" T.WEATHER_SNOW
+
 	
 ;	// screenshot quality
 	Gui, Font, s8 bold cD8D8D8, Verdana
@@ -531,6 +537,8 @@ make_gui:
 	WinGet, GuiID, ID, A
 
 return
+
+
 
 runasGuiToggled:
 	gui,submit,nohide
@@ -741,6 +749,14 @@ run:
 
 	;;;;;;;; GAME.CFG
 
+	
+if(env_weather == 1) 
+   env_weather := "clear" 
+else if (env_weather == 2) 
+   env_weather := "rainy" 
+else if (env_weather == 3)
+   env_weather := "snow"
+
 	gamecfg := regnum_path "game.cfg"
 	if(!FileExist(gamecfg)) {
 		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
@@ -760,7 +776,7 @@ run:
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
 	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
-	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
+	iniwrite,% env_weather,%gamecfg%,general,env_weather
 
 	;;;;;;;; SPLASHES
 
@@ -856,6 +872,15 @@ return
 
 setTranslations:
 translations := []
+translations["WEATHER_CLEAR"] := { deu: "Klar"
+	, eng: "Clear"
+	, spa: "Clear" }
+translations["WEATHER_RAINY"] := { deu: "Regnerisch"
+	, eng: "Rainy"
+	, spa: "Rainy" }
+translations["WEATHER_CLEAR"] := { deu: "Schnee"
+	, eng: "Snow"
+	, spa: "Snow" }
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
 	, eng: "RegnumStarter"
 	, spa: "RegnumStarter" }
