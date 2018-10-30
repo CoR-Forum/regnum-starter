@@ -253,6 +253,7 @@ readUserConfig:
 		, dbg_ignore_server_time: 0
 		, env_time_of_day: 12
 		, env_weather: clear
+		, debug_mode: 0
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -457,10 +458,10 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
-;	// hide NGD intro
+;	// debug mode
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%debug_mode% backgroundtrans vdebug_mode
-	gui, add, text, x+3 yp backgroundtrans, "debug mode"
+	gui, add, text, x+3 yp backgroundtrans, % "debug mode (experimental)"
 
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
@@ -784,13 +785,27 @@ else if (env_weather == 3)
 
 if(debug_mode)  {
  		iniwrite, 1, %gamecfg%, debug, dbg_action_system
-    	iniwrite, 1, %gamecfg%, debug, dbg_debug_movement_events
+    	iniwrite, 1, %gamecfg%, debug, dbg_central_timer
+	    iniwrite, 1, %gamecfg%, debug, dbg_debug_movement_events
 	    iniwrite, 1, %gamecfg%, debug, dbg_debug_positions
+ 		iniwrite, 1, %gamecfg%, debug, dbg_enable_cycle_debuggers
+    	iniwrite, 1, %gamecfg%, debug, dbg_entity_system
+	    iniwrite, 1, %gamecfg%, debug, dbg_lua_call_debug
+	    iniwrite, 1, %gamecfg%, debug, dbg_render_paths
+	    iniwrite, 1, %gamecfg%, debug, dbg_resource_manager_output
+	    iniwrite, 1, %gamecfg%, debug, dbg_terrain_manager
 	}
 else {
  		iniwrite, 0, %gamecfg%, debug, dbg_action_system
-    	iniwrite, 0, %gamecfg%, debug, dbg_debug_movement_events
+    	iniwrite, 0, %gamecfg%, debug, dbg_central_timer
+	    iniwrite, 0, %gamecfg%, debug, dbg_debug_movement_events
 	    iniwrite, 0, %gamecfg%, debug, dbg_debug_positions
+ 		iniwrite, 0, %gamecfg%, debug, dbg_enable_cycle_debuggers
+    	iniwrite, 0, %gamecfg%, debug, dbg_entity_system
+	    iniwrite, 0, %gamecfg%, debug, dbg_lua_call_debug
+	    iniwrite, 0, %gamecfg%, debug, dbg_render_paths
+	    iniwrite, 0, %gamecfg%, debug, dbg_resource_manager_output
+	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
 	;;;;;;;; SPLASHES
