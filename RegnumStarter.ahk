@@ -248,7 +248,8 @@ readUserConfig:
 		, width: 1366
 		, height: 768
 		, vg_fullscreen_mode: 0
-		, vg_screenshot_quality: 100
+		, screenshot_quality: 1
+		, screenshot_autosave: 1
 		, cl_crafting_show_min_level: 0
 		, dbg_ignore_server_time: 0
 		, env_weather: clear
@@ -456,6 +457,11 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
+
+;	// screenshot quality
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_quality% backgroundtrans vscreenshot_quality
+	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_QUALITY
 
 ;	// debug mode
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -778,7 +784,6 @@ else if (weather == 3)
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
-	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
@@ -792,6 +797,23 @@ if(dbg_ignore_server_time == 1)  {
 	   env_time_of_day := "18"
 	else if (server_time == 4)
 	   env_time_of_day := "1"
+	}
+
+if(screenshot_quality)  {
+ 		iniwrite, 100, %gamecfg%, video_graphics, vg_screenshot_quality
+		iniwrite, png, %gamecfg%, video_graphics, vg_screenshot_format
+	}
+else {
+ 		iniwrite, 80, %gamecfg%, video_graphics, vg_screenshot_quality
+		iniwrite, jpg, %gamecfg%, video_graphics, vg_screenshot_format
+	}
+
+if(screenshot_autosave)  {
+ 		iniwrite, 1, %gamecfg%, video_graphics, vg_screenshot_autotag
+	}
+else {
+ 		iniwrite, 0, %gamecfg%, video_graphics, vg_screenshot_autotag
+
 	}
 
 if(debug_mode)  {
