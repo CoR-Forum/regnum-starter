@@ -252,6 +252,7 @@ readUserConfig:
 		, vg_vertical_sync: 1
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
+		, cl_update_all_resources: 0
 		, cl_crafting_show_min_level: 0
 		, cl_show_subclass_on_players: 0
 		, cl_show_hidden_armors: 0
@@ -423,7 +424,7 @@ make_gui:
 	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
-	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % "graphic settings"
+	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
 
 ; 	// server selection
 	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
@@ -473,9 +474,14 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
 	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_AUTOSAVE
 
+;	// cl_update_all_resources
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x10 y170 checked%cl_update_all_resources% backgroundtrans vcl_update_all_resources
+	gui, add, text, x+3 yp backgroundtrans, % T.UPDATE_ALL_RES
+
 ;	// debug mode
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y170 checked%debug_mode% backgroundtrans vdebug_mode
+	gui, add, checkbox, w%CBW% h%CBH% x10 y190 checked%debug_mode% backgroundtrans vdebug_mode
 	gui, add, text, x+3 yp backgroundtrans, % "debug mode (experimental)"
 
 ;	// change 64bit mode
@@ -504,7 +510,7 @@ make_gui:
 ;	// advanced ingame log
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y40 checked%ingame_log% backgroundtrans w%CBW% h%CBH% vingame_log
-	gui, add, text, x+3 yp backgroundtrans, % "advanced ingame log"
+	gui, add, text, x+3 yp backgroundtrans, % "T.INGAME_LOG"
 
 ;	// cl_crafting_show_min_level
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -524,28 +530,28 @@ make_gui:
 ;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
-	gui, add, text, x+3 yp backgroundtrans, % "custom weather"
+	gui, add, text, x+3 yp backgroundtrans, % T.WEATHER
 	gui, add, dropdownlist, x500 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
 	gui, add, dropdownlist, x580 y150 w50 vweather AltSubmit, clear|rainy|storm
 
 ;	// fake net lag
-	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
-	gui, add, edit, x150 y200 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
+	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
+	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
 	
 ;	// run as windows user	
-	gui, add, checkbox, x11 y257 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
-	gui, add, text, x+3 y257 backgroundtrans, % T.RUN_AS ":"
+	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
+	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
 	
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x11 y275 w85 h18 -multi vrunas_name, %runas_name%
+	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x18 y295 backgroundtrans vgui_runas_name_text, % "Windows " T.USER
+	gui, add, text, x20 y300 backgroundtrans vgui_runas_name_text, % "Windows " T.USER
 	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x109 y275 w85 h18 -multi vrunas_pw, %runas_pw%
+	gui, add, edit, x109 y280 w85 h18 -multi vrunas_pw, %runas_pw%
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x118 y295 backgroundtrans vgui_runas_pw_text, % "Win " T.PASSWORD
+	gui, add, text, x120 y300 backgroundtrans vgui_runas_pw_text, % "Win " T.PASSWORD
 	Gui, Font, s6 cD8D8D8, Verdana
-	gui, add, text, x80 y310 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
+	gui, add, text, x80 y315 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
 	
 	gosub, runasGuiToggled
@@ -830,6 +836,7 @@ else if (weather == 3)
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
+	iniwrite,% cl_update_all_resources,%gamecfg%,client,cl_update_all_resources
 
 ;	// set time env in HOURS (24h)
 if(dbg_ignore_server_time == 1)  {
@@ -997,6 +1004,15 @@ return
 
 setTranslations:
 translations := []
+translations["WEATHER"] := { deu: "Eigene Tageszeit"
+	, eng: "Custom daytime"
+	, spa: "Custom daytime" }
+translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
+	, eng: "Graphic Settings"
+	, spa: "Graphic Settings" }
+	translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
+	, eng: "Advanced combat log"
+	, spa: "Advanced combat log" }
 translations["CONJ_MODE"] := { deu: "Healbeschi-Modus (Umgedrehte Auswahlpriorität)"
 	, eng: "healconj mode (inverted selection priority)"
 	, spa: "healconj mode (inverted selection priority)" }
@@ -1136,6 +1152,9 @@ translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
 translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
 	, eng: "Publisher not found"
 	, spa: "Editor no encontrado" }
+translations["UPDATE_ALL_RES"] := { deu: "Alle Spielinhalte auf einmal aktualisieren"
+	, eng: "Update all resources at once"
+	, spa: "Update all resources at once" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
 	, eng: "You didn't select any account! Go to 'Manage Accounts' first!"
 	, spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
