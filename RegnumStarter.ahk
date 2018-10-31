@@ -252,6 +252,7 @@ readUserConfig:
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_crafting_show_min_level: 0
+		, cl_show_subclass_on_players: 0
 		, dbg_ignore_server_time: 0
 		, env_weather: clear
 		, debug_mode: 0
@@ -419,7 +420,7 @@ make_gui:
 	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
-	gui, add, button, x300 y150 w80 ggraphic_settings, % "graphic settings"
+	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % "graphic settings"
 
 ; 	// server selection
 	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
@@ -496,6 +497,16 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
 	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
+	
+;	// cl_crafting_show_min_level
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
+	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
+
+;	// cl_show_subclass_on_players
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y110 checked%cl_show_subclass_on_players% backgroundtrans w%CBW% h%CBH% vcl_show_subclass_on_players
+	gui, add, text, x+3 yp backgroundtrans, % "cl_show_subclass_on_players (experimental)"
 	
 ;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -798,6 +809,7 @@ else if (weather == 3)
 	iniwrite,% net_fake_lag,%gamecfg%,network,net_fake_lag
 	iniwrite,% language,%gamecfg%,client,cl_language
 	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
+	iniwrite,% cl_show_subclass_on_players,%gamecfg%,client,cl_show_subclass_on_players
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
