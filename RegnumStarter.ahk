@@ -748,11 +748,12 @@ setupParams:
 	run_runas_pw := runas_pw
 return
 
+;	// game path for live and test server
 run:	
 	live = %regnum_path%LiveServer\
 	test = %regnum_path%TestServer\
 
-	;;;;;;;; USER INPUT VALIDATION
+;	// USER INPUT VALIDATION
 
 	if(empty(run_user.name) || empty(run_user.pw_hashed)) {
 		msgbox % T.NO_ACCOUNT_CHOSEN
@@ -764,13 +765,13 @@ run:
 		return
 	}
 
-	;;;;;;;; CHECK / DOWNLOAD / UPDATE LIVESERVER
+;	// CHECK / DOWNLOAD / UPDATE LIVESERVER
 
 	gui, 1:+disabled
 	gosub updateGamefiles
 	gui, 1:-disabled
 
-	;;;;;;;; CHECK AMUN
+;	// check if amun has been selected
 
 	if(run_server.name == "Amun") {
 		ifnotexist, %test%ROClientGame.exe
@@ -782,6 +783,7 @@ run:
 
 	;;;;;;;; GAME.CFG
 
+;	// set weather (these values seem to be wrong at all)
 if(weather == 1) 
    env_weather := "clear" 
 else if (weather == 2)
@@ -789,12 +791,14 @@ else if (weather == 2)
 else if (weather == 3)
    env_weather := "snow"
 
+;	// ??
 	gamecfg := regnum_path "game.cfg"
 	if(!FileExist(gamecfg)) {
 		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
 		iniwrite, .., %gamecfg%, client, cl_sdb_path ; would otherwise wrongly be set to "." afterwards, when the file is being filled up by the game itself (as apposed to the one included in the installers where it is ".."). For compatibility's sake, set it to ".." here.)
 	}
 
+;	// write to regnum game.cfg
 	iniwrite,% run_server.ip,%gamecfg%,server,sv_game_server_host
 	iniwrite,% run_server.port,%gamecfg%,server,sv_game_server_tcp_port
 	iniwrite,% run_server.retr,%gamecfg%,server,sv_retriever_host
@@ -810,6 +814,7 @@ else if (weather == 3)
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
 
+;	// set time env in HOURS (24h)
 if(dbg_ignore_server_time == 1)  {
 	if(server_time == 1) 
 	   env_time_of_day := "8" 
@@ -821,6 +826,7 @@ if(dbg_ignore_server_time == 1)  {
 	   env_time_of_day := "1"
 	}
 
+;	// set screenshot quality to 100 percent and save as png. default is jpg and 80 percent.
 if(screenshot_quality)  {
  		iniwrite, 100, %gamecfg%, video_graphics, vg_screenshot_quality
 		iniwrite, png, %gamecfg%, video_graphics, vg_screenshot_format
@@ -830,6 +836,7 @@ else {
 		iniwrite, jpg, %gamecfg%, video_graphics, vg_screenshot_format
 	}
 
+;	// auto-save screenshots. this won't show the window where you can name a screenshot or delete it.
 if(screenshot_autosave)  {
  		iniwrite, 1, %gamecfg%, video_graphics, vg_screenshot_autotag
 	}
@@ -954,6 +961,8 @@ checkLanguage:
 		}
 	}
 return
+
+;	// translations
 
 setTranslations:
 translations := []
@@ -1133,7 +1142,7 @@ for k,v in translations {
 translations=
 return
 
-; ///// make gui moveable:
+;	// make gui moveable
 ~LButton::
 errorlevel_safe := errorlevel
 MouseGetPos, MouseStartX, MouseStartY, MouseWin, MouseControl
@@ -1187,13 +1196,7 @@ WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
 return
 
-
-
-
-
-
-
-
+;	// md5 function to securly save account passwords in users.txt
 
 md5(string)    ; by SKAN | rewritten by jNizM
 {
@@ -1207,39 +1210,3 @@ md5(string)    ; by SKAN | rewritten by jNizM
 	StringLower, o,o
 	return o
 } ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
