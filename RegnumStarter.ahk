@@ -1,4 +1,4 @@
-﻿#persistent
+#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
@@ -248,13 +248,10 @@ readUserConfig:
 		, width: 1366
 		, height: 768
 		, vg_fullscreen_mode: 0
-		, vg_vertical_sync: 1
-		, screenshot_quality: 1
-		, screenshot_autosave: 1
+		, vg_screenshot_quality: 100
 		, cl_crafting_show_min_level: 0
 		, dbg_ignore_server_time: 0
-		, env_weather: clear
-		, debug_mode: 0
+		, env_time_of_day: 12
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
@@ -421,11 +418,6 @@ make_gui:
 ; 	// account management
 	gui, add, button, x400 y250 w80 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
-; 	// graphic settings
-	gui, add, button, x300 y150 w80 ggraphic_settings, % "graphic settings"
-
-
-
 ; 	// server selection
 	gui, add, dropdownlist, x400 y220 w120 vselected_server altsubmit
 	gosub updateServerlist
@@ -464,21 +456,6 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
-;	// screenshot quality
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_quality% backgroundtrans vscreenshot_quality
-	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_QUALITY
-
-;	// screenshot autosave
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
-	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_AUTOSAVE
-
-;	// debug mode
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y170 checked%debug_mode% backgroundtrans vdebug_mode
-	gui, add, text, x+3 yp backgroundtrans, % "debug mode (experimental)"
-
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
@@ -491,11 +468,6 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
-
-;	// vsync
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x520 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
-	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
 	
 ;	// cl_crafting_show_min_level
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -505,10 +477,24 @@ make_gui:
 ;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
+<<<<<<< HEAD
 	gui, add, text, x+3 yp backgroundtrans, % "custom weather"
 	gui, add, dropdownlist, x500 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
 	gui, add, dropdownlist, x580 y150 w50 vweather AltSubmit, clear|rainy|storm
 
+=======
+	gui, add, text, x+3 yp backgroundtrans, % "custom server time (in hours)"
+	gui, add, edit, x580 y150 w60 h15 -multi venv_time_of_day, %env_time_of_day%,
+	
+	
+;	// screenshot quality
+	Gui, Font, s8 bold cD8D8D8, Verdana
+	gui, add, text, x400 y30 backgroundtrans, % "Automatic enhancements:"
+	Gui, Font, s7 cD8D8D8, Verdana
+;	// gui, add, checkbox, x400 y100 checked%vg_screenshot_quality% backgroundtrans w%CBW% h%CBH% vvg_screenshot_quality
+	gui, add, text, x400 y45 backgroundtrans, % "- high quality screenshots (default is 80%)"
+	
+>>>>>>> bcfc02d5cb04fbb6b8a81a034b99c4221f3a2ba4
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
 	gui, add, edit, x150 y200 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
@@ -552,20 +538,6 @@ make_gui:
 	WinGet, GuiID, ID, A
 
 return
-
-	graphic_settings:
-refererlist =
-	for i,referer in referers {
-		refererlist .= "|" referer.name
-	}
-	placeholder := "   "
-	gui, 1:+disabled
-	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % "under development"
-	gui, 2:add, button, g2guiok x235, Ok
-	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
-	return
 
 runasGuiToggled:
 	gui,submit,nohide
@@ -657,8 +629,6 @@ shortcutCreate:
 return
 
 ; ////////////////////////
-
-
 accounts_edit:
 	refererlist =
 	for i,referer in referers {
@@ -778,13 +748,6 @@ run:
 
 	;;;;;;;; GAME.CFG
 
-if(weather == 1) 
-   env_weather := "clear" 
-else if (weather == 2)
-   env_weather := "rainy" 
-else if (weather == 3)
-   env_weather := "snow"
-
 	gamecfg := regnum_path "game.cfg"
 	if(!FileExist(gamecfg)) {
 		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
@@ -802,62 +765,9 @@ else if (weather == 3)
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
+	iniwrite,% 100,%gamecfg%,video_graphics,vg_screenshot_quality
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
-	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
-
-if(dbg_ignore_server_time == 1)  {
-	if(server_time == 1) 
-	   env_time_of_day := "8" 
-	else if (server_time == 2)
-	   env_time_of_day := "13" 
-	else if (server_time == 3)
-	   env_time_of_day := "18"
-	else if (server_time == 4)
-	   env_time_of_day := "1"
-	}
-
-if(screenshot_quality)  {
- 		iniwrite, 100, %gamecfg%, video_graphics, vg_screenshot_quality
-		iniwrite, png, %gamecfg%, video_graphics, vg_screenshot_format
-	}
-else {
- 		iniwrite, 80, %gamecfg%, video_graphics, vg_screenshot_quality
-		iniwrite, jpg, %gamecfg%, video_graphics, vg_screenshot_format
-	}
-
-if(screenshot_autosave)  {
- 		iniwrite, 1, %gamecfg%, video_graphics, vg_screenshot_autotag
-	}
-else {
- 		iniwrite, 0, %gamecfg%, video_graphics, vg_screenshot_autotag
-
-	}
-
-if(debug_mode)  {
- 		iniwrite, 1, %gamecfg%, debug, dbg_action_system
-    	iniwrite, 1, %gamecfg%, debug, dbg_central_timer
-	    iniwrite, 1, %gamecfg%, debug, dbg_debug_movement_events
-	    iniwrite, 1, %gamecfg%, debug, dbg_debug_positions
- 		iniwrite, 1, %gamecfg%, debug, dbg_enable_cycle_debuggers
-    	iniwrite, 1, %gamecfg%, debug, dbg_entity_system
-	    iniwrite, 1, %gamecfg%, debug, dbg_lua_call_debug
-	    iniwrite, 1, %gamecfg%, debug, dbg_render_paths
-	    iniwrite, 1, %gamecfg%, debug, dbg_resource_manager_output
-	    iniwrite, 1, %gamecfg%, debug, dbg_terrain_manager
-	}
-else {
- 		iniwrite, 0, %gamecfg%, debug, dbg_action_system
-    	iniwrite, 0, %gamecfg%, debug, dbg_central_timer
-	    iniwrite, 0, %gamecfg%, debug, dbg_debug_movement_events
-	    iniwrite, 0, %gamecfg%, debug, dbg_debug_positions
- 		iniwrite, 0, %gamecfg%, debug, dbg_enable_cycle_debuggers
-    	iniwrite, 0, %gamecfg%, debug, dbg_entity_system
-	    iniwrite, 0, %gamecfg%, debug, dbg_lua_call_debug
-	    iniwrite, 0, %gamecfg%, debug, dbg_render_paths
-	    iniwrite, 0, %gamecfg%, debug, dbg_resource_manager_output
-	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
-	}
 
 	;;;;;;;; SPLASHES
 
@@ -945,7 +855,7 @@ checkLanguage:
 		else if(RegExMatch(language, "i)es|sp|ar"))
 			language = spa
 		else {
-			msgbox, Failed to detect language.`n`nKonnte Sprache nicht erkennen.`n`nNo entendió el lenguaje.
+			msgbox, Failed to understand language.`n`nKonnte Sprache nicht feststellen.`n`nNo entendió el lenguaje.
 			language =
 		}
 	}
@@ -953,175 +863,206 @@ return
 
 setTranslations:
 translations := []
-translations["SCREENSHOT_QUALITY"] := { deu: "Screenshots in höchster Qualität"
-	, eng: "High Quality Screenshots"
-	, spa: "High Quality Screenshots" }
-translations["SCREENSHOT_AUTOSAVE"] := { deu: "Screenshots automatisch speichern"
-	, eng: "Auto-Save Screenshots"
-	, spa: "Auto-Save Screenshots" }
-translations["WEATHER_CLEAR"] := { deu: "Klar"
-	, eng: "Clear"
-	, spa: "Clear" }
-translations["WEATHER_RAINY"] := { deu: "Regnerisch"
-	, eng: "Rainy"
-	, spa: "Rainy" }
-translations["WEATHER_CLEAR"] := { deu: "Schnee"
-	, eng: "Snow"
-	, spa: "Snow" }
 translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
 	, eng: "RegnumStarter"
+	, ara: "RegnumStarter"
 	, spa: "RegnumStarter" }
 translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
 	, eng: "Checking for RegnumStarter updates..."
+	, ara: "جاري البحث عن تحديثات ل RegnumStarter"
 	, spa: "Comprobando actualizaciones de RegnumStarter" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
 	, eng: "List of servers and publishers updated successfully."
+	, ara: "تم تحديث قائمة الخوادم والناشرين بنجاح"
 	, spa: "Lista de servidores y editores actualizados con éxito." }
 translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
 	, eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
+	, ara: "تم تنزيل تحديث جديد تلقائيًا وسيتم الآن استبدال التحديث الحالي باسم RegnumStarter.exe / RegnumStarter.ahk. التغيير:"
 	, spa: "Una nueva actualización se ha descargado automáticamente y ahora reemplazará la actual como RegnumStarter.exe / RegnumStarter.ahk. Registro de cambios:" }
 translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
 	, eng: "Error when trying to download and apply the auto-update for RegnumStarter! You can still download it manually. This is the changelog:"
+	, ara: "حدث خطأ أثناء محاولة تنزيل التحديث التلقائي وتطبيقه على RegnumStarter! لا يزال بإمكانك تنزيله يدويًا. هذا هو التغيير:"
 	, spa: "¡Error al intentar descargar y aplicar la actualización automática para RegnumStarter! Todavía puedes descargarlo manualmente. Este es el registro de cambios:" }
 translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
 	, eng: "Checking Game Version..."
+	, ara: "جاري فحص إصدار اللعبة"
 	, spa: "Revisando la versión del juego ..." }
 translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Der RegnumStarter wird jetzt die Spieldateien aktualisieren."
 	, eng: "New Regnum Update: RegnumStarter will now update the game files."
+	, ara: "تحديث Regnum الجديد: سيقوم RegnumStarter بتحديث ملفات اللعبة الآن"
 	, spa: "Nueva actualización de Regnum: RegnumStarter ahora actualizará los archivos del juego." }
 translations["FAILED"] := { deu: "fehlgeschlagen"
 	, eng: "failed"
+	, ara: "فشل"
 	, spa: "ha fallado" }
 translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
 	, eng: "Update completed."
+	, ara: "اكتمل التحديث"
 	, spa: "Actualización completada." }
 translations["EMPTY"] := { deu: "leer"
 	, eng: "empty"
+	, ara: "فارغ"
 	, spa: "vacío" }
 translations["LOGIN"] := { deu: "Login"
 	, eng: "Login"
+	, ara: "تسجيل الدخول"
 	, spa: "Iniciar sesión" }
 translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
 	, eng: "Manage Accounts"
+	, ara: "إدارة الحسابات"
 	, spa: "Cuentas de administración" }
 translations["64BIT_MODE"] := { deu: "64bit-Client starten (experimentell)"
 	, eng: "start 64bit-Client (experimental)"
+	, ara: "بدء عميل ال 64 بت (تجريبي)"
 	, spa: "start 64bit-Client (experimental)" }
 translations["PUBLISHER"] := { deu: "Publisher"
 	, eng: "Publisher"
-	, agt: "hzi"
+	, ara: "الناشر"
 	, spa: "Referente" }
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
 	, eng: "Create Shortcut"
+	, ara: "إنشاء إختصار"
 	, spa: "Crear acceso directo" }
 translations["DELETE_SPLASH"] := { deu: "NGD-Intro ausblenden"
 	, eng: "Hide NGD-Intro"
+	, ara: "إخفاء NGD-Intro"
 	, spa: "Ocultar NGD-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
 	, eng: "Hide Loading Screen"
+	, ara: "اخفاء شاشة التحميل"
 	, spa: "Ocultar pantalla de carga" }
 translations["HIDE_WINDOW_BORDER"] := { deu: "Fensterrahmen ausblenden"
 	, eng: "Hide window border"
+	, ara: "إخفاء حد النافذة"
 	, spa: "Ocultar el borde de la ventana" }
 translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
 	, eng: "Screen Resolution"
+	, ara: "دقة الشاشة"
 	, spa: "Resolución de la pantalla" }
 translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
 	, eng: "Game Folder"
+	, ara: "مجلد اللعبة"
 	, spa: "Carpeta de juego" }
 translations["FULLSCREEN_MODE"] := { deu: "Vollbildmodus"
-	, eng: "Fullscreen mode"
-	, spa: "Fullscreen mode" }
-translations["VSYNC"] := { deu: "vSync aktivieren"
-	, eng: "Enable vSync"
-	, spa: "Enable vSync" }
+	, eng: "Fulscreen mode"
+	, ara: "وضع ملء الشاشة"
+	, spa: "Fulscreen mode" }
 translations["CHANGE"] := { deu: "ändern"
 	, eng: "change"
+	, ara: "تغيير"
 	, spa: "cambio" }
 translations["RUN_AS"] := { deu: "Als anderer Win-Nutzer ausführen"
 	, eng: "Run as other windows user"
+	, ara: "تشغيل كمستخدم Windows آخر"
 	, spa: "ejecutar como otro usuario de Windows" }
 translations["USER"] := { deu: "Nutzer"
 	, eng: "User"
+	, ara: "مستخدم"
 	, spa: "Usuario" }
 translations["PASSWORD"] := { deu: "Passwort"
 	, eng: "Password"
+	, ara: "كلمة المرور"
 	, spa: "Contraseña" }
 translations["REQUIRED"] := { deu: "erforderlich"
 	, eng: "required"
+	, ara: "مطلوب"
 	, spa: "necesario" }
 translations["NET_FAKE_LAG"] := { deu: "Künstliche Latenz"
-	, eng: "Emulate latency"
-	, spa: "Emulate latency" }
+	, eng: "Simulate latency"
+	, ara: "محاكاة زمن الوصول"
+	, spa: "Simular latencia" }
 translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht korrekt konfiguriert!"
 	, eng: "Path to Game Installation has not been configured!"
+	, ara: "لم يتم تكوين المسار إلى ملف تثبيت اللعبة!"
 	, spa: "Ruta de instalación del juego no se ha configurado!" }
 translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
 	, eng: "Select where to create the Shortcut"
+	, ara: "حدد مكان إنشاء الاختصار"
 	, spa: "Seleccione dónde crear el atajo" }
 translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
 	, eng: "Couldn't create shortcut."
+	, ara: "لا يمكن إنشاء اختصار"
 	, spa: "No se pudo crear el acceso directo." }
 translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
-	, eng: "Creation of direct link successfull for"
+	, eng: "Creation of direct link successful for"
+	, ara: "إنشاء الرابط المباشر نجح ل"
 	, spa: "Creación de enlace directo exitoso para" }
 translations["NAME"] := { deu: "Name"
 	, eng: "Name"
+	, ara: "اسم"
 	, spa: "Nombre" }
 translations["COMMENT"] := { deu: "Notiz"
 	, eng: "Note"
+	, ara: "ملحوظة"
 	, spa: "Nota" }
 translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
 	, eng: "Invalid Regnum-Path!"
+	, ara: "مسار Regnum غير صالح!"
 	, spa: "Ruta de registro no válida!" }
 translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
 	, eng: "game.cfg not found"
+	, ara: "game.cfg غير موجود"
 	, spa: "game.cfg no encontrado" }
 translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
 	, eng: "game.cfg was found, but it's smaller than 0.5 kB"
+	, ara: "game.cfg موجود لكنه اقل من 0.5 كيلوبايت"
 	, spa: "Se encontró game.cfg, pero es más pequeño que 0.5 kB" }
 translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Bildschirm-Auflösung!"
 	, eng: "Please choose a screen resolution!"
+	, ara: "يرجى اختيار دقة الشاشة!"
 	, spa: "Por favor, elija una resolución de pantalla!" }
 translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
 	, eng: "Server not found"
+	, ara: "الخادم غير موجود"
 	, spa: "Servidor no encontrado" }
 translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
 	, eng: "Publisher not found"
+	, ara: "الناشر غير موجود"
 	, spa: "Editor no encontrado" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
 	, eng: "You didn't select any account! Go to 'Manage Accounts' first!"
+	, ara: "لم تحدد أي حساب! انتقل إلى "إدارة الحسابات" أولاً!"
 	, spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
 translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
 	, eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
+	, ara: "TestServer\ROClientGame.exe مفقود (Amun-Integration تجريبي)"
 	, spa: "Falta TestServer\ROClientGame.exe (Amun-Integration es experimental)" }
 translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
 	, eng: "No game files found in the specified folder"
+	, ara: "لم يتم العثور على ملفات اللعبة في المجلد المحدد"
 	, spa: "No se encontraron archivos del juego en la carpeta especificada" }
 translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange.`n`nWenn die Logindaten stimmen, wird das Spiel danach starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden, sobald es gestartet ist."
 	, eng: "Shall we download the game to this folder now? This doesn't take long.`n`nIf the login succeeds, Regnum will start downloading all game files which may take a long time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded, once it has started."
+	, ara: "هل يمكننا تحميل اللعبة الى هذا المجلد الان؟ لن يستغرق هذا وقتاً طويلاً. 'n`n`f نجح تسجيل الدخول، سوف تبدأ Regnum بتحميل جميع ملفات اللعبة التي قد تستغرق وقتا طويلا. هذا أمر طبيعي تمامًا: يجب تنزيل جميع المواد ، التي يتم تضمينها عادةً مع المثبت، بمجرد بدء تشغيلها"
 	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo.`n`nSi el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
 translations["64_BIT_CHANGED"] := { deu: "64-bit-Modus wurde geändert. Deshalb werden jetzt ein paar Dateien aktualisiert. Fortfahren?"
 	, eng: "64-bit mode was changed. Thus, some files will be updated. Continue?"
+	, ara: "تم تغيير وضع 64 بت. وبالتالي ، سيتم تحديث بعض الملفات. استمر؟"
 	, spa: "Se cambió el 64-bits-modo. Así, algunos archivos serán actualizados. ¿Continuar?" }
 translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
-	, eng: "Please fill out your windows login details or disable the usage of another windows user."
+	, eng: "Please fill out your windows login details or disable the usage of another Windows user."
+	, ara: "يرجى ملء تفاصيل تسجيل الدخول إلى Windows أو تعطيل استخدام مستخدم آخر لل Windows"
 	, spa: "Complete los detalles de inicio de sesión de Windows o deshabilite el uso de otro usuario de Windows." }
 translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
-	, eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
+	, eng: "Couldn't start ROClientGame.exe! Wrong Windows login data or missing permissions?"
+	, ara: "لا يمكن بدء ROClientGame.exe! بيانات تسجيل الدخول إلى Windows خاطئة أو أذونات مفقودة؟"
 	, spa: "No se pudo iniciar ROClientGame.exe! Datos de inicio de sesión incorrectos de Windows o permisos perdidos" }
 translations["CONNECTION_ERROR_USER_NOT_FOUND"] := { deu: "Logindaten falsch:`nFalschen Username, falsches Passwort oder falschen Publisher für diesen Account angegeben."
 	, eng: "Wrong credentials:`nWrong username, wrong password or wrong publisher configured for this account."
+	, ara: "بيانات اعتماد خاطئة: `nWrong اسم المستخدم أو كلمة مرور خاطئة أو تم تكوين ناشر خاطئ لهذا الحساب"
 	, spa: "Credenciales incorrectas: nombre de usuario `nWrong, contraseña incorrecta o editor incorrecto configurado para esta cuenta." }
 translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrekt, aber der Account ist entweder`n`n1. ...nicht autorisiert: Hierfür bitte einmalig den normalen, offiziellen Launcher benutzen (Spiel betreten nicht notwendig, nur Autorisierung). Oder`n`n2. ...gebannt" ; todo right?
 	, eng: "Credentials are correct, but the account is either`n`n1. ...not authorized. To solve this, please for once use the normal, official Regnum Launcher (no need to actually enter the game, just authorize it). Or`n`n2. ...banned"
+	, ara: "بيانات الاعتماد صحيحة ، ولكن الحساب إما أنه `n`n1. ...ليس لديه الصلاحية. لحل هذه المشكلة ، يرجى استخدام Regnum Launcher الرسمي مرة واحدة (دون الحاجة إلى دخول اللعبة فعليًا ، صرح بها فقط). أو`n`n2. ...محظور"
 	, spa: "Las credenciales son correctas, pero la cuenta es o bien `n`n1. ...no autorizado. Para resolver esto, por favor, por una vez, utilice el Regnum Launcher normal y oficial (no es necesario que ingrese al juego, solo autorícelo). O`n`n2. ... prohibido" }
 translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins mit demselben Account müssen mindestens 5 Sekunden vergangen sein)"
-	, eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cooldown))"
+	, eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cool down))"
+	, ara: "تم تسجيل الدخول بالفعل الى الحساب! `n (بين تسجيل الدخول من نفس الحساب ، يجب أن يكون قد مر 5 ثوان على الأقل (وقت انتظار تسجيل الدخول))"
 	, spa: "La cuenta ya ha iniciado sesión. `n (Entre dos inicios de sesión con la misma cuenta debe haber pasado 5 segundos como mínimo (tiempo de reutilización de inicio de sesión))" }
 translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
-	, eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
-	, spa: "serverConfig.txt contiene datos inválidos. Esta es probablemente la primera vez que ejecuta Quickstarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
+	, eng: "serverConfig.txt contains invalid data. This is probably your first time to open the RegnumStarter and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
+	, ara: "serverConfig.txt يحتوي على بيانات غير صحيحة. ربما هذه هي المرة الأولى التي تقوم فيها بتشغيل RegnumStarter او إتصالك باللإنترنت او cor-forum.de غير متاحين حالياً / او تم تركيبه بطريقة غير سليمة. برجاء المحاولة لاحقاً. يرجى أيضا الاتصال بنا إذا استمرت هذه المشكلة"
+	, spa: "serverConfig.txt contiene datos inválidos. Es probable que sea la primera vez que abres el RegnumStarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
 global T := []
 for k,v in translations {
 	T[k] := v[language]
@@ -1203,7 +1144,6 @@ md5(string)    ; by SKAN | rewritten by jNizM
 	StringLower, o,o
 	return o
 } ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
-
 
 
 
