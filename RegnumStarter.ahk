@@ -465,7 +465,7 @@ make_gui:
 
 ;	// screenshot autosave
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
+	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
 	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_AUTOSAVE
 
 ;	// debug mode
@@ -502,14 +502,6 @@ make_gui:
 	gui, add, text, x420 y170 backgroundtrans, % "weather (experimental)"
 	gui, add, dropdownlist, x550 y170 w50 vweather AltSubmit, clear|rainy|storm
 
-	
-;	// screenshot quality
-	Gui, Font, s8 bold cD8D8D8, Verdana
-	gui, add, text, x400 y30 backgroundtrans, % "Automatic enhancements:"
-	Gui, Font, s7 cD8D8D8, Verdana
-;	// gui, add, checkbox, x400 y100 checked%vg_screenshot_quality% backgroundtrans w%CBW% h%CBH% vvg_screenshot_quality
-	gui, add, text, x400 y45 backgroundtrans, % "- high quality screenshots (default is 80%)"
-	
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
 	gui, add, edit, x150 y200 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
