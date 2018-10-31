@@ -485,12 +485,12 @@ make_gui:
 
 ;	// fullscreen mode
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
+	gui, add, checkbox, x400 y220 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
 
 ;	// vsync
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x520 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
+	gui, add, checkbox, x510 y220 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
 	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
 	
 ;	// cl_crafting_show_min_level
