@@ -502,16 +502,12 @@ make_gui:
 	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
 	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
 	
-;	// server time
+;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
-	gui, add, text, x+3 yp backgroundtrans, % "custom server time"
-	gui, add, dropdownlist, x550 y150 w50 vserver_time AltSubmit, morning|afternoon|evening|night
-
-;	// weather
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x420 y170 backgroundtrans, % "weather (experimental)"
-	gui, add, dropdownlist, x550 y170 w50 vweather AltSubmit, clear|rainy|storm
+	gui, add, text, x+3 yp backgroundtrans, % "custom weather"
+	gui, add, dropdownlist, x500 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
+	gui, add, dropdownlist, x580 y150 w50 vweather AltSubmit, clear|rainy|storm
 
 ;	// fake net lag
 	gui, add, text, x10 y200 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
