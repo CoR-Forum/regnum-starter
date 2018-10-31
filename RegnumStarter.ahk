@@ -247,12 +247,15 @@ readUserConfig:
 		, net_fake_lag: 0
 		, width: 1366
 		, height: 768
+		, ingame_log: 1
 		, vg_fullscreen_mode: 0
 		, vg_vertical_sync: 1
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_crafting_show_min_level: 0
 		, cl_show_subclass_on_players: 0
+		, cl_show_hidden_armors: 0
+		, cl_invert_selection_priority: 0
 		, dbg_ignore_server_time: 0
 		, env_weather: clear
 		, debug_mode: 0
@@ -483,30 +486,40 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y90 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 
+;	// conjurer mode
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y220 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
+	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
+
 ;	// fullscreen mode
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y220 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
+	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
 
 ;	// vsync
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x510 y220 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
+	gui, add, checkbox, x510 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
 	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
 	
+;	// advanced ingame log
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y40 checked%ingame_log% backgroundtrans w%CBW% h%CBH% vingame_log
+	gui, add, text, x+3 yp backgroundtrans, % "advanced ingame log"
+
 ;	// cl_crafting_show_min_level
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
-	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
-	
-;	// cl_crafting_show_min_level
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y130 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
+	gui, add, checkbox, x400 y110 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
 	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
 
 ;	// cl_show_subclass_on_players
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y110 checked%cl_show_subclass_on_players% backgroundtrans w%CBW% h%CBH% vcl_show_subclass_on_players
+	gui, add, checkbox, x400 y90 checked%cl_show_subclass_on_players% backgroundtrans w%CBW% h%CBH% vcl_show_subclass_on_players
 	gui, add, text, x+3 yp backgroundtrans, % "cl_show_subclass_on_players (experimental)"
+
+;	// cl_show_hidden_armors
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x400 y70 checked%cl_show_hidden_armors% backgroundtrans w%CBW% h%CBH% vcl_show_hidden_armors
+	gui, add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (experimental)"
 	
 ;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -808,6 +821,7 @@ else if (weather == 3)
 	iniwrite,% ! hide_loading_screen,%gamecfg%,client,cl_show_loading_screen
 	iniwrite,% net_fake_lag,%gamecfg%,network,net_fake_lag
 	iniwrite,% language,%gamecfg%,client,cl_language
+	iniwrite,% cl_invert_selection_priority,%gamecfg%,client,cl_invert_selection_priority
 	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
 	iniwrite,% cl_show_subclass_on_players,%gamecfg%,client,cl_show_subclass_on_players
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
@@ -846,6 +860,20 @@ if(screenshot_autosave)  {
 else {
  		iniwrite, 0, %gamecfg%, video_graphics, vg_screenshot_autotag
 
+	}
+
+
+if(ingame_log)  {
+ 		iniwrite, 1, %gamecfg%, debug, cl_combat_log_colored_names
+    	iniwrite, 1, %gamecfg%, debug, cl_combat_log_constant_damage
+	    iniwrite, 1, %gamecfg%, debug, cl_combat_log_power_level
+	    iniwrite, 1, %gamecfg%, debug, cl_combat_log_small
+	}
+else {
+ 		iniwrite, 0, %gamecfg%, debug, cl_combat_log_colored_names
+    	iniwrite, 0, %gamecfg%, debug, cl_combat_log_constant_damage
+	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_power_level
+	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_small
 	}
 
 if(debug_mode)  {
@@ -969,6 +997,9 @@ return
 
 setTranslations:
 translations := []
+translations["CONJ_MODE"] := { deu: "Healbeschi-Modus (Umgedrehte Auswahlpriorität)"
+	, eng: "healconj mode (inverted selection priority)"
+	, spa: "healconj mode (inverted selection priority)" }
 translations["SCREENSHOT_QUALITY"] := { deu: "Screenshots in höchster Qualität"
 	, eng: "High Quality Screenshots"
 	, spa: "High Quality Screenshots" }
