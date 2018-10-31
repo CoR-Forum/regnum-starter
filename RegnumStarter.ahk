@@ -408,27 +408,27 @@ make_gui:
 	
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
-	gui, add, button, w140 h30 x490 y290 glogin, % T.LOGIN
+	gui, add, button, w140 h35 x490 y290 glogin, % T.LOGIN
 
 	Gui, Font, s7 c000000, Verdana
 
 ; 	// user selection
-	gui, add, dropdownlist, x490 y250 w140 vselected_user altsubmit
+	gui, add, dropdownlist, x500 y240 w120 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// account management
-	gui, add, button, x400 y250 w80 gaccounts_edit, % T.MANAGE_ACCOUNTS
+	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
 	gui, add, button, x300 y150 w80 ggraphic_settings, % "graphic settings"
 
 ; 	// server selection
-	gui, add, dropdownlist, x400 y220 w120 vselected_server altsubmit
+	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
 	gosub updateServerlist
 
 ;	// create shortcut
 	Gui, Font, s6 c000000, Verdana
-	gui, add, button, w80 h30 x400 y290 gshortcutCreate, % T.CREATE_SHORTCUT
+	gui, add, button, w80 h35 x400 y290 gshortcutCreate, % T.CREATE_SHORTCUT
 
 ;	// window resolution
 	Gui, Font, s7 norm cD8D8D8, Verdana
@@ -1206,3 +1206,19 @@ md5(string)    ; by SKAN | rewritten by jNizM
 	StringLower, o,o
 	return o
 } ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
