@@ -248,6 +248,7 @@ readUserConfig:
 		, width: 1366
 		, height: 768
 		, vg_fullscreen_mode: 0
+		, vg_vertical_sync: 1
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_crafting_show_min_level: 0
@@ -490,6 +491,11 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
 	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
+
+;	// vsync
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x520 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
+	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
 	
 ;	// cl_crafting_show_min_level
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -1028,8 +1034,11 @@ translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
 	, eng: "Game Folder"
 	, spa: "Carpeta de juego" }
 translations["FULLSCREEN_MODE"] := { deu: "Vollbildmodus"
-	, eng: "Fulscreen mode"
-	, spa: "Fulscreen mode" }
+	, eng: "Fullscreen mode"
+	, spa: "Fullscreen mode" }
+translations["VSYNC"] := { deu: "vSync aktivieren"
+	, eng: "Enable vSync"
+	, spa: "Enable vSync" }
 translations["CHANGE"] := { deu: "ändern"
 	, eng: "change"
 	, spa: "cambio" }
