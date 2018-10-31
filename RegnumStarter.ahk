@@ -382,9 +382,7 @@ empty(v) {
 		return true
 	return false
 }
-; //////////////////////////////////
-; //////////////////////////////////
-; //////////////////////////////////
+
 ; //////////////////////////////////
 make_gui:
 	SysGet, CBW, 71
@@ -423,8 +421,6 @@ make_gui:
 
 ; 	// graphic settings
 	gui, add, button, x300 y150 w80 ggraphic_settings, % "graphic settings"
-
-
 
 ; 	// server selection
 	gui, add, dropdownlist, x400 y220 w120 vselected_server altsubmit
@@ -535,7 +531,7 @@ make_gui:
 	
 	gosub, runasGuiToggled
 
-	
+;	// language selection. this will change both regnums and regnumstarters language.	
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
