@@ -1021,7 +1021,7 @@ translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
 	, spa: "Editor no encontrado" }
 translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
 	, eng: "You didn't select any account! Go to 'Manage Accounts' first!"
-	, ara: "لم تحدد أي حساب! انتقل إلى "إدارة الحسابات" أولاً!"
+	, ara: "لم تحدد أي حساب! انتقل إلى 'إدارة الحسابات' أولاً!"
 	, spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
 translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
 	, eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
