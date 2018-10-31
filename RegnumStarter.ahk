@@ -463,9 +463,14 @@ make_gui:
 	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_quality% backgroundtrans vscreenshot_quality
 	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_QUALITY
 
+;	// screenshot autosave
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
+	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_AUTOSAVE
+
 ;	// debug mode
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%debug_mode% backgroundtrans vdebug_mode
+	gui, add, checkbox, w%CBW% h%CBH% x10 y170 checked%debug_mode% backgroundtrans vdebug_mode
 	gui, add, text, x+3 yp backgroundtrans, % "debug mode (experimental)"
 
 ;	// change 64bit mode
@@ -935,6 +940,12 @@ return
 
 setTranslations:
 translations := []
+translations["SCREENSHOT_QUALITY"] := { deu: "Screenshots in höchster Qualität"
+	, eng: "High Quality Screenshots"
+	, spa: "High Quality Screenshots" }
+translations["SCREENSHOT_AUTOSAVE"] := { deu: "Screenshots automatisch speichern"
+	, eng: "Auto-Save Screenshots"
+	, spa: "Auto-Save Screenshots" }
 translations["WEATHER_CLEAR"] := { deu: "Klar"
 	, eng: "Clear"
 	, spa: "Clear" }
