@@ -409,7 +409,6 @@ make_gui:
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
 	gui, add, button, w140 h35 x490 y290 glogin, % T.LOGIN
-
 	Gui, Font, s7 c000000, Verdana
 
 ; 	// user selection
