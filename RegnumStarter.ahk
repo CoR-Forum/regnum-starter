@@ -420,6 +420,11 @@ make_gui:
 ; 	// account management
 	gui, add, button, x400 y250 w80 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
+; 	// graphic settings
+	gui, add, button, x300 y150 w80 ggraphic_settings, % "graphic settings"
+
+
+
 ; 	// server selection
 	gui, add, dropdownlist, x400 y220 w120 vselected_server altsubmit
 	gosub updateServerlist
@@ -546,7 +551,19 @@ make_gui:
 
 return
 
-
+	graphic_settings:
+refererlist =
+	for i,referer in referers {
+		refererlist .= "|" referer.name
+	}
+	placeholder := "   "
+	gui, 1:+disabled
+	Gui, 2:Font, s8 c000000, Verdana
+	gui, 2:add, text, x+40 y+6, % "under development"
+	gui, 2:add, button, g2guiok x235, Ok
+	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
+	gui, 2:show	
+	return
 
 runasGuiToggled:
 	gui,submit,nohide
@@ -638,6 +655,8 @@ shortcutCreate:
 return
 
 ; ////////////////////////
+
+
 accounts_edit:
 	refererlist =
 	for i,referer in referers {
