@@ -510,7 +510,7 @@ make_gui:
 ;	// advanced ingame log
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y40 checked%ingame_log% backgroundtrans w%CBW% h%CBH% vingame_log
-	gui, add, text, x+3 yp backgroundtrans, % "T.INGAME_LOG"
+	gui, add, text, x+3 yp backgroundtrans, % T.INGAME_LOG
 
 ;	// cl_crafting_show_min_level
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -531,8 +531,8 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
 	gui, add, text, x+3 yp backgroundtrans, % T.WEATHER
-	gui, add, dropdownlist, x500 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
-	gui, add, dropdownlist, x580 y150 w50 vweather AltSubmit, clear|rainy|storm
+	gui, add, dropdownlist, x510 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
+	gui, add, dropdownlist, x590 y150 w50 vweather AltSubmit, clear|rainy|storm
 
 ;	// fake net lag
 	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
