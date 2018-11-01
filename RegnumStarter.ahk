@@ -694,7 +694,7 @@ accounts_edit:
 	placeholder := "   "
 	gui, 1:+disabled
 	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t`t" T.PUBLISHER "`t`t" T.COMMENT
+	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t" T.PUBLISHER "`t`t" T.COMMENT
 	if(users.Length()==0)
 		users.push(new User())
 	for i,user in users {
