@@ -1,4 +1,4 @@
-#persistent
+﻿#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
@@ -613,6 +613,8 @@ updateUserlist:
 		userlist := ""
 		for i,user in users {
 			userlist .= "|" user.name
+			if(user.comment)
+				userlist .= " (" user.comment ")"
 		}
 		guicontrol, 1:, selected_user, %userlist%
 		if(empty(selected_user))
