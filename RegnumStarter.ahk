@@ -409,7 +409,7 @@ make_gui:
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-beta1
-;	Gui, add, link, x450 center y10 w120 h25 backgroundtrans, <a href="https://github.com/phil294/regnum-starter">GitHub</a>
+;	Gui, add, link, x400 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 	
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
