@@ -715,6 +715,7 @@ accounts_edit:
 		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
 	}
 	gui, 2:add, button, ggui2_add x20,+
+	gui, 2:add, text, ggui2_add x30,Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server!
 	gui, 2:add, button, g2guiok x235, Ok
 	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
 	gui, 2:show	
@@ -1015,9 +1016,9 @@ translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 	translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
 	, eng: "Advanced combat log"
 	, spa: "Advanced combat log" }
-translations["CONJ_MODE"] := { deu: "Healbeschi-Modus (Umgedrehte Auswahlpriorität)"
-	, eng: "healconj mode (inverted selection priority)"
-	, spa: "healconj mode (inverted selection priority)" }
+translations["CONJ_MODE"] := { deu: "Healbeschi-Modus"
+	, eng: "healconj mode"
+	, spa: "healconj mode" }
 translations["SCREENSHOT_QUALITY"] := { deu: "Screenshots in höchster Qualität"
 	, eng: "High Quality Screenshots"
 	, spa: "High Quality Screenshots" }
