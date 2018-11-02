@@ -9,7 +9,7 @@ gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-try menu, tray, icon, %APPDATA%/icon.ico
+try menu, tray, icon, %APPDATA%/icon.png
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
@@ -58,7 +58,7 @@ checkAppdata:
 			FileCopy, data\*, %APPDATA%
 		}
 	}
-	for k,v in ["background.png", "icon.ico"] {
+	for k,v in ["background.png", "icon.png"] {
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
@@ -664,10 +664,10 @@ shortcutCreate:
 	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
-		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.ico
+		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.png
 	} else {
 		script = "%A_ScriptFullPath%"
-		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.ico
+		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.png
 	}
 	
 	if(errorlevel) {
