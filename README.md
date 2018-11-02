@@ -8,7 +8,7 @@ With this tool, you can log in to the game [Champions of Regnum](https://www.cha
 
 Download the latest version [here](https://github.com/phil294/cor-schnellstarter/releases/). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk Skript directly.
 
-![](https://cdn.treudler.net/18/181102021252jooltx.gif)
+![](https://cdn.treudler.net/18/181102025845UJ4Gdx.gif)
 
 ### Accounts
 
