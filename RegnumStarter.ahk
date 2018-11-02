@@ -9,7 +9,7 @@ gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-try menu, tray, icon, %APPDATA%/icon.png
+try menu, tray, icon, %APPDATA%/rsicon.ico
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
@@ -408,7 +408,7 @@ make_gui:
 	
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-rc2
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-rc3
 ;	Gui, add, link, x400 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 	
 ; 	// login button
@@ -424,7 +424,7 @@ make_gui:
 	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
-	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
+;	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
 
 ; 	// server selection
 	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
