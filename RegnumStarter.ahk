@@ -424,7 +424,7 @@ make_gui:
 	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
-;	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
+	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
 
 ; 	// server selection
 	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
@@ -444,10 +444,7 @@ make_gui:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x280 y275 w42 h18 limit4 center number -multi vheight, %height%
 	
-;	// hide window boarder
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+
 
 ;	// regnum path
 	Gui, Font, s8 bold cD8D8D8, Verdana
@@ -542,6 +539,11 @@ make_gui:
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
 	
+;	// hide window boarder
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -578,19 +580,18 @@ make_gui:
 
 return
 
-	graphic_settings:
-refererlist =
-	for i,referer in referers {
-		refererlist .= "|" referer.name
-	}
-	placeholder := "   "
+graphic_settings:
 	gui, 1:+disabled
-	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % "under development"
-	gui, 2:add, button, g2guiok x235, Ok
-	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
-	return
+	Gui, 3:Font, s8 c000000, Verdana
+	gui, 3:add, text, x+40 y+6, % "under development"
+	;	// hide window boarder
+;	Gui, 3:Font, s7 cD8D8D8, Verdana
+;	gui, 3:add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+;	gui, 3:add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+	gui, 3:add, button, g3guiok x235, Ok
+	gui, 3:add, button, g3guicancel x180 yp+0 xp+38, Cancel
+	gui, 3:show	
+return
 
 runasGuiToggled:
 	gui,submit,nohide
@@ -754,6 +755,14 @@ return
 2guicancel:	
 	gui, 1:-disabled
 	gui, 2:destroy
+	winactivate, ahk_id %GUIID%
+return
+3guiok:
+	gui, 3:submit, nohide
+return
+3guicancel:	
+	gui, 1:-disabled
+	gui, 3:destroy
 	winactivate, ahk_id %GUIID%
 return
 ; ////////////
