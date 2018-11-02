@@ -9,7 +9,7 @@ gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-try menu, tray, icon, %APPDATA%/icon.ico
+try menu, tray, icon, %APPDATA%/icon.png
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
@@ -58,7 +58,7 @@ checkAppdata:
 			FileCopy, data\*, %APPDATA%
 		}
 	}
-	for k,v in ["background.png", "icon.ico"] {
+	for k,v in ["background.png", "icon.png"] {
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
@@ -424,7 +424,7 @@ make_gui:
 	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
 
 ; 	// graphic settings
-;	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
+	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
 
 ; 	// server selection
 	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
@@ -444,10 +444,7 @@ make_gui:
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x280 y275 w42 h18 limit4 center number -multi vheight, %height%
 	
-;	// hide window boarder
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+
 
 ;	// regnum path
 	Gui, Font, s8 bold cD8D8D8, Verdana
@@ -542,6 +539,11 @@ make_gui:
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
 	
+;	// hide window boarder
+	Gui, Font, s7 cD8D8D8, Verdana
+	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -558,7 +560,7 @@ make_gui:
 
 ;	// language selection. this will change both regnums and regnumstarters language.	
 	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
+	gui, add, dropdownlist, x480 y6 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
 
 
@@ -578,19 +580,18 @@ make_gui:
 
 return
 
-	graphic_settings:
-refererlist =
-	for i,referer in referers {
-		refererlist .= "|" referer.name
-	}
-	placeholder := "   "
+graphic_settings:
 	gui, 1:+disabled
-	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % "under development"
-	gui, 2:add, button, g2guiok x235, Ok
-	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
-	return
+	Gui, 3:Font, s8 c000000, Verdana
+	gui, 3:add, text, x+40 y+6, % "under development"
+	;	// hide window boarder
+;	Gui, 3:Font, s7 cD8D8D8, Verdana
+;	gui, 3:add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+;	gui, 3:add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+	gui, 3:add, button, g3guiok x235, Ok
+	gui, 3:add, button, g3guicancel x180 yp+0 xp+38, Cancel
+	gui, 3:show	
+return
 
 runasGuiToggled:
 	gui,submit,nohide
@@ -664,10 +665,10 @@ shortcutCreate:
 	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
-		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.ico
+		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.png
 	} else {
 		script = "%A_ScriptFullPath%"
-		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.ico
+		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.png
 	}
 	
 	if(errorlevel) {
@@ -754,6 +755,14 @@ return
 2guicancel:	
 	gui, 1:-disabled
 	gui, 2:destroy
+	winactivate, ahk_id %GUIID%
+return
+3guiok:
+	gui, 3:submit, nohide
+return
+3guicancel:	
+	gui, 1:-disabled
+	gui, 3:destroy
 	winactivate, ahk_id %GUIID%
 return
 ; ////////////
@@ -872,6 +881,7 @@ else {
 
 	}
 
+;	// write game config for combat log settings
 
 if(ingame_log)  {
  		iniwrite, 1, %gamecfg%, debug, cl_combat_log_colored_names
@@ -885,6 +895,8 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_power_level
 	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_small
 	}
+
+;	// write game config for debug settings
 
 if(debug_mode)  {
  		iniwrite, 1, %gamecfg%, debug, dbg_action_system
@@ -911,7 +923,7 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
-	;;;;;;;; SPLASHES
+;	// remove NGD intro
 
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
@@ -927,7 +939,7 @@ else {
 	if(hide_window_border)
 		settimer, removeRegnumWindowBorder, -1000
 
-	;;;;;;;; RUN
+;	// run the regnum client
 	
 	if run_runas = 1
 	{
@@ -952,7 +964,7 @@ else {
 		return
 	}
 
-	;;;;;;; PROMPT LOG.TXT CONNECTION ERROR
+;	// prompt log.txt connection error
 
 	Loop, Read, %live%log.txt
 	{
@@ -979,13 +991,14 @@ else {
 
 return
 
-; //////
+;	// remove window border
 
 removeRegnumWindowBorder:
 	WinWaitActive, ahk_class Regnum,,3
 	WinSet, style, -0xC00000, ahk_class Regnum
 return
-; //////
+
+;	// try to automatically detect the language
 
 checkLanguage:
 	while(empty(language)) {
@@ -1228,7 +1241,7 @@ return
 
 WatchMouse:
 GetKeyState, LButtonState, LButton, P
-if LButtonState = U  ; Button has been released, so drag is complete.
+if LButtonState = U		;	// Button has been released, so drag is complete.
 {
 			wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, Server
 			PosGuiX = %OL_Ecke_GuiX%
@@ -1247,14 +1260,14 @@ MouseStartY = %MouseY%
 WinGetPos, GuiX, GuiY,,, ahk_id %GuiID%
 GuiX += %DeltaX%
 GuiY += %DeltaY%
-SetWinDelay, -1   ; Makes the below move faster/smoother.
+SetWinDelay, -1		;	// Makes the below move faster/smoother.
 WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
 return
 
 ;	// md5 function to securly save account passwords in users.txt
 
-md5(string)    ; by SKAN | rewritten by jNizM
+md5(string)		;	// by SKAN | rewritten by jNizM
 {
 	hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
 	, VarSetCapacity(MD5_CTX, 104, 0), DllCall("advapi32\MD5Init", "Ptr", &MD5_CTX)
@@ -1265,7 +1278,7 @@ md5(string)    ; by SKAN | rewritten by jNizM
 	DllCall("FreeLibrary", "Ptr", hModule)
 	StringLower, o,o
 	return o
-} ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
+}	;	// https://autohotkey.com/boards/viewtopic.php?f=6&t=21
 
 
 
