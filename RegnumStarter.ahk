@@ -558,7 +558,7 @@ make_gui:
 
 ;	// language selection. this will change both regnums and regnumstarters language.	
 	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x256 y215 w45 vlanguage glanguage_changed, eng|deu|spa
+	gui, add, dropdownlist, x480 y6 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
 
 
