@@ -1,6 +1,6 @@
 # CoR Schnellstarter
 
-![](https://cdn.treudler.net/shared/screenshots/2018_10_01_22-37-30_aRFzkq7tdc73MT6ZWyLO.png)
+![](https://cdn.treudler.net/18/181102021650-646x331.png)
 
 With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within few seconds and skip the input of username and password.
 
@@ -8,7 +8,7 @@ With this tool, you can log in to the game [Champions of Regnum](https://www.cha
 
 Download the latest version [here](https://github.com/phil294/cor-schnellstarter/releases/). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk Skript directly.
 
-![](https://cdn.treudler.net/shared/screenshots/2018_09_13_00-48-17_730HVVGVxWCKEiI668Wm.gif)
+![](https://cdn.treudler.net/18/181102021252jooltx.gif)
 
 ### Accounts
 
