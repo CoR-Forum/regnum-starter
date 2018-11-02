@@ -881,6 +881,7 @@ else {
 
 	}
 
+;	// write game config for combat log settings
 
 if(ingame_log)  {
  		iniwrite, 1, %gamecfg%, debug, cl_combat_log_colored_names
@@ -894,6 +895,8 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_power_level
 	    iniwrite, 0, %gamecfg%, debug, cl_combat_log_small
 	}
+
+;	// write game config for debug settings
 
 if(debug_mode)  {
  		iniwrite, 1, %gamecfg%, debug, dbg_action_system
@@ -920,7 +923,7 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
-	;;;;;;;; SPLASHES
+;	// remove NGD intro
 
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
@@ -936,7 +939,7 @@ else {
 	if(hide_window_border)
 		settimer, removeRegnumWindowBorder, -1000
 
-	;;;;;;;; RUN
+;	// run the regnum client
 	
 	if run_runas = 1
 	{
@@ -961,7 +964,7 @@ else {
 		return
 	}
 
-	;;;;;;; PROMPT LOG.TXT CONNECTION ERROR
+;	// prompt log.txt connection error
 
 	Loop, Read, %live%log.txt
 	{
@@ -988,13 +991,14 @@ else {
 
 return
 
-; //////
+;	// remove window border
 
 removeRegnumWindowBorder:
 	WinWaitActive, ahk_class Regnum,,3
 	WinSet, style, -0xC00000, ahk_class Regnum
 return
-; //////
+
+;	// try to automatically detect the language
 
 checkLanguage:
 	while(empty(language)) {
@@ -1237,7 +1241,7 @@ return
 
 WatchMouse:
 GetKeyState, LButtonState, LButton, P
-if LButtonState = U  ; Button has been released, so drag is complete.
+if LButtonState = U		;	// Button has been released, so drag is complete.
 {
 			wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, Server
 			PosGuiX = %OL_Ecke_GuiX%
@@ -1256,14 +1260,14 @@ MouseStartY = %MouseY%
 WinGetPos, GuiX, GuiY,,, ahk_id %GuiID%
 GuiX += %DeltaX%
 GuiY += %DeltaY%
-SetWinDelay, -1   ; Makes the below move faster/smoother.
+SetWinDelay, -1		;	// Makes the below move faster/smoother.
 WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
 return
 
 ;	// md5 function to securly save account passwords in users.txt
 
-md5(string)    ; by SKAN | rewritten by jNizM
+md5(string)		;	// by SKAN | rewritten by jNizM
 {
 	hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
 	, VarSetCapacity(MD5_CTX, 104, 0), DllCall("advapi32\MD5Init", "Ptr", &MD5_CTX)
@@ -1274,7 +1278,7 @@ md5(string)    ; by SKAN | rewritten by jNizM
 	DllCall("FreeLibrary", "Ptr", hModule)
 	StringLower, o,o
 	return o
-} ;https://autohotkey.com/boards/viewtopic.php?f=6&t=21
+}	;	// https://autohotkey.com/boards/viewtopic.php?f=6&t=21
 
 
 
