@@ -9,7 +9,7 @@ gosub, checkAppdata
 gosub, readUserConfig
 gosub, checkLanguage
 gosub, setTranslations
-try menu, tray, icon, %APPDATA%/icon.ico
+try menu, tray, icon, %APPDATA%/rsicon.ico
 coordmode,mouse,screen
 gosub, readServerConfig ; servers and referers
 goSub, readUsers
