@@ -1,6 +1,8 @@
 -> [Discussion on cor-forum.de](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
 
-# CoR Schnellstarter
+# RegnumStarter v3
+
+### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
 ![](https://cdn.treudler.net/18/181102021650-646x331.png)
 
