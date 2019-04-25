@@ -862,7 +862,9 @@ if(weather == 1)
 else if (weather == 2)
    env_weather := "rainy" 
 else if (weather == 3)
-   env_weather := "snow"
+   env_weather := "snow" // existing
+else if (weather == 4)
+   env_weather := "thunder" // ?
 
 ;	// ??
 	gamecfg := regnum_path "game.cfg"
