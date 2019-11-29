@@ -929,10 +929,8 @@ else {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
 		filedelete, %live%splash_nge.png
-		filedelete, %live%splash_gmg.png
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
-		filedelete, %live%splash_gmg.png
 	}
 
 	;;;;;;;; REMOVE WINDOW BORDER OPTION
