@@ -16,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = v2.2.0
+rs_version_release = 3.1.0
 gosub, make_gui
 
 argc = %0%
@@ -408,7 +408,7 @@ make_gui:
 	
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-rc3
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.1.0
 ;	Gui, add, link, x400 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 	
 ; 	// login button
