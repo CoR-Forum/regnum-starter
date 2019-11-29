@@ -928,6 +928,7 @@ else {
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
+		filedelete, %live%splash_nge.png
 		filedelete, %live%splash_gmg.png
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
