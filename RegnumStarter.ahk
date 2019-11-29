@@ -456,7 +456,7 @@ make_gui:
 
 	Gui, Font, s8 c000000, Verdana
 
-;	// hide NGD intro
+;	// hide NGE intro
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
@@ -923,7 +923,7 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
-;	// remove NGD intro
+;	// remove NGE intro
 
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
