@@ -1,4 +1,4 @@
-﻿#persistent
+#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
@@ -69,10 +69,26 @@ checkAppdata:
 	}
 return
 updateServerConfig:
-	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
-	
-	; main program update?
+	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
+	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
+	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
+	serverConfigReq := ComObjCreate("Msxml2.XMLHTTP")
+	serverConfigReq.open("GET", BASE_URL "serverConfig.txt?disablecache=" A_TickCount, true)
+	serverConfigReq.onreadystatechange := Func("updateServerConfigCallback")
+	serverConfigReq.send()
+return
+updateServerConfigCallback() {
+	global
+	if (serverConfigReq.readyState != 4)
+		return
+	if (serverConfigReq.status != 200 || serverConfigReq.responseText == "") {
+		msgbox % T.INVALID_SERVER_CONFIG
+		return
+	}
+	fileDelete, %APPDATA%/serverConfig.txt
+	fileAppend, % serverConfigReq.responseText, %APPDATA%/serverConfig.txt
 	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
+	; main program update?
 	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
 		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
 		for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
@@ -116,7 +132,7 @@ Del `%0
 			msgbox, ,RegnumStarter - Metaupdate, % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
-return
+}
 autoUpdateFailed:
 	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
 	tooltip
