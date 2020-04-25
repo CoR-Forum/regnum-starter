@@ -2,7 +2,7 @@
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
-BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
+BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
