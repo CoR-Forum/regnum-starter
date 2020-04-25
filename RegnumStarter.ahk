@@ -187,11 +187,7 @@ updateGamefiles:
 			necessaryLiveFiles.Push("steam_api64.dll") ; the only file with a different name in 64 bit mode...
 		else
 			necessaryLiveFiles.Push("steam_api.dll")
-<<<<<<< RegnumStarter.ahk
-		;unnecessaryLiveFiles := [ "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "splash_nge.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
-=======
-		;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
->>>>>>> RegnumStarter.ahk
+			;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
 		for k,file in necessaryLiveFiles {
 			if(!patchLiveGamefile(file)) {
 				FileDelete, %live%ROClientGame.exe ; so downloadAll will surely be true next time
