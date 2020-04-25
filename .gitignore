@@ -2,3 +2,4 @@ test*
 todo*
 data
 .vscode
+*.exe
