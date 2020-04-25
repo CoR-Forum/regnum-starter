@@ -923,4 +923,4 @@ errorlevel := errorlevel_safe
 return
 
 ;	// md5 function to securly save account passwords in users.txt
-#Include %A_ScriptDir%\gui\graphic_settings.ahk
+#Include %A_ScriptDir%\lib\md5_function.ahk
