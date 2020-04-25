@@ -1,4 +1,4 @@
-﻿#persistent
+#persistent
 #singleinstance off
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
@@ -69,10 +69,26 @@ checkAppdata:
 	}
 return
 updateServerConfig:
-	urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
-	
-	; main program update?
+	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
+	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
+	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
+	serverConfigReq := ComObjCreate("Msxml2.XMLHTTP")
+	serverConfigReq.open("GET", BASE_URL "serverConfig.txt?disablecache=" A_TickCount, true)
+	serverConfigReq.onreadystatechange := Func("updateServerConfigCallback")
+	serverConfigReq.send()
+return
+updateServerConfigCallback() {
+	global
+	if (serverConfigReq.readyState != 4)
+		return
+	if (serverConfigReq.status != 200 || serverConfigReq.responseText == "") {
+		msgbox % T.INVALID_SERVER_CONFIG
+		return
+	}
+	fileDelete, %APPDATA%/serverConfig.txt
+	fileAppend, % serverConfigReq.responseText, %APPDATA%/serverConfig.txt
 	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
+	; main program update?
 	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
 		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
 		for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
@@ -116,7 +132,7 @@ Del `%0
 			msgbox, ,RegnumStarter - Metaupdate, % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
-return
+}
 autoUpdateFailed:
 	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
 	tooltip
@@ -166,12 +182,16 @@ updateGamefiles:
 	if(downloadAll) {
 		if(!FileExist(live))
 			FileCreateDir, %live%
-		necessaryLiveFiles := ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "current_build", "openal.dll"] ; minimally necessary files inside liveserver folder for the game to start. more or less coincidentally, these are also the ones that need to be downloaded when 32/64 mode changed (according to the normal launcher workflow, did not check if this is optimizable)
+		necessaryLiveFiles := ["ROClientGame.exe", "shaders.ngz", "scripts.ngz", "openal.dll"] ; minimally necessary files inside liveserver folder for the game to start. more or less coincidentally, these are also the ones that need to be downloaded when 32/64 mode changed (according to the normal launcher workflow, did not check if this is optimizable)
 		if(win64)
 			necessaryLiveFiles.Push("steam_api64.dll") ; the only file with a different name in 64 bit mode...
 		else
 			necessaryLiveFiles.Push("steam_api.dll")
+<<<<<<< RegnumStarter.ahk
 		;unnecessaryLiveFiles := [ "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "splash_nge.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+=======
+		;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+>>>>>>> RegnumStarter.ahk
 		for k,file in necessaryLiveFiles {
 			if(!patchLiveGamefile(file)) {
 				FileDelete, %live%ROClientGame.exe ; so downloadAll will surely be true next time
@@ -180,26 +200,54 @@ updateGamefiles:
 		}
 		IniWrite, %win64%, %launcherini%, build, win64
 		msgbox
+		gosub startGame
 	} else {
 		; Check if update available, then download and overwrite those files that might contain changes
 		tooltip, % T.CHECKING_GAME_UPDATES
-		fileRead, current_build, %live%current_build
-		patchLiveGamefile("current_build")
-		fileRead, current_build_new, %live%current_build
-		if(!empty(current_build_new) && current_build != current_build_new) {
-			msgbox, 1, Regnum Update, % T.NOTICED_NEW_UPDATE
-			IfMsgBox, Cancel
-			{
-				FileDelete, %live%current_build
-				goto exitThread
-			}
-			for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"]
-				patchLiveGamefile(file)
-			msgbox, % T.UPDATING_FINISHED
-		}
-		tooltip
+		
+		; Async: Will start game afterwards
+		add := win64 ? "64" : ""
+		gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
+		gameHeadReq := ComObjCreate("Msxml2.XMLHTTP")
+		gameHeadReq.open("HEAD", gameHeadUrl, true)
+		gameHeadReq.onreadystatechange := Func("updateGamefilesCallback")
+		gameHeadReq.send()
 	}
 return
+
+updateGamefilesCallback() {
+	global
+	if (gameHeadReq.readyState != 4) {
+		return
+	}
+	if (gameHeadReq.status != 200) {
+		msgbox % "Could not check for new Regnum Update. " gameHeadReq.status
+		; gosub startGame ; Continue anyway (disabled)
+		gui, 1:-disabled
+		tooltip
+		return
+	}
+	gameReqETag := gameHeadReq.getResponseHeader("ETag")
+	gameReqETag := RegExReplace(gameReqETag, "\W", "")
+	regnumUpdateDetected := game_etag != gameReqETag
+	if(regnumUpdateDetected) {
+		msgbox, 1, Regnum Update, % T.NOTICED_NEW_UPDATE
+		IfMsgBox, Cancel
+		{
+			gui, 1:-disabled
+			tooltip
+			return
+		}
+		for k,file in ["ROClientGame.exe", "shaders.ngz", "scripts.ngz"]
+			patchLiveGamefile(file)
+		game_etag := gameReqETag
+		msgbox, % T.UPDATING_FINISHED
+	}
+	tooltip
+	gui, 1:-disabled
+	gosub startGame
+}
+
 exitThread:
 	gui, 1:-disabled
 	tooltip
@@ -244,6 +292,7 @@ readUserConfig:
 		, skip_logo: 1
 		, win64: 0
 		, hide_loading_screen: 0
+		, game_etag: -1
 		, net_fake_lag: 0
 		, width: 1366
 		, height: 768
@@ -781,8 +830,9 @@ setupParams:
 	run_runas_pw := runas_pw
 return
 
-;	// game path for live and test server
-run:	
+; // User request; validate and maybe proceed to startGame
+run:
+	;	// game path for live and test server
 	live = %regnum_path%LiveServer\
 	test = %regnum_path%TestServer\
 
@@ -797,12 +847,6 @@ run:
 		msgbox, % T.CHOOSE_RESOLUTION
 		return
 	}
-
-;	// CHECK / DOWNLOAD / UPDATE LIVESERVER
-
-	gui, 1:+disabled
-	gosub updateGamefiles
-	gui, 1:-disabled
 
 ;	// check if amun has been selected
 
@@ -932,13 +976,6 @@ else {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
 	}
-
-	;;;;;;;; REMOVE WINDOW BORDER OPTION
-
-	if(hide_window_border)
-		settimer, removeRegnumWindowBorder, -1000
-
-;	// run the regnum client
 	
 	if run_runas = 1
 	{
@@ -950,6 +987,22 @@ else {
 	}
 	else
 		runas
+	
+	;	// CHECK / DOWNLOAD / UPDATE LIVESERVER (async)
+
+	gui, 1:+disabled
+	gosub updateGamefiles ; either terminates or goes to startGame
+return
+
+; // The game will now start
+startGame:
+
+	;;;;;;;; REMOVE WINDOW BORDER OPTION
+
+	if(hide_window_border)
+		settimer, removeRegnumWindowBorder, -1000
+
+;	// run the regnum client
 	 
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
