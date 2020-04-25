@@ -936,19 +936,3 @@ md5(string)		;	// by SKAN | rewritten by jNizM
 	StringLower, o,o
 	return o
 }	;	// https://autohotkey.com/boards/viewtopic.php?f=6&t=21
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
