@@ -16,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = v2.2.0
+rs_version_release = 3.1.0
 gosub, make_gui
 
 argc = %0%
@@ -187,7 +187,11 @@ updateGamefiles:
 			necessaryLiveFiles.Push("steam_api64.dll") ; the only file with a different name in 64 bit mode...
 		else
 			necessaryLiveFiles.Push("steam_api.dll")
+<<<<<<< RegnumStarter.ahk
+		;unnecessaryLiveFiles := [ "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "splash_nge.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+=======
 		;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+>>>>>>> RegnumStarter.ahk
 		for k,file in necessaryLiveFiles {
 			if(!patchLiveGamefile(file)) {
 				FileDelete, %live%ROClientGame.exe ; so downloadAll will surely be true next time
@@ -453,7 +457,7 @@ make_gui:
 	
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-rc3
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.1.0
 ;	Gui, add, link, x400 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 	
 ; 	// login button
@@ -501,7 +505,7 @@ make_gui:
 
 	Gui, Font, s8 c000000, Verdana
 
-;	// hide NGD intro
+;	// hide NGE intro
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
 	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
@@ -963,15 +967,14 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
-;	// remove NGD intro
+;	// remove NGE intro
 
 	if(skip_logo==1) {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
-		filedelete, %live%splash_gmg.png
+		filedelete, %live%splash_nge.png
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
-		filedelete, %live%splash_gmg.png
 	}
 	
 	if run_runas = 1
@@ -1142,9 +1145,9 @@ translations["PUBLISHER"] := { deu: "Publisher"
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
 	, eng: "Create Shortcut"
 	, spa: "Crear acceso directo" }
-translations["DELETE_SPLASH"] := { deu: "NGD-Intro ausblenden"
-	, eng: "Hide NGD-Intro"
-	, spa: "Ocultar NGD-Intro" }
+translations["DELETE_SPLASH"] := { deu: "NGE-Intro ausblenden"
+	, eng: "Hide NGE-Intro"
+	, spa: "Ocultar NGE-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
 	, eng: "Hide Loading Screen"
 	, spa: "Ocultar pantalla de carga" }
