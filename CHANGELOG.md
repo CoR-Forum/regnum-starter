@@ -1,14 +1,8 @@
 ## [3.1.0] - 2019-11-29
 
-### Added
+- **added** RegnumStarter logo in Taskbar
 
-- RegnumStarter logo in Taskbar
+- **changed** Old Server "Haven" is no longer in the server list
+- **changed** RegnumStarter is no longer trying to hide the gamigo logo as it has been removed by NGE
 
-### Changed
-
-- Old Server "Haven" is no longer in the server list
-- RegnumStarter is no longer trying to hide the gamigo logo as it has been removed by NGE
-
-### Fixed
-
-- NGE logo can now be hidden
+- **changed** NGE logo can now be hidden
