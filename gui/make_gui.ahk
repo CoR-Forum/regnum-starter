@@ -8,8 +8,18 @@ make_gui:
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
 	
+
+;   // number generator for background image
+    Random, BgNum , 1, 2 ; the function Random generates a number between 1 and 2 and sets it to the variable BgNum
+    BgNumRound := Round(BgNum) ; variable BgNum will be round up or down and named BgNumRound
+
 ; 	// background image	
-	gui, add, picture, x0 y0, %APPDATA%\background.png
+	;gui, add, picture, x0 y0, %APPDATA%\background.png
+    
+    ; new background image below
+    Gui, Add, Picture, x0 y0, %APPDATA%\bg%BgNumRound%.png ; uses the previously generated BgNumRound variable
+
+
 
 ;	// Window title
 	Gui, Font, s10 bold cD8D8D8, Verdana
@@ -185,7 +195,7 @@ make_gui:
 		PosGuiX = center
 	if(PosGuiY="" || PosGuiY<0)
 		PosGuiY = center
-	gui, show, w646 h331 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
+	gui, show, w710 h450 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
 
 	WinGet, GuiID, ID, A
 
