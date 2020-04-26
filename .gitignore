@@ -3,3 +3,4 @@ todo*
 data
 .vscode
 *.exe
+*.core-workspace
