@@ -1,5 +1,7 @@
-test*
-todo*
-data
 .vscode
 *.exe
+*.code-workspace
+
+# blau?
+test*
+todo*
