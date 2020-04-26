@@ -33,6 +33,9 @@ translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
 translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
 	, eng: "Checking for RegnumStarter updates..."
 	, spa: "Comprobando actualizaciones de RegnumStarter" }
+translations["CHECKING_UPDATES_HEADER"] := { deu: "Versionsprüfung"
+	, eng: "Version Check"
+	, spa: "" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
 	, eng: "List of servers and publishers updated successfully."
 	, spa: "Lista de servidores y editores actualizados con éxito." }
