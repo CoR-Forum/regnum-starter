@@ -27,10 +27,10 @@ make_gui:
 	
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.1.0
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, %rs_version_release%
 
 ;	// link to the forum post	
-	Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
+	;Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
