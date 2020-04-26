@@ -1,4 +1,4 @@
-## [3.1.0] - 2019-11-29
+## [v3.1.0] - 2019-11-29
 
 - **added:** RegnumStarter logo in Taskbar
 - **changed:** Old Server "Haven" is no longer in the server list
