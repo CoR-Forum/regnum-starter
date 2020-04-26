@@ -154,7 +154,7 @@ make_gui:
 
 ;	// fake net lag
 	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
-	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
+	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%
 	
 ;	// run as windows user	
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
