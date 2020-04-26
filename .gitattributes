@@ -1,0 +1,6 @@
+# gimp files
+*.xcf filter=lfs diff=lfs merge=lfs -text
+
+# background images, logo, icon
+*.png
+*.ico
