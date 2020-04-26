@@ -38,14 +38,18 @@ if(argc >= 4) {
 	
 	exitapp
 }
-tooltip, % T.CHECKING_UPDATES
-settimer, updateServerConfig, -10 ; todo .. ? - do not block the gui
-tooltip
 
+
+;	// RegnumStarter Update Check ToolTip
+ToolTip, % T.CHECKING_UPDATES
+SetTimer, updateServerConfig, -10 ; blauhirn: todo .. ? - do not block the gui
+
+ToolTip
 OnExit, ExitSub
 
 return
 ; //
+
 checkAppdata:
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
