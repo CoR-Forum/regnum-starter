@@ -303,7 +303,7 @@ readUserConfig:
 		, cl_show_hidden_armors: 0
 		, cl_invert_selection_priority: 0
 		, dbg_ignore_server_time: 0
-		, env_weather: clear
+		, env_weather: "clear"
 		, debug_mode: 0
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
