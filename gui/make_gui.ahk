@@ -31,7 +31,7 @@ make_gui:
 
 ;	// link to the forum post	
 	Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
-	
+
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
 	gui, add, button, w140 h35 x550 y390 glogin, % T.LOGIN
