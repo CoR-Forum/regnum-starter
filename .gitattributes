@@ -1,11 +1,11 @@
+Ahk2Exe*/* filter=lfs diff=lfs merge=lfs
 # gimp files
 *.xcf filter=lfs diff=lfs merge=lfs -text
 
 # background images, logo, icon
 *.png filter=lfs diff=lfs merge=lfs -text
 *.ico filter=lfs diff=lfs merge=lfs -text
-*.ico filter=lfs diff=lfs merge=lfs -text
 
 
 # ignore the AHK compiler
-Ahk2Exe112401/* filter=lfs diff=lfs merge=lfs
+Ahk2Exe*/* filter=lfs diff=lfs merge=lfs
