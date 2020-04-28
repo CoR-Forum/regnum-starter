@@ -17,7 +17,7 @@ make_gui:
 	
 ;	// version number
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.2.0
+	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.2.1
 
 ;	// link to the forum post	
 	Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
@@ -70,7 +70,7 @@ make_gui:
 ;	// hide NGE intro
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
-	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
+	gui, add, text, x+3 yp backgroundtrans, % T.SKIP_LOGO
 
 ;	// screenshot quality
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -144,7 +144,7 @@ make_gui:
 
 ;	// fake net lag
 	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
-	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
+	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%
 	
 ;	// run as windows user	
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
