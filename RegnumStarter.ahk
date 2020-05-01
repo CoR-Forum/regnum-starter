@@ -775,7 +775,7 @@ else {
 		filedelete, %live%splash_ngd.ogg
 		filedelete, %live%splash_nge.png
 		filedelete, %live%splash.ngz
-		filedelete, %live%splash_ngd.ogg
+		filedelete, %live%splash_nge.ogg
 	}
 	
 	if run_runas = 1
