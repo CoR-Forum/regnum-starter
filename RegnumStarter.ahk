@@ -609,6 +609,10 @@ return
 return
 3guiok:
 	gui, 3:submit, nohide
+	gosub writeUserConfig
+	gosub readUserConfig
+	gui, 3:destroy
+	gui, 1:-disabled
 return
 3guicancel:
 	gui, 1:-disabled
