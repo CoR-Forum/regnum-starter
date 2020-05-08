@@ -14,7 +14,7 @@ make_gui:
 
 
 ;   // number generator for background image
-    Random, BgNum , 1, 2 ; the function Random generates a number between 1 and 2 and sets it to the variable BgNum
+    Random, BgNum , 1, 1 ; the function Random generates a number between 1 and 2 and sets it to the variable BgNum
     BgNumRound := Round(BgNum) ; variable BgNum will be round up or down and named BgNumRound
 
 ;		// randomly choose a background image based on the function above
