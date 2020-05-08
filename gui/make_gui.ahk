@@ -68,20 +68,9 @@ make_gui:
 
 
 
-;	// regnum path
-	Gui, Font, s8 bold cD8D8D8, Verdana
-	gui  add, text, backgroundtrans x10 y30, % T.REGNUM_PATH ":"
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x10 w300 r2 y50 backgroundtrans vregnum_path, %regnum_path%
-	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x150 w80 y30 gpath_edit, % T.CHANGE
+
 
 	Gui, Font, s8 c000000, Verdana
-
-;	// hide NGE intro
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
-	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
 
 ;	// screenshot quality
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -106,10 +95,6 @@ make_gui:
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
-
-;	// hide loading screen
-	gui, add, checkbox, w%CBW% h%CBH% x10 y90 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 
 ;	// conjurer mode
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -160,11 +145,6 @@ make_gui:
 ;	// run as windows user
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunAsGuiToggled vrunas
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
-
-;	// hide window boarder
-;	Gui, Font, s7 cD8D8D8, Verdana
-;	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-;	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
