@@ -1,5 +1,5 @@
-#persistent
-#singleinstance off
+#persistent ; keep the script running
+#singleinstance Force
 APPDATA := A_AppData "\RegnumStarter"
 global APPDATA
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
@@ -35,7 +35,7 @@ if(argc >= 4) {
 	run_runas_name = %6%
 	run_runas_pw = %7%
 	gosub run
-	
+
 	exitapp
 }
 
@@ -124,7 +124,7 @@ Del `%0
 		onExit
 		exitapp
 	}
-	
+
 	; otherwise, metaupdate?
 	iniread, server_version_new, %APPDATA%/serverConfig.txt, version, version, -1
 	if(server_version_new == -1) {
@@ -204,7 +204,7 @@ updateGamefiles:
 	} else {
 		; Check if update available, then download and overwrite those files that might contain changes
 		tooltip, % T.CHECKING_GAME_UPDATES
-		
+
 		; Async: Will start game afterwards
 		add := win64 ? "64" : ""
 		gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
@@ -507,11 +507,11 @@ shortcutCreate:
 	gui, submit, nohide
 	user := users[selected_user]
 	server := servers[selected_server]
-	
+
 	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
 	ifnotinstring, shortcut, \
 		return
-	
+
 	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
@@ -520,7 +520,7 @@ shortcutCreate:
 		script = "%A_ScriptFullPath%"
 		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.png
 	}
-	
+
 	if(errorlevel) {
 		msgbox, % T.CREATE_LINK_FAILED
 	} else {
@@ -529,9 +529,9 @@ shortcutCreate:
 			wat .= " " runas_name " " runas_pw
 		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
 	}
-	
+
 	shortcut_last := shortcut
-	
+
 return
 
 ; ////////////////////////
@@ -557,7 +557,7 @@ accounts_edit:
 		Gui, 2:Font, s8 c000000, Verdana
 		gui, 2:add, dropdownlist, x300 y%y% w100 vreferer%a_index% altsubmit
 		guicontrol, 2:, referer%a_index%, %refererlist%
-		try 
+		try
 			referer := referer_by_token(user.referer.token)
 		catch {
 			referer := referers[1]
@@ -569,7 +569,7 @@ accounts_edit:
 	gui, 2:add, text, ggui2_add x30,Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server!
 	gui, 2:add, button, g2guiok x235, Ok
 	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
+	gui, 2:show
 return
 
 gui2_add:
@@ -602,7 +602,7 @@ return
 return
 
 2guiclose:
-2guicancel:	
+2guicancel:
 	gui, 1:-disabled
 	gui, 2:destroy
 	winactivate, ahk_id %GUIID%
@@ -610,7 +610,7 @@ return
 3guiok:
 	gui, 3:submit, nohide
 return
-3guicancel:	
+3guicancel:
 	gui, 1:-disabled
 	gui, 3:destroy
 	winactivate, ahk_id %GUIID%
@@ -662,10 +662,10 @@ run:
 	;;;;;;;; GAME.CFG
 
 ;	// set weather (these values seem to be wrong at all)
-if(weather == 1) 
-   env_weather := "clear" 
+if(weather == 1)
+   env_weather := "clear"
 else if (weather == 2)
-   env_weather := "rainy" 
+   env_weather := "rainy"
 else if (weather == 3)
    env_weather := "snow"
 
@@ -697,10 +697,10 @@ else if (weather == 3)
 
 ;	// set time env in HOURS (24h)
 if(dbg_ignore_server_time == 1)  {
-	if(server_time == 1) 
-	   env_time_of_day := "8" 
+	if(server_time == 1)
+	   env_time_of_day := "8"
 	else if (server_time == 2)
-	   env_time_of_day := "13" 
+	   env_time_of_day := "13"
 	else if (server_time == 3)
 	   env_time_of_day := "18"
 	else if (server_time == 4)
@@ -777,7 +777,7 @@ else {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_nge.ogg
 	}
-	
+
 	if run_runas = 1
 	{
 		if(empty(run_runas_name) || empty(run_runas_pw)) {
@@ -788,7 +788,7 @@ else {
 	}
 	else
 		runas
-	
+
 	;	// CHECK / DOWNLOAD / UPDATE LIVESERVER (async)
 
 	gui, 1:+disabled
@@ -804,7 +804,7 @@ startGame:
 		settimer, removeRegnumWindowBorder, -1000
 
 ;	// run the regnum client
-	 
+
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
 	}
@@ -836,7 +836,7 @@ startGame:
 			{
 				msgbox  % T.CONNECTION_ERROR_USER_ALREADY_LOGGED_IN
 			}
-			else 
+			else
 				msgbox % "Regnum connection error: `n" connection_error
 		}
 	}
@@ -864,7 +864,7 @@ checkLanguage:
 			language = spa
 		else {
 			msgbox, Failed to detect language.`n`nKonnte Sprache nicht erkennen.`n`nNo entendió el lenguaje.
-			language = 
+			language =
 					}
 	}
 return
