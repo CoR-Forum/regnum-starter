@@ -158,7 +158,7 @@ make_gui:
 	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%
 
 ;	// run as windows user
-	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
+	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunAsGuiToggled vrunas
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
 
 ;	// hide window boarder
@@ -178,7 +178,7 @@ make_gui:
 	gui, add, text, x80 y315 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
 
-	gosub, runasGuiToggled
+	gosub, runAsGuiToggled
 
 ;	// language selection. this will change both regnums and regnumstarters language.
 	Gui, Font, s7 c000000, Verdana

@@ -443,7 +443,7 @@ empty(v) {
 ;	// include graphic_settings snippet
 #Include %A_ScriptDir%\gui\graphic_settings.ahk
 
-runasGuiToggled:
+runAsGuiToggled:
 	gui,submit,nohide
 	if(runas)
 		wat:="show"
