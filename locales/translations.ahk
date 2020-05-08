@@ -9,9 +9,12 @@ translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 translations["GRAPHIC_SETTINGS_WINDOW_TITLE"] := { deu: "Grafikeinstellungen"
 	, eng: "Graphic Settings"
 	, spa: "Graphic Settings" }
-translations["GRAPHIC_SETTINGS_SAVE"] := { deu: "Speichern"
-	, eng: "Save"
-	, spa: "Save" }
+translations["GRAPHIC_SETTINGS_SAVE"] := { deu: "Anwenden"
+	, eng: "Apply"
+	, spa: "Apply" }
+translations["GRAPHIC_SETTINGS_SAVE_CLOSE"] := { deu: "Schließen"
+	, eng: "Close"
+	, spa: "Close" }
 translations["GRAPHIC_SETTINGS_CANCEL"] := { deu: "Abbrechen"
 	, eng: "Cancel"
 	, spa: "Cancel" }

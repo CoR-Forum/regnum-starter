@@ -615,6 +615,10 @@ GraphicSettingsGuiOk:
 	gui, 3:destroy
 	gui, 1:-disabled
 return
+GraphicSettingsGuiSave:
+	gui, 3:submit, nohide
+	gosub writeUserConfig
+return
 GraphicSettingsGuiCancel:
 	gui, 1:-disabled
 	gui, 3:destroy
