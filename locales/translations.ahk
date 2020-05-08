@@ -6,7 +6,13 @@ translations["WEATHER"] := { deu: "Eigene Tageszeit"
 translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 	, eng: "Graphic Settings"
 	, spa: "Graphic Settings" }
-	translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
+translations["GRAPHIC_SETTINGS_SAVE"] := { deu: "Speichern"
+	, eng: "Save"
+	, spa: "Save" }
+translations["GRAPHIC_SETTINGS_CANCEL"] := { deu: "Abbrechen"
+	, eng: "Cancel"
+	, spa: "Cancel" }
+translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
 	, eng: "Advanced combat log"
 	, spa: "Advanced combat log" }
 translations["CONJ_MODE"] := { deu: "Healbeschi-Modus"
