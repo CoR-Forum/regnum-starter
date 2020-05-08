@@ -607,14 +607,15 @@ return
 	gui, 2:destroy
 	winactivate, ahk_id %GUIID%
 return
-3guiok:
+
+;		// graphic settings window control elements
+GraphicSettingsGuiOk:
 	gui, 3:submit, nohide
 	gosub writeUserConfig
-	gosub readUserConfig
 	gui, 3:destroy
 	gui, 1:-disabled
 return
-3guicancel:
+GraphicSettingsGuiCancel:
 	gui, 1:-disabled
 	gui, 3:destroy
 	winactivate, ahk_id %GUIID%

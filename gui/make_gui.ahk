@@ -162,9 +162,9 @@ make_gui:
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
 
 ;	// hide window boarder
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
+;	Gui, Font, s7 cD8D8D8, Verdana
+;	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
+;	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
