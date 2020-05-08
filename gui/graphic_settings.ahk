@@ -1,5 +1,6 @@
 graphic_settings:
 	gui, 1:+disabled
+	Gui, 3:-SysMenu
 	Gui, 3:Font, s8 c000000, Verdana
 	gui, 3:add, text, x+40 y+6, % "under development"
 	;	// hide window boarder
