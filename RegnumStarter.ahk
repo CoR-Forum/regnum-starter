@@ -614,6 +614,7 @@ GraphicSettingsGuiOk:
 	gosub writeUserConfig
 	gui, 3:destroy
 	gui, 1:-disabled
+	Reload
 return
 GraphicSettingsGuiSave:
 	gui, 3:submit, nohide
@@ -622,7 +623,8 @@ return
 GraphicSettingsGuiCancel:
 	gui, 1:-disabled
 	gui, 3:destroy
-	winactivate, ahk_id %GUIID%
+	Reload
+	;winactivate, ahk_id %GUIID%
 return
 ; ////////////
 
