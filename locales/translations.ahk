@@ -6,6 +6,9 @@ translations["WEATHER"] := { deu: "Eigene Tageszeit"
 translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 	, eng: "Graphic Settings"
 	, spa: "Graphic Settings" }
+translations["GRAPHIC_SETTINGS_WINDOW_TITLE"] := { deu: "Grafikeinstellungen"
+	, eng: "Graphic Settings"
+	, spa: "Graphic Settings" }
 translations["GRAPHIC_SETTINGS_SAVE"] := { deu: "Speichern"
 	, eng: "Save"
 	, spa: "Save" }
