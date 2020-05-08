@@ -1,22 +1,23 @@
+; 	// file includes all main functions related to the user interface.
+; 	// some things might be splitted into seperated files for better overview and workflow.
+
+; initialize the UI
 make_gui:
 	SysGet, CBW, 71
 	SysGet, CBH, 72
 	cbw -= 2
 	cbh  -= 2
-	
+
 	Gui, Color, EEAA99
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
-	
+
 
 ;   // number generator for background image
     Random, BgNum , 1, 2 ; the function Random generates a number between 1 and 2 and sets it to the variable BgNum
     BgNumRound := Round(BgNum) ; variable BgNum will be round up or down and named BgNumRound
 
-; 	// background image	
-	;gui, add, picture, x0 y0, %APPDATA%\background.png
-    
-    ; new background image below
+;		// randomly choose a background image based on the function above
     Gui, Add, Picture, x0 y0, %APPDATA%\bg%BgNumRound%.png ; uses the previously generated BgNumRound variable
 
 
@@ -24,12 +25,12 @@ make_gui:
 ;	// Window title
 	Gui, Font, s10 bold cD8D8D8, Verdana
 	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
-	
-;	// version number
+
+;	// version number next to the window title
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x500 center y10 w120 h25 backgroundtrans, %rs_version_release%
 
-;	// link to the forum post	
+;	// link to the forum post
 	;Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
 
 ; 	// login button
@@ -64,7 +65,7 @@ make_gui:
 	gui, add, text, x270 y275 backgroundtrans, x
 	Gui, Font, s7 c000000, Verdana
 	gui, add, edit, x280 y275 w42 h18 limit4 center number -multi vheight, %height%
-	
+
 
 
 ;	// regnum path
@@ -105,8 +106,8 @@ make_gui:
 ;	// change 64bit mode
 	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
 	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
-	
-;	// hide loading screen	
+
+;	// hide loading screen
 	gui, add, checkbox, w%CBW% h%CBH% x10 y90 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
 	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
 
@@ -124,7 +125,7 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x510 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
 	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
-	
+
 ;	// advanced ingame log
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y40 checked%ingame_log% backgroundtrans w%CBW% h%CBH% vingame_log
@@ -144,7 +145,7 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y70 checked%cl_show_hidden_armors% backgroundtrans w%CBW% h%CBH% vcl_show_hidden_armors
 	gui, add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (experimental)"
-	
+
 ;	// server time and weather
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
@@ -155,11 +156,11 @@ make_gui:
 ;	// fake net lag
 	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
 	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%
-	
-;	// run as windows user	
+
+;	// run as windows user
 	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
 	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
-	
+
 ;	// hide window boarder
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
@@ -176,10 +177,10 @@ make_gui:
 	Gui, Font, s6 cD8D8D8, Verdana
 	gui, add, text, x80 y315 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
 	Gui, Font, s7 cD8D8D8, Verdana
-	
+
 	gosub, runasGuiToggled
 
-;	// language selection. this will change both regnums and regnumstarters language.	
+;	// language selection. this will change both regnums and regnumstarters language.
 	Gui, Font, s7 c000000, Verdana
 	gui, add, dropdownlist, x480 y6 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
