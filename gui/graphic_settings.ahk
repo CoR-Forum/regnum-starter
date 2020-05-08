@@ -15,32 +15,32 @@ gui, 3:Tab, 1
 	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
 	gui, 3:show
 
-	gui, 3:Tab, 2
-		gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
-		gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
-		gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
-		gui, 3:show
+gui, 3:Tab, 2
+	gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
+	gui, 3:show
 
-		gui, 3:Tab, 3
-			gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
-			gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
-			gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
-			gui, 3:show
+gui, 3:Tab, 3
+	gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
+	gui, 3:show
 
-			gui, 3:Tab, 4
-				gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
-				gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
-				gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
-				gui, 3:show
+gui, 3:Tab, 4
+	gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
+	gui, 3:show
 
-				gui, 3:Tab, 5
-					gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
-					gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
-					gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
-					gui, 3:show
+gui, 3:Tab, 5
+	gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
+	gui, 3:show
 
-					gui, 3:Tab, 6
-						gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
-						gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
-						gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
-						gui, 3:show
+gui, 3:Tab, 6
+	gui, 3:add, button, gGraphicSettingsGuiCancel x180 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
+	gui, 3:show
