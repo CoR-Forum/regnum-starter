@@ -1,17 +1,26 @@
 graphic_settings:
-	gui, 1:+disabled
+	Gui, 1:+disabled
 	Gui, 3:-SysMenu
 	Gui, 3:Show, w400 h300, % T.GRAPHIC_SETTINGS_WINDOW_TITLE
 	Gui, 3:Font, s8 c000000, Verdana
-	gui, 3:add, text, x+40 y+6, % "under development"
+	Gui, 3:Add, Tab2, x0 y0 w400 h20 Border, RegnumStarter|Game|Sound
 	;	// hide window boarder
-	Gui, 3:Font, s7,, Verdana
+gui, 3:Tab, 1
 	gui, 3:add, checkbox, x20 x20 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
 	gui, 3:add, text, x+3 yp, % T.HIDE_WINDOW_BORDER
 
+gui, 3:Tab, 1
+	gui, 3:add, button, gGraphicSettingsGuiCancel x270 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiOk x335 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:show
 
+gui, 3:Tab, 2
+	gui, 3:add, button, gGraphicSettingsGuiCancel x270 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiOk x335 y275, % T.GRAPHIC_SETTINGS_SAVE
+	gui, 3:show
 
-	gui, 3:add, button, gGraphicSettingsGuiCancel x235, % T.GRAPHIC_SETTINGS_CANCEL
-	gui, 3:add, button, gGraphicSettingsGuiOk x235, % T.GRAPHIC_SETTINGS_SAVE
+gui, 3:Tab, 3
+	gui, 3:add, button, gGraphicSettingsGuiCancel x270 y275, % T.GRAPHIC_SETTINGS_CANCEL
+	gui, 3:add, button, gGraphicSettingsGuiOk x335 y275, % T.GRAPHIC_SETTINGS_SAVE
 	gui, 3:show
 return
