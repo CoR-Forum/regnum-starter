@@ -5,8 +5,8 @@ checkAppdata:
 			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
 			exitapp
 		}
+		; this function moves the files from data directory to appdata if you update from RegnumStarter v2.0 to v2.1 or above
 		if(FileExist("data") == "D") {
-			; change from v2.0 to v2.1
 			FileCopy, data\*, %APPDATA%
 		}
 	}
