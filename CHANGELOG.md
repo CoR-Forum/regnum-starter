@@ -7,7 +7,6 @@
 - **added:** [b75c721fc8c5cbc6af94a2f3fc1b5c9226ed7707] New Settings window. The mess of options has been moved into this menu.
 - **added:** Relevant translations.
 - **hotfix:** [fd125e7ff03844c4582155690cda4dd19a235806] Added explanation to the language selection on first start, as the dropdown window is bugged.
-- **hotfix:** [40a5090157f1b24e278291cb065cd97f8412a9e3] Window can't be moved anymore to avoid a critical kill of the configuration file.
 - **fixed:** [4f3dea5cbdd911f91a7c0a5f19e13abbc4b8137d] RegnumStarter now allows only one instance to run at a time. This prevents one instance overwriting the config files of another and fixes some AHK bugs.
 - **fixed:** [156b00d6f5d58eed6bd85b17200f18ce96044e3f] RegnumStarter will now make sure that all needed files are in place, all the time.
 - **changed:** Refactored a lot of functions.
