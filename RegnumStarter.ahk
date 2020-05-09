@@ -557,10 +557,11 @@ return
 ;		// graphic settings window control elements
 GraphicSettingsGuiOk:
 	gui, 3:submit, nohide
+	gui, 1:-disabled
 	gosub writeUserConfig
 	gui, 3:destroy
-	gui, 1:-disabled
-	Reload
+	winactivate, ahk_id %GUIID%
+;	Reload
 return
 GraphicSettingsGuiSave:
 	gui, 3:submit, nohide
@@ -569,8 +570,8 @@ return
 GraphicSettingsGuiCancel:
 	gui, 1:-disabled
 	gui, 3:destroy
-	Reload
-	;winactivate, ahk_id %GUIID%
+;	Reload
+	winactivate, ahk_id %GUIID%
 return
 ; ////////////
 
@@ -834,9 +835,9 @@ ifinstring, MouseControl, button
 	errorlevel := errorlevel_safe
 	return
   }
-SetTimer, WatchMouse, 10
-errorlevel := errorlevel_safe
-return
+;SetTimer, WatchMouse, 10
+;errorlevel := errorlevel_safe
+;return
 
 WatchMouse:
 GetKeyState, LButtonState, LButton, P
@@ -847,7 +848,7 @@ if LButtonState = U		;	// Button has been released, so drag is complete.
 			PosGuiY = %Ol_Ecke_GuiY%
 	SetTimer, WatchMouse, off
 	errorlevel := errorlevel_safe
-	return
+return
 }
 MouseGetPos, MouseX, MouseY
 DeltaX = %MouseX%
