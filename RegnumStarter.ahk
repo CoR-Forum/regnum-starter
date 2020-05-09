@@ -826,12 +826,10 @@ startGame:
 
 return
 
-;	// remove window border
+;	// INC_SCR remove window border
 
-removeRegnumWindowBorder:
-	WinWaitActive, ahk_class Regnum,,3
-	WinSet, style, -0xC00000, ahk_class Regnum
-return
+#Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
+
 
 ;	// try to automatically detect the language
 
