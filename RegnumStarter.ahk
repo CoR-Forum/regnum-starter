@@ -1,8 +1,8 @@
-#persistent
-#singleinstance off
-APPDATA := A_AppData "\RegnumStarter"
+#persistent ; keep the script running
+#singleinstance Force ; starting the application again will close any existing version of it
+APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
-BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
+BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/ ; BASE_URL variable
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -16,7 +16,11 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
+<<<<<<< RegnumStarter.ahk
+rs_version_release = 4.0.0-pre
+=======
 rs_version_release = 3.2.1
+>>>>>>> RegnumStarter.ahk
 gosub, make_gui
 
 argc = %0%
@@ -35,39 +39,50 @@ if(argc >= 4) {
 	run_runas_name = %6%
 	run_runas_pw = %7%
 	gosub run
-	
+
 	exitapp
 }
-tooltip, % T.CHECKING_UPDATES
-settimer, updateServerConfig, -10 ; todo .. ? - do not block the gui
-tooltip
 
+
+;	// RegnumStarter Update Check ToolTip
+ToolTip, % T.CHECKING_UPDATES
+SetTimer, updateServerConfig, -10 ; blauhirn: todo .. ? - do not block the gui
+SetTimer, updateRegnumNews, -10
+SetTimer, sendAnalytics, -10
+
+ToolTip
 OnExit, ExitSub
 
 return
-; //
-checkAppdata:
-	if(!fileexist(APPDATA)) {
-		FileCreateDir, %APPDATA%
-		if(errorlevel) {
-			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
-			exitapp
-		}
-		if(FileExist("data") == "D") {
-			; change from v2.0 to v2.1
-			FileCopy, data\*, %APPDATA%
-		}
-	}
-	for k,v in ["background.png", "icon.png"] {
-		if(!FileExist(APPDATA "/" v)) {
-			tooltip, Downloading %v%...
-			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
-			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
-				; who cares
-			}
-		}
-	}
+; // checkAppdata function
+
+#Include %A_ScriptDir%\lib\core\checkAppdata.ahk
+
+#Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
+
+updateRegnumNews:
+	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
+	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
+	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
+	RegnumNewsReq := ComObjCreate("Msxml2.XMLHTTP")
+	RegnumNewsReq.open("GET", BASE_URL "RegnumNews.txt?disablecache=" A_TickCount, true)
+	RegnumNewsReq.onreadystatechange := Func("updateRegnumNewsCallback")
+	RegnumNewsReq.send()
+
 return
+
+updateRegnumNewsCallback() {
+	global
+	if (serverConfigReq.readyState != 4)
+		return
+	if (serverConfigReq.status != 200 || serverConfigReq.responseText == "") {
+		msgbox % T.INVALID_SERVER_CONFIG
+		return
+	}
+	fileDelete, %APPDATA%/RegnumNews.txt
+	fileAppend, % RegnumNewsReq.responseText, %APPDATA%/RegnumNews.txt
+}
+
 updateServerConfig:
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
@@ -77,6 +92,7 @@ updateServerConfig:
 	serverConfigReq.onreadystatechange := Func("updateServerConfigCallback")
 	serverConfigReq.send()
 return
+
 updateServerConfigCallback() {
 	global
 	if (serverConfigReq.readyState != 4)
@@ -120,7 +136,7 @@ Del `%0
 		onExit
 		exitapp
 	}
-	
+
 	; otherwise, metaupdate?
 	iniread, server_version_new, %APPDATA%/serverConfig.txt, version, version, -1
 	if(server_version_new == -1) {
@@ -133,6 +149,7 @@ Del `%0
 		reload
 	}
 }
+
 autoUpdateFailed:
 	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
 	tooltip
@@ -200,7 +217,7 @@ updateGamefiles:
 	} else {
 		; Check if update available, then download and overwrite those files that might contain changes
 		tooltip, % T.CHECKING_GAME_UPDATES
-		
+
 		; Async: Will start game afterwards
 		add := win64 ? "64" : ""
 		gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
@@ -303,7 +320,7 @@ readUserConfig:
 		, cl_show_hidden_armors: 0
 		, cl_invert_selection_priority: 0
 		, dbg_ignore_server_time: 0
-		, env_weather: clear
+		, env_weather: "clear"
 		, debug_mode: 0
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
@@ -439,18 +456,24 @@ empty(v) {
 ;	// include graphic_settings snippet
 #Include %A_ScriptDir%\gui\graphic_settings.ahk
 
-runasGuiToggled:
+
+
+
+
+runAsGuiToggled:
 	gui,submit,nohide
 	if(runas)
 		wat:="show"
 	else
 		wat:="hide"
-	guicontrol,1:%wat%,runas_name
-	guicontrol,1:%wat%,runas_pw
-	guicontrol,1:%wat%,gui_runas_name_text
-	guicontrol,1:%wat%,gui_runas_pw_text
-	guicontrol,1:%wat%,gui_runas_required_text
+	guicontrol,3:%wat%,runas_name
+	guicontrol,3:%wat%,runas_pw
+	guicontrol,3:%wat%,gui_runas_name_text
+	guicontrol,3:%wat%,gui_runas_pw_text
+	guicontrol,3:%wat%,gui_runas_required_text
 return
+
+#Include %A_ScriptDir%\gui\ManageAccounts.ahk
 
 language_changed:
 reload
@@ -503,11 +526,11 @@ shortcutCreate:
 	gui, submit, nohide
 	user := users[selected_user]
 	server := servers[selected_server]
-	
+
 	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
 	ifnotinstring, shortcut, \
 		return
-	
+
 	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
 	if(a_iscompiled) {
 		exe = "%A_ScriptFullPath%"
@@ -516,7 +539,7 @@ shortcutCreate:
 		script = "%A_ScriptFullPath%"
 		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.png
 	}
-	
+
 	if(errorlevel) {
 		msgbox, % T.CREATE_LINK_FAILED
 	} else {
@@ -525,90 +548,33 @@ shortcutCreate:
 			wat .= " " runas_name " " runas_pw
 		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
 	}
-	
+
 	shortcut_last := shortcut
-	
+
 return
 
 ; ////////////////////////
 
 
-accounts_edit:
-	refererlist =
-	for i,referer in referers {
-		refererlist .= "|" referer.name
-	}
-	placeholder := "   "
-	gui, 1:+disabled
-	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t" T.PUBLISHER "`t`t" T.COMMENT
-	if(users.Length()==0)
-		users.push(new User())
-	for i,user in users {
-		y := 0 + a_index * 28
-		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi r1 x20 y%y% w130 vname%a_index%, % user.name
-		Gui, 2:Font, s8 c9B0000, Verdana
-		gui, 2:add, edit, -multi r1 x160 y%y% w130 vpw%a_index% password, %placeholder%
-		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, dropdownlist, x300 y%y% w100 vreferer%a_index% altsubmit
-		guicontrol, 2:, referer%a_index%, %refererlist%
-		try 
-			referer := referer_by_token(user.referer.token)
-		catch {
-			referer := referers[1]
-		}
-		guicontrol, 2:choose, referer%a_index%, % referer.name
-		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
-	}
-	gui, 2:add, button, ggui2_add x20,Add new account
-	gui, 2:add, text, ggui2_add x30,Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server!
-	gui, 2:add, button, g2guiok x235, Ok
-	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
-return
 
-gui2_add:
-	gosub 2guiok
-	users.push(new User())
-	gosub accounts_edit
-return
 
-2guiok:
-	gui, 2:submit, nohide
-	; Update users:
-	amnt := users.Length()
-	new_users := Array()
-	loop, % amnt
-	{
-		if(empty(name%a_index%) || empty(referer%a_index%))
-			continue
-		if(pw%a_index% == placeholder) {
-			; no (new) password entered: use new values, but old pw hash
-			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], users[a_index].pw_hashed))
-		} else {
-			; also override pw: generate new pw hash
-			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], , pw%a_index%))
-		}
-	}
-	users := new_users
-	; apply users to gui1:
-	goSub updateUserlist
-	gosub 2guiclose
-return
-
-2guiclose:
-2guicancel:	
-	gui, 1:-disabled
-	gui, 2:destroy
-	winactivate, ahk_id %GUIID%
-return
-3guiok:
+;		// graphic settings window control elements
+GraphicSettingsGuiOk:
 	gui, 3:submit, nohide
+	gui, 1:-disabled
+	gosub writeUserConfig
+	gui, 3:destroy
+	winactivate, ahk_id %GUIID%
+;	Reload
 return
-3guicancel:	
+GraphicSettingsGuiSave:
+	gui, 3:submit, nohide
+	gosub writeUserConfig
+return
+GraphicSettingsGuiCancel:
 	gui, 1:-disabled
 	gui, 3:destroy
+;	Reload
 	winactivate, ahk_id %GUIID%
 return
 ; ////////////
@@ -658,10 +624,10 @@ run:
 	;;;;;;;; GAME.CFG
 
 ;	// set weather (these values seem to be wrong at all)
-if(weather == 1) 
-   env_weather := "clear" 
+if(weather == 1)
+   env_weather := "clear"
 else if (weather == 2)
-   env_weather := "rainy" 
+   env_weather := "rainy"
 else if (weather == 3)
    env_weather := "snow"
 
@@ -693,10 +659,10 @@ else if (weather == 3)
 
 ;	// set time env in HOURS (24h)
 if(dbg_ignore_server_time == 1)  {
-	if(server_time == 1) 
-	   env_time_of_day := "8" 
+	if(server_time == 1)
+	   env_time_of_day := "8"
 	else if (server_time == 2)
-	   env_time_of_day := "13" 
+	   env_time_of_day := "13"
 	else if (server_time == 3)
 	   env_time_of_day := "18"
 	else if (server_time == 4)
@@ -773,7 +739,7 @@ else {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_nge.ogg
 	}
-	
+
 	if run_runas = 1
 	{
 		if(empty(run_runas_name) || empty(run_runas_pw)) {
@@ -784,7 +750,7 @@ else {
 	}
 	else
 		runas
-	
+
 	;	// CHECK / DOWNLOAD / UPDATE LIVESERVER (async)
 
 	gui, 1:+disabled
@@ -800,7 +766,7 @@ startGame:
 		settimer, removeRegnumWindowBorder, -1000
 
 ;	// run the regnum client
-	 
+
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
 	}
@@ -832,7 +798,7 @@ startGame:
 			{
 				msgbox  % T.CONNECTION_ERROR_USER_ALREADY_LOGGED_IN
 			}
-			else 
+			else
 				msgbox % "Regnum connection error: `n" connection_error
 		}
 	}
@@ -840,32 +806,13 @@ startGame:
 
 return
 
-;	// remove window border
+;	// INC_SCR remove window border
+#Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
 
-removeRegnumWindowBorder:
-	WinWaitActive, ahk_class Regnum,,3
-	WinSet, style, -0xC00000, ahk_class Regnum
-return
+;	// INC_SCR try to automatically detect the language
+#Include %A_ScriptDir%\locales\checkLanguage.ahk
 
-;	// try to automatically detect the language
-
-checkLanguage:
-	while(empty(language)) {
-		InputBox, language, Language - Sprache - Idioma, Please select a language - Bitte wähle eine Sprache - Por favor elija un idioma.`n`neng deu spa,,,,,,,, deu
-		if(RegExMatch(language, "i)de|ger"))
-			language = deu
-		else if(RegExMatch(language, "i)en|usa|gb"))
-			language = eng
-		else if(RegExMatch(language, "i)es|sp|ar"))
-			language = spa
-		else {
-			msgbox, Failed to detect language.`n`nKonnte Sprache nicht erkennen.`n`nNo entendió el lenguaje.
-			language =
-		}
-	}
-return
-
-;	// include translations snippet
+;	// INC_SCR include translations snippet
 #Include %A_ScriptDir%\locales\translations.ahk
 
 ;	// make gui moveable
@@ -892,9 +839,9 @@ ifinstring, MouseControl, button
 	errorlevel := errorlevel_safe
 	return
   }
-SetTimer, WatchMouse, 10
-errorlevel := errorlevel_safe
-return
+;SetTimer, WatchMouse, 10
+;errorlevel := errorlevel_safe
+;return
 
 WatchMouse:
 GetKeyState, LButtonState, LButton, P
@@ -905,7 +852,7 @@ if LButtonState = U		;	// Button has been released, so drag is complete.
 			PosGuiY = %Ol_Ecke_GuiY%
 	SetTimer, WatchMouse, off
 	errorlevel := errorlevel_safe
-	return
+return
 }
 MouseGetPos, MouseX, MouseY
 DeltaX = %MouseX%
@@ -920,6 +867,14 @@ GuiY += %DeltaY%
 SetWinDelay, -1		;	// Makes the below move faster/smoother.
 WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
+return
+
+DiscordLink:
+Run https://discord.gg/CbYETYc
+return
+
+ForumLink:
+Run https://cor-forum.de
 return
 
 ;	// md5 function to securly save account passwords in users.txt

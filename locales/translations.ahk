@@ -3,10 +3,25 @@ translations := []
 translations["WEATHER"] := { deu: "Eigene Tageszeit"
 	, eng: "Custom daytime"
 	, spa: "Custom daytime" }
+translations["SETTINGS"] := { deu: "Einstellungen"
+	, eng: "Settings"
+	, spa: "Settings" }
 translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 	, eng: "Graphic Settings"
 	, spa: "Graphic Settings" }
-	translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
+translations["GRAPHIC_SETTINGS_WINDOW_TITLE"] := { deu: "Grafikeinstellungen"
+	, eng: "Graphic Settings"
+	, spa: "Graphic Settings" }
+translations["GRAPHIC_SETTINGS_SAVE"] := { deu: "Anwenden"
+	, eng: "Apply"
+	, spa: "Apply" }
+translations["GRAPHIC_SETTINGS_SAVE_CLOSE"] := { deu: "Schließen"
+	, eng: "Close"
+	, spa: "Close" }
+translations["GRAPHIC_SETTINGS_CANCEL"] := { deu: "Abbrechen"
+	, eng: "Cancel"
+	, spa: "Cancel" }
+translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
 	, eng: "Advanced combat log"
 	, spa: "Advanced combat log" }
 translations["CONJ_MODE"] := { deu: "Healbeschi-Modus"
@@ -33,6 +48,9 @@ translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
 translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
 	, eng: "Checking for RegnumStarter updates..."
 	, spa: "Comprobando actualizaciones de RegnumStarter" }
+translations["CHECKING_UPDATES_HEADER"] := { deu: "Versionsprüfung"
+	, eng: "Version Check"
+	, spa: "" }
 translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
 	, eng: "List of servers and publishers updated successfully."
 	, spa: "Lista de servidores y editores actualizados con éxito." }
@@ -82,9 +100,9 @@ translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
 translations["HIDE_WINDOW_BORDER"] := { deu: "Fensterrahmen ausblenden"
 	, eng: "Hide window border"
 	, spa: "Ocultar el borde de la ventana" }
-translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
-	, eng: "Screen Resolution"
-	, spa: "Resolución de la pantalla" }
+translations["WINDOW_RESOLUTION"] := { deu: "Auflösung"
+	, eng: "Resolution"
+	, spa: "Resolución" }
 translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
 	, eng: "Game Folder"
 	, spa: "Carpeta de juego" }
