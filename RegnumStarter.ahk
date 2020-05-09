@@ -963,5 +963,9 @@ WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
 return
 
+DiscordLink:
+Run https://discord.gg/CbYETYc
+return
+
 ;	// md5 function to securly save account passwords in users.txt
 #Include %A_ScriptDir%\lib\md5_function.ahk

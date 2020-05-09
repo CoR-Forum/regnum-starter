@@ -28,6 +28,8 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x+2 center y10 w120 h25 backgroundtrans, %rs_version_release%
 
+	Gui, Add, Picture, gDiscordLink x20 y380 h60 w61 backgroundtrans, %APPDATA%\Discord-Logo.png
+
 Gui, Font, s7 cD8D8D8, Verdana
 FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
 Gui, Add, Text, x20 y50 w500 h250 backgroundtrans, %RegnumNewsText%
