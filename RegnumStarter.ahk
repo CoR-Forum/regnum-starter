@@ -460,7 +460,7 @@ empty(v) {
 #Include %A_ScriptDir%\gui\graphic_settings.ahk
 
 
-#Include %A_ScriptDir%\gui\ManageAccounts.ahk
+
 
 
 runAsGuiToggled:
@@ -475,6 +475,8 @@ runAsGuiToggled:
 	guicontrol,3:%wat%,gui_runas_pw_text
 	guicontrol,3:%wat%,gui_runas_required_text
 return
+
+#Include %A_ScriptDir%\gui\ManageAccounts.ahk
 
 language_changed:
 reload
