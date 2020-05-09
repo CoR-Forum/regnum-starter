@@ -3,6 +3,9 @@ translations := []
 translations["WEATHER"] := { deu: "Eigene Tageszeit"
 	, eng: "Custom daytime"
 	, spa: "Custom daytime" }
+translations["SETTINGS"] := { deu: "Einstellungen"
+	, eng: "Settings"
+	, spa: "Settings" }
 translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
 	, eng: "Graphic Settings"
 	, spa: "Graphic Settings" }
@@ -97,9 +100,9 @@ translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
 translations["HIDE_WINDOW_BORDER"] := { deu: "Fensterrahmen ausblenden"
 	, eng: "Hide window border"
 	, spa: "Ocultar el borde de la ventana" }
-translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
-	, eng: "Screen Resolution"
-	, spa: "Resolución de la pantalla" }
+translations["WINDOW_RESOLUTION"] := { deu: "Auflösung"
+	, eng: "Resolution"
+	, spa: "Resolución" }
 translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
 	, eng: "Game Folder"
 	, spa: "Carpeta de juego" }

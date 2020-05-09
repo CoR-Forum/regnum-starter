@@ -449,11 +449,11 @@ runAsGuiToggled:
 		wat:="show"
 	else
 		wat:="hide"
-	guicontrol,1:%wat%,runas_name
-	guicontrol,1:%wat%,runas_pw
-	guicontrol,1:%wat%,gui_runas_name_text
-	guicontrol,1:%wat%,gui_runas_pw_text
-	guicontrol,1:%wat%,gui_runas_required_text
+	guicontrol,3:%wat%,runas_name
+	guicontrol,3:%wat%,runas_pw
+	guicontrol,3:%wat%,gui_runas_name_text
+	guicontrol,3:%wat%,gui_runas_pw_text
+	guicontrol,3:%wat%,gui_runas_required_text
 return
 
 language_changed:
