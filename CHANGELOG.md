@@ -14,6 +14,11 @@
 
 Please note that this is a pre-release version and many objects might be changed in the near future.
 
+## [v3.2.1] - 20-04-29
+
+- **fixed:** [ba1446041a23fc2366297135f71fc84d422472b9] Extremly loud NGE Intro is now hiding correctly if "Hide NGE-Intro" is checked. Please note issue #6
+- **fixed:** [b8ec0aeb1668520fb790a36fd8006fb08ab942a7] No more "," will be added behind the value of emluated latency
+
 ## [v3.2.0] - 2020-04-26
 
 - **fixed:** [34f845e09661c81153a17f627c99a7fe00991f54] Game update detection method

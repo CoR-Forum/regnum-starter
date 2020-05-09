@@ -16,7 +16,11 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
+<<<<<<< RegnumStarter.ahk
 rs_version_release = 4.0.0-pre
+=======
+rs_version_release = 3.2.1
+>>>>>>> RegnumStarter.ahk
 gosub, make_gui
 
 argc = %0%

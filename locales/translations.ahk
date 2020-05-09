@@ -91,7 +91,7 @@ translations["PUBLISHER"] := { deu: "Publisher"
 translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
 	, eng: "Create Shortcut"
 	, spa: "Crear acceso directo" }
-translations["DELETE_SPLASH"] := { deu: "NGE-Intro ausblenden"
+translations["SKIP_LOGO"] := { deu: "NGE-Intro ausblenden"
 	, eng: "Hide NGE-Intro"
 	, spa: "Ocultar NGE-Intro" }
 translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
