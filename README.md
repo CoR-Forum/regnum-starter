@@ -1,16 +1,17 @@
--> [Discussion on cor-forum.de](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
+## -> [Discussion](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
 
-# RegnumStarter v3
+# RegnumStarter v4 !
 
 ### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
-![](https://cdn.treudler.net/18/181102021650-646x331.png)
+![](https://cdn.treudler.net/20/200510005156299-5nHRM-710x450.png)
 
-With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within few seconds and skip the input of username and password.
+
+With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within just a few seconds and skip the input of username and password!
 
 ### Usage
 
-Download the latest version [here](https://github.com/phil294/cor-schnellstarter/releases/). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk script directly.
+Download the latest version [here](https://git.treudler.net/CoR-Forum/RegnumStarter/-/releases). Simply run the .exe. Alternatively, install [AutoHotkey](https://autohotkey.com/download/1.1/) and run the .ahk script directly.
 
 ![](https://cdn.treudler.net/18/1811020259331XgzUx.gif)
 
@@ -46,6 +47,9 @@ Choose Unicode 64-bit as your basefile.
 * **Francis** - [@joshua2504](https://github.com/joshua2504)
 
 We've been playing Regnum for many years but both not playing anymore.
+
+This is how the RegnumStarter looked earlier... 
+![](https://cdn.treudler.net/18/181102021650-646x331.png)
 
 ### License
 
