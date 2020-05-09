@@ -72,6 +72,7 @@ updateRegnumNews:
 	RegnumNewsReq.open("GET", BASE_URL "RegnumNews.txt?disablecache=" A_TickCount, true)
 	RegnumNewsReq.onreadystatechange := Func("updateRegnumNewsCallback")
 	RegnumNewsReq.send()
+
 return
 
 updateRegnumNewsCallback() {

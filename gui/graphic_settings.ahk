@@ -1,7 +1,7 @@
 graphic_settings:
 	Gui, 1:+disabled
 	Gui, 3:-SysMenu
-	Gui, 3:Show, w400 h300, % T.GRAPHIC_SETTINGS_WINDOW_TITLE
+	Gui, 3:Show, w400 h300, % T.SETTINGS
 	Gui, 3:Font, s8 c000000, Verdana
 	Gui, 3:Add, Tab2, x0 y0 w400 h20 Border, RegnumStarter|Game|Graphics|Sound|Controls|Debug
 
