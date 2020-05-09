@@ -24,12 +24,12 @@ make_gui:
 
 
 ;	// Window title
-	Gui, Font, s10 bold cD8D8D8, Verdana
-	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
+	Gui, Font, s11 bold cD8D8D8, Verdana
+	gui, add, text, x10 center y6 w140 h25 backgroundtrans, RegnumStarter
 
 ;	// version number next to the window title
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x+2 center y10 w120 h25 backgroundtrans, %rs_version_release%
+	gui, add, text, x110 center y10 w120 h25 backgroundtrans, v%rs_version_release%
 
 ;	// discord and forum logo
 	Gui, Add, Picture, gDiscordLink x20 y380 h60 w61 backgroundtrans, %APPDATA%\logo_discord.png
@@ -68,13 +68,12 @@ make_gui:
 
 ;	// language selection. this will change both regnums and regnumstarters language.
 	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x480 y6 w45 vlanguage glanguage_changed, eng|deu|spa
+	gui, add, dropdownlist, x620 y6 w45 vlanguage glanguage_changed, eng|deu|spa
 	gosub, updateLanguageList
-
 
 ;	// close button
 	Gui, Font, s13 bold cD8D8D8, Verdana
-	gui, add, text, x620 backgroundtrans y4 gguiclose, X
+	gui, add, text, x680 backgroundtrans y4 gguiclose, X
 
 	Gui, Margin , 0, 0
 	Gui -Caption
