@@ -10,7 +10,7 @@ checkAppdata:
 			FileCopy, data\*, %APPDATA%
 		}
 	}
-	for k,v in ["icon.png", "logo_discord.png", "logo_forum.png", "bg1.png"] { ; files needed for the RegnumStarter to work
+	for k,v in ["icon.png", "logo_discord.png", "logo_forum.png", "bg1.png", "RegnumNews.txt"] { ; files needed for the RegnumStarter to work
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
