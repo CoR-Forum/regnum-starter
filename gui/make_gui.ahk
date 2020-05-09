@@ -47,7 +47,7 @@ Gui, Font, s7 cD8D8D8, Verdana
 		gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 	; 	// account management
-		gui, add, button, xp y+10 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
+		gui, add, button, xp y+10 w80 h35 gManageAccounts, % T.MANAGE_ACCOUNTS
 
 	;	// create shortcut
 		gui, add, button, w80 h35 xp y+10 gshortcutCreate, % T.CREATE_SHORTCUT
