@@ -1,8 +1,8 @@
 #persistent ; keep the script running
-#singleinstance Force
-APPDATA := A_AppData "\RegnumStarter"
+#singleinstance Force ; starting the application again will close any existing version of it
+APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
-BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
+BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/ ; BASE_URL variable
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -50,30 +50,10 @@ ToolTip
 OnExit, ExitSub
 
 return
-; //
+; // checkAppdata function
 
-checkAppdata:
-	if(!fileexist(APPDATA)) {
-		FileCreateDir, %APPDATA%
-		if(errorlevel) {
-			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
-			exitapp
-		}
-		if(FileExist("data") == "D") {
-			; change from v2.0 to v2.1
-			FileCopy, data\*, %APPDATA%
-		}
-	}
-	for k,v in ["background.png", "icon.png"] {
-		if(!FileExist(APPDATA "/" v)) {
-			tooltip, Downloading %v%...
-			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
-			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
-				; who cares
-			}
-		}
-	}
-return
+#Include %A_ScriptDir%\lib\core\checkAppdata.ahk
+
 
 SendAnalytics:
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
