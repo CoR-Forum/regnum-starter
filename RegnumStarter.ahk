@@ -835,17 +835,17 @@ ifinstring, MouseControl, button
 	errorlevel := errorlevel_safe
 	return
   }
-;SetTimer, WatchMouse, 10
-;errorlevel := errorlevel_safe
-;return
+SetTimer, WatchMouse, 10
+errorlevel := errorlevel_safe
+return
 
 WatchMouse:
 GetKeyState, LButtonState, LButton, P
 if LButtonState = U		;	// Button has been released, so drag is complete.
 {
 			wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, Server
-			PosGuiX = %OL_Ecke_GuiX%
-			PosGuiY = %Ol_Ecke_GuiY%
+			PosGuiX = center ; %OL_Ecke_GuiX%
+			PosGuiY = center ; %Ol_Ecke_GuiY%
 	SetTimer, WatchMouse, off
 	errorlevel := errorlevel_safe
 return
