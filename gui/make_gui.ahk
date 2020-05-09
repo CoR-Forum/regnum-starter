@@ -31,6 +31,8 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x110 center y10 w120 h25 backgroundtrans, v%rs_version_release%
 
+	Gui, Add, Picture, x420 y50 h171 w241 backgroundtrans, %APPDATA%\logo_cor.png
+
 ;	// discord and forum logo
 	Gui, Add, Picture, gDiscordLink x20 y380 h60 w61 backgroundtrans, %APPDATA%\logo_discord.png
 	Gui, Add, Picture, gForumLink x90 y390 h45 w196 backgroundtrans, %APPDATA%\logo_forum.png
