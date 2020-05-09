@@ -58,7 +58,7 @@ make_gui:
 	gui, add, button, w80 h35 xp y+10 gshortcutCreate, % T.CREATE_SHORTCUT
 
 ; 	// user selection
-	gui, add, dropdownlist, x+20 y310 w120 vselected_user altsubmit
+	gui, add, dropdownlist, x+20 y320 w120 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
@@ -67,7 +67,7 @@ make_gui:
 
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
-	gui, add, button, w140 h35 x550 y390 glogin, % T.LOGIN
+	gui, add, button, w150 h40 x550 y390 glogin, % T.LOGIN
 
 ;	// language selection. this will change both regnums and regnumstarters language.
 	Gui, Font, s7 c000000, Verdana
