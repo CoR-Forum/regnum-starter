@@ -43,6 +43,7 @@ if(argc >= 4) {
 ;	// RegnumStarter Update Check ToolTip
 ToolTip, % T.CHECKING_UPDATES
 SetTimer, updateServerConfig, -10 ; blauhirn: todo .. ? - do not block the gui
+SetTimer, updateRegnumNews, -10
 
 ToolTip
 OnExit, ExitSub
@@ -72,6 +73,29 @@ checkAppdata:
 		}
 	}
 return
+
+updateRegnumNews:
+	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
+	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
+	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
+	RegnumNewsReq := ComObjCreate("Msxml2.XMLHTTP")
+	RegnumNewsReq.open("GET", BASE_URL "RegnumNews.txt?disablecache=" A_TickCount, true)
+	RegnumNewsReq.onreadystatechange := Func("updateRegnumNewsCallback")
+	RegnumNewsReq.send()
+return
+
+updateRegnumNewsCallback() {
+	global
+	if (serverConfigReq.readyState != 4)
+		return
+	if (serverConfigReq.status != 200 || serverConfigReq.responseText == "") {
+		msgbox % T.INVALID_SERVER_CONFIG
+		return
+	}
+	fileDelete, %APPDATA%/RegnumNews.txt
+	fileAppend, % RegnumNewsReq.responseText, %APPDATA%/RegnumNews.txt
+}
+
 updateServerConfig:
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
@@ -81,6 +105,7 @@ updateServerConfig:
 	serverConfigReq.onreadystatechange := Func("updateServerConfigCallback")
 	serverConfigReq.send()
 return
+
 updateServerConfigCallback() {
 	global
 	if (serverConfigReq.readyState != 4)
@@ -137,6 +162,7 @@ Del `%0
 		reload
 	}
 }
+
 autoUpdateFailed:
 	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
 	tooltip

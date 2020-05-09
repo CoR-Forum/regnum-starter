@@ -28,9 +28,13 @@ make_gui:
 	Gui, Font, s7 cD8D8D8, Verdana
 	gui, add, text, x+2 center y10 w120 h25 backgroundtrans, %rs_version_release%
 
+Gui, Font, s7 cD8D8D8, Verdana
+FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
+Gui, Add, Text, x20 y50 w500 h250 backgroundtrans, %RegnumNewsText%
+
 ;	// link to the forum post
 	;Gui, add, link, x380 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
-
+Gui, Font, s7 cD8D8D8, Verdana
 	; 	// graphic settings
 		gui, add, button, x445 y280 h40 w80 ggraphic_settings, % T.SETTINGS
 
