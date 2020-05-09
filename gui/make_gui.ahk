@@ -29,7 +29,7 @@ make_gui:
 
 ;	// version number next to the window title
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x110 center y10 w120 h25 backgroundtrans, v%rs_version_release%
+	gui, add, text, x150 y10 w120 h25 backgroundtrans, v%rs_version_release%
 
 ;	// cor logo
 	Gui, Add, Picture, x420 y50 h171 w241 backgroundtrans, %APPDATA%\logo_cor.png
