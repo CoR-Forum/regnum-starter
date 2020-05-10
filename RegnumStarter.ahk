@@ -16,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = 4.0.1-pre
+rs_version_release = 4.0.2-pre
 gosub, make_gui
 
 argc = %0%
@@ -35,10 +35,18 @@ if(argc >= 4) {
 	run_runas_name = %6%
 	run_runas_pw = %7%
 	gosub run
+	;SetTimer, ExitAfterQuicklaunch, 3
 
-	exitapp
+
+
+	;SetTimer,ExitAfterQuicklaunch,5
 }
 
+ExitAfterQuicklaunch(){
+	Global
+ExitApp
+Return
+}
 
 ;	// RegnumStarter Update Check ToolTip
 ToolTip, % T.CHECKING_UPDATES
