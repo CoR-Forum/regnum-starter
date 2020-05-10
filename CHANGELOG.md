@@ -1,6 +1,10 @@
+## [v4.0.2-pre] - 2020-05-11
+
+- **fixed:** [7f4dec8f32fe5298052d6635168c87a128961832] Shurtcuts are now working again.
+
 ## [v4.0.1-pre] - 2020-05-10
 
-- **hotfix:** - A wrong variable in the configuration file prevented the RegnumStarter from starting.
+- **hotfix:** A wrong variable in the configuration file prevented the RegnumStarter from starting.
 
 If you updated to v4.0.0 previously, please download the latest release manually and replace it with your existing RegnumStarter.exe
 
