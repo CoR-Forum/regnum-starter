@@ -12,6 +12,11 @@ make_gui:
 	Gui +LastFound
 	WinSet, TransColor, EEAA99
 
+	if(PosGuiX="" || PosGuiX<0)
+		PosGuiX = center
+	if(PosGuiY="" || PosGuiY<0)
+		PosGuiY = center
+
 ;	// display native windows title name - usually only seen when hovering over the task bar
 	gui, show, w710 h450 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
 
@@ -80,10 +85,6 @@ make_gui:
 
 	Gui, Margin , 0, 0
 	Gui -Caption
-	if(PosGuiX="" || PosGuiX<0)
-		PosGuiX = center
-	if(PosGuiY="" || PosGuiY<0)
-		PosGuiY = center
 
 
 

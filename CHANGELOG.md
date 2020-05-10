@@ -1,3 +1,9 @@
+## [v4.0.1-pre] - 2020-05-10
+
+- **hotfix:** - A wrong variable in the configuration file prevented the RegnumStarter from starting.
+
+If you updated to v4.0.0 previously, please download the latest release manually and replace it with your existing RegnumStarter.exe
+
 ## [v4.0.0-pre] - 2020-05-09
 
 - **changed:** [28e0f19b2a86f0f8a49145e8673fc4490ee6bd57] New window layout and background image.

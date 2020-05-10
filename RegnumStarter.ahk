@@ -16,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = 4.0.0-pre
+rs_version_release = 4.0.1-pre
 gosub, make_gui
 
 argc = %0%
@@ -323,8 +323,8 @@ readUserConfig:
 		, runas: 0
 		, runas_name: a_space
 		, runas_pw: a_space
-		, PosGuiX: -1
-		, PosGuiY: -1
+		;, PosGuiX: -1
+		;, PosGuiY: -1
 		, shortcut_last: a_space }
 	for k,default in configEntries {
 		%k% := config_read(k, default)
@@ -843,9 +843,9 @@ WatchMouse:
 GetKeyState, LButtonState, LButton, P
 if LButtonState = U		;	// Button has been released, so drag is complete.
 {
-			wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, Server
-			PosGuiX = center ; %OL_Ecke_GuiX%
-			PosGuiY = center ; %Ol_Ecke_GuiY%
+    wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, A
+    PosGuiX = %OL_Ecke_GuiX%
+    PosGuiY = %Ol_Ecke_GuiY%
 	SetTimer, WatchMouse, off
 	errorlevel := errorlevel_safe
 return
