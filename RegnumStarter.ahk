@@ -333,6 +333,7 @@ readUserConfig:
 		, runas_pw: a_space
 		;, PosGuiX: -1
 		;, PosGuiY: -1
+		, close_on_run: 1
 		, shortcut_last: a_space }
 	for k,default in configEntries {
 		%k% := config_read(k, default)
