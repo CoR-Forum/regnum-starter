@@ -37,10 +37,11 @@ if(argc >= 4) {
 	gosub run
 	;SetTimer, ExitAfterQuicklaunch, 3
 
+	
 
 
-	;SetTimer,ExitAfterQuicklaunch,5
 }
+
 
 ExitAfterQuicklaunch(){
 	Global
@@ -769,7 +770,6 @@ startGame:
 
 	if(hide_window_border)
 		settimer, removeRegnumWindowBorder, -1000
-
 ;	// run the regnum client
 
 	if(run_server.name == "Amun") {
