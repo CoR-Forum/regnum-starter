@@ -36,10 +36,6 @@ if(argc >= 4) {
 	run_runas_pw = %7%
 	gosub run
 	;SetTimer, ExitAfterQuicklaunch, 3
-
-	
-
-
 }
 
 
