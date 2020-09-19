@@ -37,7 +37,7 @@ graphic_settings:
 
 	;	// run as windows user
 		gui, 3:add, checkbox, x10 y+15 checked%runas% w%CBW% h%CBH% grunAsGuiToggled vrunas
-		gui, 3:add, text, x+3 yp backgroundtrans, % T.RUN_AS ":"
+		gui, 3:add, text, x+3 yp backgroundtrans, % T.RUN_AS
 
 		Gui, 3:Font, s7 c000000, Verdana
 		gui, 3:add, text, x15 y+8 vgui_runas_name_text, % "Windows " T.USER ; windows user text
