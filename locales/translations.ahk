@@ -205,6 +205,9 @@ translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht
 translations["PASSWORD_ENCRYPTION_INFO"] := { deu: "Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server"
 	, eng: "Passwords are saved LOCALLY AND ENCRYPTED. No data is saved on our servers."
 	, spa: "Passwords are saved LOCALLY AND ENCRYPTED. No data is saved on our servers." }
+translations["DELETE_SPLASH"] := { deu: "NGE-Intro ausblenden"
+	, eng: "Hide NGE-Intro"
+	, spa: "Hide NGE-Intro" }
 global T := []
 for k,v in translations {
 	T[k] := v[language]
