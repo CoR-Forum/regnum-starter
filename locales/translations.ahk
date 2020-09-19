@@ -202,6 +202,9 @@ translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account berei
 translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
 	, eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
 	, spa: "serverConfig.txt contiene datos inválidos. Esta es probablemente la primera vez que ejecuta Quickstarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
+translations["PASSWORD_ENCRYPTION_INFO"] := { deu: "Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server"
+	, eng: "Passwords are saved LOCALLY AND ENCRYPTED. No data is saved on our servers."
+	, spa: "Passwords are saved LOCALLY AND ENCRYPTED. No data is saved on our servers." }
 global T := []
 for k,v in translations {
 	T[k] := v[language]
