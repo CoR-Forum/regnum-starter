@@ -2,7 +2,9 @@
 ; 	// some things might be splitted into seperated files for better overview and workflow.
 
 ; initialize the UI
+
 make_gui:
+    Gui -DPIScale
 	SysGet, CBW, 71
 	SysGet, CBH, 72
 	cbw -= 2

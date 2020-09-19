@@ -27,7 +27,7 @@ ManageAccounts:
 		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
 	}
 	gui, 2:add, button, ggui2_add x20,Add new account
-	gui, 2:add, text, ggui2_add x30,Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server!
+	gui, 2:add, text, ggui2_add x30, % T.PASSWORD_ENCRYPTION_INFO
 	gui, 2:add, button, g2guiok x235, Ok
 	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
 	gui, 2:show
