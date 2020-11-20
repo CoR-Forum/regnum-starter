@@ -1,6 +1,6 @@
 ## -> [Discussion](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
 
-# RegnumStarter v4.1 ! - [DOWNLOAD](https://git.treudler.net/CoR-Forum/RegnumStarter/uploads/029d461e821470106e04aad877b9b1dc/RegnumStarter.exe)
+# RegnumStarter v4.1.0 ! - [DOWNLOAD](https://git.treudler.net/CoR-Forum/RegnumStarter/uploads/83b57bd5cfe4187ad18f5126f5c64acc/RegnumStarter.exe)
 
 ### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
