@@ -16,7 +16,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = 4.1.0
+rs_version_release = 5.0.0
 gosub, make_gui
 
 argc = %0%
@@ -61,6 +61,8 @@ return
 
 #Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
 
+return
+
 updateRegnumNews:
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
@@ -69,7 +71,6 @@ updateRegnumNews:
 	RegnumNewsReq.open("GET", BASE_URL "RegnumNews.txt?disablecache=" A_TickCount, true)
 	RegnumNewsReq.onreadystatechange := Func("updateRegnumNewsCallback")
 	RegnumNewsReq.send()
-
 return
 
 updateRegnumNewsCallback() {
@@ -877,6 +878,10 @@ return
 
 ForumLink:
 Run https://cor-forum.de
+return
+
+WikiLink:
+Run https://regnum.wiki
 return
 
 ;	// md5 function to securly save account passwords in users.txt
