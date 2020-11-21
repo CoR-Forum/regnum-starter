@@ -176,10 +176,12 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 
 	Gui, 4:Tab, 7
-	;	// server time and weather
+	;	// vg_gui_skin
 		gui, 4:add, text, x30 y60 backgroundtrans, GUI SKIN
-		gui, 4:add, dropdownlist, x+20 yp w70 v_gui_skin AltSubmit, regnum_default|regnum_test|test
+		gui, 4:add, dropdownlist, x+20 yp w140 vreg_vg_gui_skin AltSubmit, regnum_default (newest)|regnum_loadingscreen|regnum_mainmenu|regnum_mainmenuv2|test|default
+		gui, 4:add, text, x+10 yp backgroundtrans, Current nr: %reg_vg_gui_skin%
 Gui, 4:Show, w550 h336, settings
+
 
 return
 

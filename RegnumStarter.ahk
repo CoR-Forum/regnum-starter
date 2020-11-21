@@ -316,7 +316,7 @@ readUserConfig:
 		, ingame_log: 1
 		, vg_fullscreen_mode: 0
 		, vg_vertical_sync: 1
-		, vg_gui_skin: "regnum_default"
+		, reg_vg_gui_skin: 1
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_update_all_resources: 0
@@ -343,6 +343,8 @@ return
 writeUserConfig:
 	if(selected_server=="")
 		selected_server := 1
+	if(reg_vg_gui_skin=="")
+		reg_vg_gui_skin := 1
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
@@ -594,17 +596,12 @@ run:
 ;	// set weather (these values seem to be wrong at all)
 if(weather == 1)
    env_weather := "clear"
-else if (weather == 2)
+if (weather == 2)
    env_weather := "rainy"
-else if (weather == 3)
+if (weather == 3)
    env_weather := "snow"
 
-if(v_gui_skin == "regnum_default")
-   vg_gui_skin := "regnum_default"
-else if (v_gui_skin == "regnum_test")
-   vg_gui_skin := "regnum_test"
-else if (v_gui_skin == "test")
-   vg_gui_skin := "test"
+
 
 ;	// ??
 	gamecfg := regnum_path "game.cfg"
@@ -612,7 +609,15 @@ else if (v_gui_skin == "test")
 		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
 		iniwrite, .., %gamecfg%, client, cl_sdb_path ; would otherwise wrongly be set to "." afterwards, when the file is being filled up by the game itself (as apposed to the one included in the installers where it is ".."). For compatibility's sake, set it to ".." here.)
 	}
-
+if(reg_vg_gui_skin == 1){
+   vg_gui_skin := "regnum_default"
+}
+if(reg_vg_gui_skin == 2){
+   vg_gui_skin := "regnum_test"
+}
+if(reg_vg_gui_skin == 3){
+   vg_gui_skin := "test"
+}
 ;	// write to regnum game.cfg
 	iniwrite,% run_server.ip,%gamecfg%,server,sv_game_server_host
 	iniwrite,% run_server.port,%gamecfg%,server,sv_game_server_tcp_port
@@ -645,6 +650,8 @@ if(dbg_ignore_server_time == 1)  {
 	else if (server_time == 4)
 	   env_time_of_day := "1"
 	}
+
+
 
 ;	// set screenshot quality to 100 percent and save as png. default is jpg and 80 percent.
 if(screenshot_quality)  {
