@@ -68,19 +68,6 @@ make_gui:
 	Gui, Font, bold s9 cD8D8D8, Verdana
 	Gui, Add, Text, x90 y55 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
 
-;	// server status
-	Gui, Font, bold s9 cD8D8D8, Verdana
-	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status
-	Gui, Font, normal s9 cD8D8D8, Verdana
-	Gui, Add, Picture, x35 yp+25 backgroundtrans, %APPDATA%\circle-on.png
-		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
-	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
-			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
-	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
-			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
-	Gui, Font, s7 cD8D8D8, Verdana
-
-
 ; 	// graphic settings
 	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
