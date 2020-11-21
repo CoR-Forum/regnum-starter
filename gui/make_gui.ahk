@@ -45,9 +45,19 @@ make_gui:
 	Gui, Add, Picture, x570 y30 h85 w120 backgroundtrans, %APPDATA%\logo_cor.png
 
 ;	// discord and forum logo
-	Gui, Add, Picture, gDiscordLink x30 y440 h32 w32 backgroundtrans, %APPDATA%\logo_discord.png
-	Gui, Add, Picture, gForumLink x+15 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
-	Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
+	;Gui, Add, Picture, gDiscordLink x30 y440 h32 w32 backgroundtrans, %APPDATA%\logo_discord.png
+	;Gui, Add, Picture, gForumLink x+15 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
+	;Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
+
+;	// server status
+	Gui, Font, normal s9 cD8D8D8, Verdana
+	Gui, Add, Picture, x280 y30 backgroundtrans, %APPDATA%\circle-on.png
+		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Ra
+	Gui, Add, Picture, xp+40 yp backgroundtrans, %APPDATA%\circle-on.png
+		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Valhalla
+	Gui, Add, Picture, xp+70 yp backgroundtrans, %APPDATA%\circle-off.png
+		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Amun
+	Gui, Font, s7 cD8D8D8, Verdana
 
 ;	// display RegnumNews.txt
 	Gui, Font, s7 cD8D8D8, Verdana
