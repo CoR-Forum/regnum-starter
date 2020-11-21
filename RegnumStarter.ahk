@@ -314,6 +314,7 @@ readUserConfig:
 		, ingame_log: 1
 		, vg_fullscreen_mode: 0
 		, vg_vertical_sync: 1
+		, vg_gui_skin: "regnum_default"
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_update_all_resources: 0
@@ -371,7 +372,6 @@ return
 ; ///
 
 guiClose:
-filedelete, %APPDATA%/RegnumNews.txt ; delete Regnum News file on close so it re-downloads the new content next time the program starts.
 exitapp
 
 ExitSub:
@@ -594,6 +594,13 @@ else if (weather == 2)
 else if (weather == 3)
    env_weather := "snow"
 
+if(v_gui_skin == "regnum_default")
+   vg_gui_skin := "regnum_default"
+else if (v_gui_skin == "regnum_test")
+   vg_gui_skin := "regnum_test"
+else if (v_gui_skin == "test")
+   vg_gui_skin := "test"
+
 ;	// ??
 	gamecfg := regnum_path "game.cfg"
 	if(!FileExist(gamecfg)) {
@@ -615,6 +622,8 @@ else if (weather == 3)
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
+	iniwrite,% vg_vertical_sync,%gamecfg%,video_graphics,vg_vertical_sync
+	iniwrite,% vg_gui_skin,%gamecfg%,video_graphics,vg_gui_skin
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day

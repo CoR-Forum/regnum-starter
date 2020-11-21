@@ -57,8 +57,9 @@ Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_GRAPHICS
 Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_SOUND
 Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_CONTROLS
 Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_DEBUG
+Gui, 4:add, Text, x+15 y30 backgroundtrans, special
 
-Gui, 4:Add, Tab2 , +Theme -Background x20 y25 w500 h20, RegnumStart|Game|Graphics|Sound|Controls|Debug
+Gui, 4:Add, Tab2 , +Theme -Background x20 y25 w500 h20, RegnumStart|Game|Graphics|Sound|Controls|Debug|Special
 	Gui, 4:Font, s8 normal cD8D8D8, Verdana
 
 	;	// regnum path
@@ -168,6 +169,12 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (experimental)"
 
 
+
+	Gui, 4:Tab, 7
+	;	// server time and weather
+		gui, 4:add, text, x30 y60 backgroundtrans, GUI SKIN
+		gui, 4:add, dropdownlist, x+20 yp w70 v_gui_skin AltSubmit, regnum_default|regnum_test|test
 Gui, 4:Show, w550 h336, settings
 
 return
+
