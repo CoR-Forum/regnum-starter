@@ -24,20 +24,24 @@ Settings:
 	cbw -= 2
 	cbh  -= 2
 
-	Gui, 4:Color, EEAA99
+	;Gui, 4:Color, EEAA99
 	Gui, 4:+LastFound
 
 	Gui, 1:+disabled ; disable main GUI
 	Gui, 4:-SysMenu
 	Gui, 4:-Caption
+
 ;	// Window title
 	Gui, 4:Font, s11 bold cD8D8D8, Verdana
 	Gui, 4:add, text, x240 center y6 w140 h25 backgroundtrans, settings
 	Gui, 4:Font, s7 cD8D8D8, Verdana
-  	Gui, 4:Add, Picture, x0 y0, %APPDATA%\bg_settings.png ; uses the previously generated BgNumRound variable
+  	Gui, 4:Add, Picture, x0 y0, %APPDATA%\bg_settings.png
 	Gui, 4:Font, s8  normal cD8D8D8, Verdana
 
-
+;	// close button
+	Gui, 4:Font, s12 cD8D8D8, Verdana
+	gui, 4:add, text, x533 backgroundtrans y4 gSettingsGuiCancel
+Gui, 4:Font, s7 cD8D8D8, Verdana
 	Gui, 4:Add, Picture, gSettingsGuiCancel x340 y305  backgroundtrans, %APPDATA%\btn_red_90px.png
 	Gui, 4:add, Text, xp+10 yp+5 backgroundtrans, % T.UI_CANCEL
 	;Gui, 4:Add, Picture, gSettingsGuiSave xp+130 y310 backgroundtrans, %APPDATA%\button-blue-small.png
