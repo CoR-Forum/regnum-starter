@@ -49,16 +49,6 @@ make_gui:
 	;Gui, Add, Picture, gForumLink x+15 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
 	;Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
 
-;	// server status
-	Gui, Font, normal s9 cD8D8D8, Verdana
-	Gui, Add, Picture, x280 y30 backgroundtrans, %APPDATA%\circle-on.png
-		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Ra
-	Gui, Add, Picture, xp+40 yp backgroundtrans, %APPDATA%\circle-on.png
-		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Valhalla
-	Gui, Add, Picture, xp+70 yp backgroundtrans, %APPDATA%\circle-off.png
-		Gui, Add, Text, x+8 yp w500 h270 backgroundtrans, Amun
-	Gui, Font, s7 cD8D8D8, Verdana
-
 ;	// display RegnumNews.txt
 	Gui, Font, s7 cD8D8D8, Verdana
 	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
@@ -67,23 +57,36 @@ make_gui:
 ;	// quick access to options
 	Gui, Font, bold s9 cD8D8D8, Verdana
 	Gui, Add, Text, x90 y55 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
-	Gui, Font, s7 cD8D8D8, Verdana
+	Gui, Font, s7 normal cD8D8D8, Verdana
 
-; 	// graphic settings
+; 	// settings
 	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
+
+;	// server status
+	Gui, Font, bold s9 cD8D8D8, Verdana
+	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status
+	Gui, Font, normal s9 cD8D8D8, Verdana
+	Gui, Add, Picture, x35 yp+25 backgroundtrans, %APPDATA%\circle-on.png
+		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
+	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
+			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
+	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
+			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
+	Gui, Font, s7 cD8D8D8, Verdana
+
 
 ; 	// account management
 	Gui, Add, Picture, x263 y356 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
-	Gui, Add, Picture, gshortcutCreate x400 y338 backgroundtrans, %APPDATA%\btn_blue_134px.png
+	Gui, Add, Picture, gshortcutCreate x400 y356 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
 
 ;	// conjurer mode
 	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x550 y365 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
+	gui, add, checkbox, x550 y360 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 ; 	// user selection
