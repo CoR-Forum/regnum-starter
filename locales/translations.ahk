@@ -3,6 +3,36 @@ translations := []
 translations["WEATHER"] := { deu: "Eigene Tageszeit"
 	, eng: "Custom daytime"
 	, spa: "Custom daytime" }
+translations["UI_SAVE"] := { deu: "Anwenden"
+	, eng: "Apply"
+	, spa: "Apply" }
+translations["UI_CLOSE"] := { deu: "Schließen"
+	, eng: "Close"
+	, spa: "Close" }
+translations["UI_CANCEL"] := { deu: "Abbrechen"
+	, eng: "Cancel"
+	, spa: "Cancel" }
+translations["UI_SETTINGS"] := { deu: "Einstellungen"
+	, eng: "Settings"
+	, spa: "Settings" }
+translations["UI_SETTINGS_REGNUMSTARTER"] := { deu: "RegnumStarter"
+	, eng: "RegnumStarter"
+	, spa: "RegnumStarter" }
+translations["UI_SETTINGS_GAME"] := { deu: "Spiel"
+	, eng: "Game"
+	, spa: "Game" }
+translations["UI_SETTINGS_GRAPHICS"] := { deu: "Grafik"
+	, eng: "Graphics"
+	, spa: "Graphics" }
+translations["UI_SETTINGS_SOUND"] := { deu: "Sound"
+	, eng: "Sound"
+	, spa: "Sound" }
+translations["UI_SETTINGS_CONTROLS"] := { deu: "Steuerung"
+	, eng: "Controls"
+	, spa: "Controls" }
+translations["UI_SETTINGS_DEBUG"] := { deu: "Debug"
+	, eng: "Debug"
+	, spa: "Debug" }
 translations["SETTINGS"] := { deu: "Einstellungen"
 	, eng: "Settings"
 	, spa: "Settings" }
