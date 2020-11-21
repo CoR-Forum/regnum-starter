@@ -4,6 +4,7 @@
 ; initialize the UI
 
 make_gui:
+
     Gui -DPIScale
 	SysGet, CBW, 71
 	SysGet, CBH, 72
@@ -53,6 +54,10 @@ make_gui:
 	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
 	Gui, Add, Text, x265 y55 w500 h270 backgroundtrans, %RegnumNewsText%
 
+; 	// new settings
+	Gui, Add, Picture, gSettings x35 y300 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
+	gui, add, Text, xp+50 yp+5 h40 w80 backgroundtrans gSettings, settings
+
 ;	// server status
 	Gui, Font, s9 cD8D8D8, Verdana
 
@@ -60,8 +65,6 @@ make_gui:
 		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
 			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
-	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
-			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Patch Server
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
 			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun
 	Gui, Font, s7 cD8D8D8, Verdana

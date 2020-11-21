@@ -1,9 +1,29 @@
+GraphicSettingsGuiOk:
+	gui, 3:submit, nohide
+	gui, 1:-disabled
+	gosub writeUserConfig
+	gui, 3:destroy
+	winactivate, ahk_id %GUIID%
+;	Reload
+return
+GraphicSettingsGuiSave:
+	gui, 3:submit, nohide
+	gosub writeUserConfig
+return
+GraphicSettingsGuiCancel:
+	gui, 1:-disabled
+	gui, 3:destroy
+;	Reload
+	winactivate, ahk_id %GUIID%
+return
+
 graphic_settings:
-	Gui, 1:+disabled
+	Gui, 1:+disabled ; disable main GUI
 	Gui, 3:-SysMenu
 	Gui, 3:Show, w400 h300, % T.SETTINGS
+	Gui, 3:-Caption
 	Gui, 3:Font, s8 c000000, Verdana
-	Gui, 3:Add, Tab2, x0 y0 w400 h20 Border, RegnumStarter|Game|Graphics|Sound|Controls|Debug
+	Gui, 3:Add, Tab2, x20 y10 w400 h20, RegnumStarter|Game|Graphics|Sound|Controls|Debug
 
 	;	// regnum path
 	gui, 3:Tab, 1
@@ -143,3 +163,4 @@ gui, 3:Tab, 6
 	gui, 3:add, button, gGraphicSettingsGuiSave x255 y275, % T.GRAPHIC_SETTINGS_SAVE
 	gui, 3:add, button, gGraphicSettingsGuiOk x330 y275, % T.GRAPHIC_SETTINGS_SAVE_CLOSE
 	gui, 3:show
+return

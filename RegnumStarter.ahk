@@ -460,6 +460,9 @@ empty(v) {
 ;	// include graphic_settings snippet
 #Include %A_ScriptDir%\gui\graphic_settings.ahk
 
+;	// include settings snippet
+#Include %A_ScriptDir%\gui\settings.ahk
+
 
 
 
@@ -563,24 +566,7 @@ return
 
 
 ;		// graphic settings window control elements
-GraphicSettingsGuiOk:
-	gui, 3:submit, nohide
-	gui, 1:-disabled
-	gosub writeUserConfig
-	gui, 3:destroy
-	winactivate, ahk_id %GUIID%
-;	Reload
-return
-GraphicSettingsGuiSave:
-	gui, 3:submit, nohide
-	gosub writeUserConfig
-return
-GraphicSettingsGuiCancel:
-	gui, 1:-disabled
-	gui, 3:destroy
-;	Reload
-	winactivate, ahk_id %GUIID%
-return
+
 ; ////////////
 
 login:
