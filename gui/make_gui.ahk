@@ -77,8 +77,8 @@ make_gui:
 
 
 ; 	// account management
-	Gui, Add, Picture, x263 y356 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+15 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
+	Gui, Add, Picture, x263 y356 gAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
+	gui, add, Text, xp+15 yp+5 backgroundtrans gAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
 	Gui, Add, Picture, gshortcutCreate x400 y356 backgroundtrans, %APPDATA%\btn_blue_134px.png
@@ -90,12 +90,12 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 ; 	// user selection
-	Gui, Font, s9 normal cD8D8D8, Verdana
-	gui, add, dropdownlist, x260 y396 w190 vselected_user altsubmit
+	Gui, Font, s8 normal cD8D8D8, Verdana
+	gui, add, dropdownlist, x260 y396 w200 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
-	gui, add, dropdownlist, x+5 yp w80 vselected_server altsubmit
+	gui, add, dropdownlist, x+5 yp w70 vselected_server altsubmit
 	gosub updateServerlist
 
 ; 	// login button

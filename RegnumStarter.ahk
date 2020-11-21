@@ -482,6 +482,8 @@ return
 
 #Include %A_ScriptDir%\gui\ManageAccounts.ahk
 
+#Include %A_ScriptDir%\gui\accounts.ahk
+
 language_changed:
 reload
 
