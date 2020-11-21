@@ -54,10 +54,15 @@ make_gui:
 	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
 	Gui, Add, Text, x265 y55 w500 h270 backgroundtrans, %RegnumNewsText%
 
-;	// server status
-	Gui, Font, s9 cD8D8D8, Verdana
+;	// quick access to options
+	Gui, Font, bold s9 cD8D8D8, Verdana
+	Gui, Add, Text, x90 y55 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
 
-	Gui, Add, Picture, x35 y340 backgroundtrans, %APPDATA%\circle-on.png
+;	// server status
+	Gui, Font, bold s9 cD8D8D8, Verdana
+	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status
+	Gui, Font, normal s9 cD8D8D8, Verdana
+	Gui, Add, Picture, x35 yp+25 backgroundtrans, %APPDATA%\circle-on.png
 		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
 			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
@@ -67,11 +72,11 @@ make_gui:
 
 
 ; 	// graphic settings
-	Gui, Add, Picture, gSettings x263 y338 backgroundtrans, %APPDATA%\btn_blue_134px.png
+	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
 
 ; 	// account management
-	Gui, Add, Picture, x263 yp+18 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
+	Gui, Add, Picture, x263 y356 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
