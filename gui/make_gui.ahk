@@ -38,7 +38,7 @@ make_gui:
 	gui, add, text, x240 center y6 w140 h25 backgroundtrans, RegnumStarter
 
 ;	// version number next to the window title
-	Gui, Font, s7 cD8D8D8, Verdana
+	Gui, Font, s7 normal cD8D8D8, Verdana
 	gui, add, text, x+5 y10 w120 h25 backgroundtrans, v%rs_version_release%
 
 ;	// cor logo
@@ -56,7 +56,7 @@ make_gui:
 
 ; 	// new settings
 	Gui, Add, Picture, gSettings x35 y300 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+50 yp+5 h40 w80 backgroundtrans gSettings, settings
+	gui, add, Text, xp+50 yp+5 h40 w80 backgroundtrans gSettings, % T.UI_SETTINGS
 
 ;	// server status
 	Gui, Font, s9 cD8D8D8, Verdana
