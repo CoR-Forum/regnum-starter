@@ -34,11 +34,11 @@ Settings:
 	Gui, 4:Font, s11 bold cD8D8D8, Verdana
 	Gui, 4:add, text, x240 center y6 w140 h25 backgroundtrans, settings
 	Gui, 4:Font, s7 cD8D8D8, Verdana
-  	Gui, 4:Add, Picture, x0 y0, %APPDATA%\bg2.png ; uses the previously generated BgNumRound variable
+  	;Gui, 4:Add, Picture, x0 y0, %APPDATA%\bg2.png ; uses the previously generated BgNumRound variable
 	Gui, 4:Font, s8 cD8D8D8, Verdana
 
 
-	Gui, 4:Add, Picture, gSettingsGuiCancel x20 y350  h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
+	Gui, 4:Add, Picture, gSettingsGuiCancel x20 y350  h23 w159 backgroundtrans, %APPDATA%\button-red-small.png
 	Gui, 4:add, Text, xp+40 yp+5 backgroundtrans, % T.UI_CANCEL
 	Gui, 4:Add, Picture, gSettingsGuiSave xp+120 y350 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
 	Gui, 4:add, Text, xp+40 yp+5 backgroundtrans, % T.UI_SAVE
@@ -54,7 +54,7 @@ Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_SOUND
 Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_CONTROLS
 Gui, 4:add, Text, x+15 y30 backgroundtrans, % T.UI_SETTINGS_DEBUG
 
-Gui, 4:Add, Tab2 , +Theme -Background x20 y30 w500 h20, RegnumStart|Game|Graphics|Sound|Controls|Debug
+Gui, 4:Add, Tab2 , +Theme -Background x20 y25 w500 h20, RegnumStart|Game|Graphics|Sound|Controls|Debug
 	Gui, 4:Font, s8 normal cD8D8D8, Verdana
 
 	;	// regnum path

@@ -54,10 +54,6 @@ make_gui:
 	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
 	Gui, Add, Text, x265 y55 w500 h270 backgroundtrans, %RegnumNewsText%
 
-; 	// new settings
-	Gui, Add, Picture, gSettings x35 y300 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+50 yp+5 h40 w80 backgroundtrans gSettings, % T.UI_SETTINGS
-
 ;	// server status
 	Gui, Font, s9 cD8D8D8, Verdana
 
@@ -71,12 +67,12 @@ make_gui:
 
 
 ; 	// graphic settings
-	Gui, Add, Picture, ggraphic_settings x263 y338 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+50 yp+5 h40 w80 backgroundtrans ggraphic_settings, % T.SETTINGS
+	Gui, Add, Picture, gSettings x263 y338 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
+	gui, add, Text, xp+50 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
 
 ; 	// account management
 	Gui, Add, Picture, x263 yp+18 h23 w159 gManageAccounts backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+30 yp+5 h40 w160 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
+	gui, add, Text, xp+30 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
 	Gui, Add, Picture, gshortcutCreate x425 y338 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
