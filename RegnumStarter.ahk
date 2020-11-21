@@ -303,6 +303,7 @@ readUserConfig:
 	; name: defaultvalue
 	configEntries := { language: a_space
 		, rs_delete_tmp_files: 0
+		, rs_close_on_login: 0
 		, selected_user: 1
 		, selected_server: 1
 		, skip_logo: 1
@@ -586,6 +587,8 @@ run:
 		}
 	}
 
+
+
 	;;;;;;;; GAME.CFG
 
 ;	// set weather (these values seem to be wrong at all)
@@ -742,11 +745,14 @@ startGame:
 
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
+
 	}
 	else
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
+
 	}
+
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return

@@ -103,6 +103,11 @@ make_gui:
 	Gui, Add, Picture, glogin x+8 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
 	gui, add, Text, xp+40 yp+5 BackgroundTrans, % T.LOGIN
 
+;	// close on start
+	;Gui, Font, s8 cD8D8D8, Verdana
+	;gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
+	;gui, add, text, x+3 yp backgroundtrans, close rs on login
+
 
 ;	// language selection. this will change both regnums and regnumstarters language.
 	Gui, Font, s6 c000000, Verdana
