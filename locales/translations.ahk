@@ -3,6 +3,9 @@ translations := []
 translations["WEATHER"] := { deu: "Eigene Tageszeit"
 	, eng: "Custom daytime"
 	, spa: "Custom daytime" }
+translations["UI_HEADING_QUICK_OPTIONS"] := { deu: "Einstellungen"
+	, eng: "Options"
+	, spa: "Apply" }
 translations["UI_SAVE"] := { deu: "Anwenden"
 	, eng: "Apply"
 	, spa: "Apply" }
@@ -12,9 +15,9 @@ translations["UI_CLOSE"] := { deu: "Schließen"
 translations["UI_CANCEL"] := { deu: "Abbrechen"
 	, eng: "Cancel"
 	, spa: "Cancel" }
-translations["UI_SETTINGS"] := { deu: "Einstellungen"
-	, eng: "Settings"
-	, spa: "Settings" }
+translations["UI_SETTINGS"] := { deu: "weitere Optionen"
+	, eng: "Advanced Settings"
+	, spa: "Advanced Settings" }
 translations["UI_SETTINGS_REGNUMSTARTER"] := { deu: "RegnumStarter"
 	, eng: "RegnumStarter"
 	, spa: "RegnumStarter" }
