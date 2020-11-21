@@ -155,11 +155,13 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 	;	// fake net lag
 		gui, 4:add, text, x30 y+8 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
+		Gui, 4:Font, s7 c000000, Verdana
 		gui, 4:add, edit, x170 yp w60 h15 -multi vnet_fake_lag, %net_fake_lag%
+		Gui, 4:Font, s7 cD8D8D8, Verdana
 
 	;	// debug mode
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%debug_mode% backgroundtrans vdebug_mode
-		gui, 4:add, text, x+3 yp backgroundtrans, % "debug mode (enabled a bunch of debugging options)"
+		gui, 4:add, text, x+3 yp backgroundtrans, % "debug mode (enables a bunch of debugging options)"
 
 	;	// cl_crafting_show_min_level
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
@@ -179,8 +181,9 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 ;		// cl_terrain_load_radius
 		gui, 4:add, text, x30 y+8 backgroundtrans, cl_terrain_load_radius
-		gui, 4:add, edit, x170 yp w60 h15 -multi vcl_terrain_load_radius, %cl_terrain_load_radius%
-
+		Gui, 4:Font, s7 c000000, Verdana
+		gui, 4:add, edit, x170 yp w60 h16 -multi vcl_terrain_load_radius, %cl_terrain_load_radius%
+		Gui, 4:Font, s7 cD8D8D8, Verdana
 
 
 	Gui, 4:Tab, 7
