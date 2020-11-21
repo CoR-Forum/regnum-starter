@@ -61,7 +61,7 @@ make_gui:
 
 ; 	// settings
 	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+20 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
+	gui, add, Text, xp+20 yp+5 backgroundtrans, % T.UI_SETTINGS
 
 ;	// server status
 	Gui, Font, bold s9 cD8D8D8, Verdana
@@ -78,14 +78,14 @@ make_gui:
 
 ; 	// account management
 	Gui, Add, Picture, x263 y356 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+20 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
+	gui, add, Text, xp+15 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
 	Gui, Add, Picture, gshortcutCreate x400 y356 backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+20 yp+5 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
+	gui, add, Text, xp+15 yp+5 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
 
 ;	// conjurer mode
-	Gui, Font, s7 cD8D8D8, Verdana
+	Gui, Font, s8 cD8D8D8, Verdana
 	gui, add, checkbox, x550 y360 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
