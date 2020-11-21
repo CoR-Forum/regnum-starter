@@ -2,10 +2,6 @@ checkAppdata:
 	filedelete, %APPDATA%/RegnumNews.txt ; delete Regnum News file on close so it re-downloads the new content next time the program starts.
 
 	; delete old garbage
-
-	if(!rs_delete_tmp_files==1) {
-		filedelete, %appdata%/*.png
-	}
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
 		if(errorlevel) {
@@ -27,3 +23,8 @@ checkAppdata:
 		}
 	}
 return
+
+clearAppdata:
+	if(rs_delete_tmp_files==1) {
+		filedelete, %appdata%\*.png
+	}

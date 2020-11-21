@@ -302,6 +302,7 @@ return
 readUserConfig:
 	; name: defaultvalue
 	configEntries := { language: a_space
+		, rs_delete_tmp_files: 0
 		, selected_user: 1
 		, selected_server: 1
 		, skip_logo: 1
@@ -372,6 +373,7 @@ return
 ; ///
 
 guiClose:
+goSub ClearAppdata
 exitapp
 
 ExitSub:

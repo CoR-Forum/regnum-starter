@@ -110,6 +110,11 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 		gosub, runAsGuiToggled
 
+
+		;	// delete all regnumstarter tmp files at program close
+		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%rs_delete_tmp_files% backgroundtrans vrs_delete_tmp_files
+		gui, 4:add, text, x+3 yp backgroundtrans, rs delete tmp files
+
 	gui, 4:Tab,2
 			;	// cl_update_all_resources
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y60 checked%cl_update_all_resources% backgroundtrans vcl_update_all_resources
