@@ -62,21 +62,21 @@ make_gui:
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
 			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
-			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun
+			Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
 	Gui, Font, s7 cD8D8D8, Verdana
 
 
 ; 	// graphic settings
-	Gui, Add, Picture, gSettings x263 y338 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+50 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
+	Gui, Add, Picture, gSettings x263 y338 backgroundtrans, %APPDATA%\btn_blue_134px.png
+	gui, add, Text, xp+20 yp+5 backgroundtrans gSettings, % T.UI_SETTINGS
 
 ; 	// account management
-	Gui, Add, Picture, x263 yp+18 h23 w159 gManageAccounts backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+30 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
+	Gui, Add, Picture, x263 yp+18 gManageAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
+	gui, add, Text, xp+20 yp+5 backgroundtrans gManageAccounts, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
-	Gui, Add, Picture, gshortcutCreate x425 y338 h23 w159 backgroundtrans, %APPDATA%\button-blue-small.png
-	gui, add, Text, xp+30 yp+5 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
+	Gui, Add, Picture, gshortcutCreate x400 y338 backgroundtrans, %APPDATA%\btn_blue_134px.png
+	gui, add, Text, xp+20 yp+5 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
 
 ;	// conjurer mode
 	Gui, Font, s7 cD8D8D8, Verdana
@@ -94,7 +94,7 @@ make_gui:
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
 	;gui, add, button, w150 h40 x550 y390 glogin, % T.LOGIN
-	Gui, Add, Picture, glogin x542 y392 h30 w125 backgroundtrans, %APPDATA%\button-green-big.png
+	Gui, Add, Picture, glogin x542 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
 	gui, add, Text, x585 y398 glogin BackgroundTrans, % T.LOGIN
 
 
