@@ -149,7 +149,7 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y60 checked%win64% backgroundtrans vwin64
 		gui, 4:add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
 
-		;	// hide window border
+	;	// hide window border
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
 		gui, 4:add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
 
@@ -159,19 +159,27 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 	;	// debug mode
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%debug_mode% backgroundtrans vdebug_mode
-		gui, 4:add, text, x+3 yp backgroundtrans, % "debug mode (experimental (?))"
+		gui, 4:add, text, x+3 yp backgroundtrans, % "debug mode (enabled a bunch of debugging options)"
 
 	;	// cl_crafting_show_min_level
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
-		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
+		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (useless)"
 
 	;	// cl_show_subclass_on_players
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%cl_show_subclass_on_players% backgroundtrans w%CBW% h%CBH% vcl_show_subclass_on_players
-		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_show_subclass_on_players (experimental)"
+		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_show_subclass_on_players (useless)"
 
 	;	// cl_show_hidden_armors
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%cl_show_hidden_armors% backgroundtrans w%CBW% h%CBH% vcl_show_hidden_armors
-		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (experimental)"
+		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (useless)"
+
+	;	// cl_disable_terrain_loading
+		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%cl_disable_terrain_loading% backgroundtrans w%CBW% h%CBH% vcl_disable_terrain_loading
+		gui, 4:add, text, x+3 yp backgroundtrans, % "cl_disable_terrain_loading"
+
+;		// cl_terrain_load_radius
+		gui, 4:add, text, x30 y+8 backgroundtrans, cl_terrain_load_radius
+		gui, 4:add, edit, x150 yp w60 h15 -multi vcl_terrain_load_radius, %cl_terrain_load_radius%
 
 
 
