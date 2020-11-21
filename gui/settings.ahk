@@ -155,7 +155,7 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 	;	// fake net lag
 		gui, 4:add, text, x30 y+8 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
-		gui, 4:add, edit, x150 yp w60 h15 -multi vnet_fake_lag, %net_fake_lag%
+		gui, 4:add, edit, x170 yp w60 h15 -multi vnet_fake_lag, %net_fake_lag%
 
 	;	// debug mode
 		gui, 4:add, checkbox, w%CBW% h%CBH% x30 y+8 checked%debug_mode% backgroundtrans vdebug_mode
@@ -179,14 +179,14 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 
 ;		// cl_terrain_load_radius
 		gui, 4:add, text, x30 y+8 backgroundtrans, cl_terrain_load_radius
-		gui, 4:add, edit, x150 yp w60 h15 -multi vcl_terrain_load_radius, %cl_terrain_load_radius%
+		gui, 4:add, edit, x170 yp w60 h15 -multi vcl_terrain_load_radius, %cl_terrain_load_radius%
 
 
 
 	Gui, 4:Tab, 7
 	;	// vg_gui_skin
 		gui, 4:add, text, x30 y60 backgroundtrans, GUI SKIN
-		gui, 4:add, dropdownlist, x+20 yp w140 vreg_vg_gui_skin AltSubmit, regnum_default (newest)|regnum_loadingscreen|regnum_mainmenu|regnum_mainmenuv2|test|default
+		gui, 4:add, dropdownlist, x+20 yp w140 vreg_vg_gui_skin AltSubmit, 1:regnum_default (newest)|2:regnum_loadingscreen|3:regnum_mainmenu|4:regnum_mainmenuv2|5:test|6:default
 		gui, 4:add, text, x+10 yp backgroundtrans, Current nr: %reg_vg_gui_skin%
 Gui, 4:Show, w550 h336, settings
 
