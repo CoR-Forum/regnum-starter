@@ -87,7 +87,8 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 ; 	// user selection
-	gui, add, dropdownlist, x267 y444 w180 vselected_user altsubmit
+	Gui, Font, s9 normal cD8D8D8, Verdana
+	gui, add, dropdownlist, x260 y396 w190 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
@@ -95,9 +96,9 @@ make_gui:
 	gosub updateServerlist
 
 ; 	// login button
-	Gui, Font, s10 bold, Verdana
-	Gui, Add, Picture, glogin x+10 y440 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
-	gui, add, Text, xp+40 y446 BackgroundTrans, % T.LOGIN
+	Gui, Font, normal s11, Verdana
+	Gui, Add, Picture, glogin x+8 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
+	gui, add, Text, xp+40 yp+5 BackgroundTrans, % T.LOGIN
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.
