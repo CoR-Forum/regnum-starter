@@ -30,7 +30,7 @@ make_gui:
 ;		// add border
 
 ;		// randomly choose a background image based on the function above
-  Gui, Add, Picture, x0 y0, %APPDATA%\bg%BgNumRound%.png ; uses the previously generated BgNumRound variable
+  Gui, Add, Picture, x0 y0, %APPDATA%\bg_main.png ; uses the previously generated BgNumRound variable
 
 
 ;	// Window title
@@ -87,7 +87,7 @@ make_gui:
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 ; 	// user selection
-	gui, add, dropdownlist, x267 y396 w180 vselected_user altsubmit
+	gui, add, dropdownlist, x267 y444 w180 vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
@@ -96,8 +96,8 @@ make_gui:
 
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
-	Gui, Add, Picture, glogin x+10 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
-	gui, add, Text, xp+40 y398 BackgroundTrans, % T.LOGIN
+	Gui, Add, Picture, glogin x+10 y440 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
+	gui, add, Text, xp+40 y446 BackgroundTrans, % T.LOGIN
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.
