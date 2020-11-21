@@ -1,5 +1,10 @@
 checkAppdata:
-	filedelete, %APPDATA%/RegnumNews.txt ; delete Regnum News file on close so it re-downloads the new content next time the program starts.
+	filedelete, %APPDATA%/RegnumNews.txt ; delete Regnum News file on close so it re-downloads the new file
+
+;	function to delete tmp files of the regnumStarter on ExitApp
+	if(rs_delete_tmp_files==1) {
+		filedelete, %APPDATA%\*.png
+	}
 
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
@@ -23,10 +28,10 @@ checkAppdata:
 	}
 return
 
-	; delete old garbage
+;	function to clear unused data from %APPDATA%
 clearAppdata:
 		filedelete, %APPDATA%/bg1.png
 		filedelete, %APPDATA%/bg2.png
 		filedelete, %APPDATA%/bckg.png
 		filedelete, %APPDATA%/background.png
-
+return
