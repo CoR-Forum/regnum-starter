@@ -96,9 +96,8 @@ make_gui:
 
 ; 	// login button
 	Gui, Font, s10 bold, Verdana
-	;gui, add, button, w150 h40 x550 y390 glogin, % T.LOGIN
-	Gui, Add, Picture, glogin x542 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
-	gui, add, Text, x585 y398 glogin BackgroundTrans, % T.LOGIN
+	Gui, Add, Picture, glogin x+10 y392 h30 w125 backgroundtrans, %APPDATA%\btn_green_162px.png
+	gui, add, Text, xp+40 y398 BackgroundTrans, % T.LOGIN
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.
