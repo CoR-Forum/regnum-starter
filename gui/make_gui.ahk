@@ -67,6 +67,7 @@ make_gui:
 ;	// quick access to options
 	Gui, Font, bold s9 cD8D8D8, Verdana
 	Gui, Add, Text, x90 y55 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
+	Gui, Font, s7 cD8D8D8, Verdana
 
 ; 	// graphic settings
 	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
