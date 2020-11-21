@@ -619,10 +619,19 @@ if(reg_vg_gui_skin == 1){
    vg_gui_skin := "regnum_default"
 }
 if(reg_vg_gui_skin == 2){
-   vg_gui_skin := "regnum_test"
+   vg_gui_skin := "regnum_loadingscreen"
 }
 if(reg_vg_gui_skin == 3){
+   vg_gui_skin := "regnum_mainmenu"
+}
+if(reg_vg_gui_skin == 4){
+   vg_gui_skin := "regnum_mainmenuv2"
+}
+if(reg_vg_gui_skin == 5){
    vg_gui_skin := "test"
+}
+if(reg_vg_gui_skin == 6){
+   vg_gui_skin := "default"
 }
 ;	// write to regnum game.cfg
 	iniwrite,% run_server.ip,%gamecfg%,server,sv_game_server_host
