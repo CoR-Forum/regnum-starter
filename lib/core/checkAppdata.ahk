@@ -1,4 +1,5 @@
 checkAppdata:
+	filedelete, %APPDATA%/RegnumNews.txt ; delete Regnum News file on close so it re-downloads the new content next time the program starts.
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
 		if(errorlevel) {
