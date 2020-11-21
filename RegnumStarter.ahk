@@ -325,7 +325,8 @@ readUserConfig:
 		, cl_show_subclass_on_players: 0
 		, cl_show_hidden_armors: 0
 		, cl_invert_selection_priority: 0
-		, cl_terrain_load_radius: 0
+		, cl_disable_terrain_loading: 0
+		, cl_terrain_load_radius: 4
 		, dbg_ignore_server_time: 0
 		, env_weather: "clear"
 		, debug_mode: 0
@@ -347,7 +348,8 @@ writeUserConfig:
 		selected_server := 1
 	if(reg_vg_gui_skin=="")
 		reg_vg_gui_skin := 1
-	
+	if(cl_terrain_load_radius=="")
+		cl_terrain_load_radius := 4
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
@@ -633,6 +635,7 @@ if(reg_vg_gui_skin == 3){
 	iniwrite,% cl_invert_selection_priority,%gamecfg%,client,cl_invert_selection_priority
 	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
 	iniwrite,% cl_show_subclass_on_players,%gamecfg%,client,cl_show_subclass_on_players
+	iniwrite,% cl_disable_terrain_loading,%gamecfg%,client,cl_disable_terrain_loading
 	iniwrite,% cl_terrain_load_radius,%gamecfg%,client,cl_terrain_load_radius
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
