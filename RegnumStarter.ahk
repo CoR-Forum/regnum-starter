@@ -19,6 +19,7 @@ iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 rs_version_release = 5.0.0
 gosub, make_gui
 
+
 argc = %0%
 if(argc >= 4) {
 	; program is being run from a shortcut: run game & exit
@@ -324,6 +325,7 @@ readUserConfig:
 		, cl_show_subclass_on_players: 0
 		, cl_show_hidden_armors: 0
 		, cl_invert_selection_priority: 0
+		, cl_terrain_load_radius: 0
 		, dbg_ignore_server_time: 0
 		, env_weather: "clear"
 		, debug_mode: 0
@@ -345,6 +347,7 @@ writeUserConfig:
 		selected_server := 1
 	if(reg_vg_gui_skin=="")
 		reg_vg_gui_skin := 1
+	
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
@@ -376,7 +379,8 @@ return
 ; ///
 
 guiClose:
-goSub ClearAppdata
+goSub clearAppdata
+goSub clearTmpAppdata
 exitapp
 
 ExitSub:
@@ -629,6 +633,7 @@ if(reg_vg_gui_skin == 3){
 	iniwrite,% cl_invert_selection_priority,%gamecfg%,client,cl_invert_selection_priority
 	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
 	iniwrite,% cl_show_subclass_on_players,%gamecfg%,client,cl_show_subclass_on_players
+	iniwrite,% cl_terrain_load_radius,%gamecfg%,client,cl_terrain_load_radius
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
