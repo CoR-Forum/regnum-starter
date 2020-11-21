@@ -10,7 +10,7 @@ checkAppdata:
 			FileCopy, data\*, %APPDATA%
 		}
 	}
-	for k,v in ["icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg1.png", "bg2.png", "RegnumNews.txt", "button-green-big.png", "button-blue-small.png","circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
+	for k,v in ["icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg1.png", "bg2.png", "RegnumNews.txt", "button-green-big.png", "button-blue-small.png","button-red-small.png", "circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
