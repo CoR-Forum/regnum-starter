@@ -30,7 +30,7 @@ make_gui:
 ;		// add border
 
 ;		// randomly choose a background image based on the function above
-  Gui, Add, Picture, x0 y0, %APPDATA%\bg_main.png ; uses the previously generated BgNumRound variable
+  Gui, Add, Picture, x0 y0, %APPDATA%\bg_main_v5_0_1.png ; uses the previously generated BgNumRound variable
 
 
 ;	// Window title
