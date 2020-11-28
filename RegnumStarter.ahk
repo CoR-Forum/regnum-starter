@@ -3,7 +3,8 @@
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
-ANALYTICS_URL = https://analytics.treudler.net/
+ANALYTICS_URL = https://analytics.treudler.net/matomo.php?action_name=RegnumStarter&idsite=8&rec=8
+rs_version_release = 5.0.1
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -17,7 +18,6 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = 5.0.1
 gosub, make_gui
 
 
