@@ -79,15 +79,15 @@ make_gui:
 
 ; 	// screenshot folder
 	Gui, Add, Picture, x263 y334 gOpenScreenshotsFolder backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+25 yp+4 backgroundtrans gOpenScreenshotsFolder, Screenshots
+	gui, add, Text, xp+25 yp+4 backgroundtrans, Screenshots
 
 ; 	// account management
 	Gui, Add, Picture, x263 y358 gAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+15 yp+4 backgroundtrans gAccounts, % T.MANAGE_ACCOUNTS
+	gui, add, Text, xp+15 yp+4 backgroundtrans, % T.MANAGE_ACCOUNTS
 
 ;	// create shortcut
 	Gui, Add, Picture, gshortcutCreate x400 y358 backgroundtrans, %APPDATA%\btn_blue_134px.png
-	gui, add, Text, xp+15 yp+4 backgroundtrans gshortcutCreate, % T.CREATE_SHORTCUT
+	gui, add, Text, xp+15 yp+4 backgroundtrans, % T.CREATE_SHORTCUT
 
 ;	// conjurer mode
 	Gui, Font, s8 cD8D8D8, Verdana
