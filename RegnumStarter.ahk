@@ -21,6 +21,7 @@ iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 gosub, make_gui
 
 
+
 argc = %0%
 if(argc >= 4) {
 	; program is being run from a shortcut: run game & exit
@@ -883,6 +884,10 @@ return
 
 WikiLink:
 Run https://regnum.wiki
+return
+
+OpenScreenshotsFolder:
+Run, explore %regnum_path%\LiveServer\screenshots
 return
 
 ;	// md5 function to securly save account passwords in users.txt
