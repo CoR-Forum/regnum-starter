@@ -3,6 +3,7 @@
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
+ANALYTICS_URL = https://analytics.treudler.net/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
