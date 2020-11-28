@@ -49,6 +49,8 @@ make_gui:
 	;Gui, Add, Picture, gForumLink x+15 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
 	;Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
 
+	Gui, Add, Text, gForumLink x605 y460 backgroundtrans, cor-forum.de
+
 ;	// display RegnumNews.txt
 	Gui, Font, s7 cD8D8D8, Verdana
 	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
