@@ -13,7 +13,7 @@ checkAppdata:
 		}
 	}
 
-	for k,v in ["icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg_main.png", "bg_settings.png","RegnumNews.txt", "btn_play.png","btn_blue_70px.png","btn_blue_90px.png","btn_blue_134px.png","btn_blue_158px.png","btn_green_70px.png","btn_green_90px.png","btn_green_162px.png","btn_red_70px.png","btn_red_90px.png","circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
+	for k,v in ["icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg_main.png", "bg_main_v5_0_1.png", "bg_settings.png","RegnumNews.txt", "btn_play.png","btn_blue_70px.png","btn_blue_90px.png","btn_blue_134px.png","btn_blue_158px.png","btn_green_70px.png","btn_green_90px.png","btn_green_162px.png","btn_red_70px.png","btn_red_90px.png","circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%...
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
