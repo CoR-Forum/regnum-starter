@@ -1,10 +1,10 @@
 ## -> [Discussion](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
 
-# RegnumStarter v4.1.0 ! - [DOWNLOAD](https://git.treudler.net/CoR-Forum/RegnumStarter/uploads/83b57bd5cfe4187ad18f5126f5c64acc/RegnumStarter.exe)
+# RegnumStarter v5.0.0 ! - [DOWNLOAD](https://git.treudler.net/CoR-Forum/RegnumStarter/uploads/800b4833eb6f300bf3042f5c6bb3c0d8/RegnumStarter.exe)
 
 ### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
-![](https://cdn.treudler.net/20/200510005156299-5nHRM-710x450.png)
+![](https://cdn.treudler.net/20/201125_222923_067-ujIuR-700x486.png)
 
 
 With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within just a few seconds and skip the input of username and password!
@@ -49,6 +49,7 @@ Choose Unicode 64-bit as your basefile.
 We've been playing Regnum for many years but both not playing anymore.
 
 This is how the RegnumStarter looked earlier... 
+![](https://cdn.treudler.net/20/200510005156299-5nHRM-710x450.png)
 ![](https://cdn.treudler.net/18/181102021650-646x331.png)
 
 ### License
