@@ -2,7 +2,7 @@
 #singleinstance Force ; starting the application again will close any existing version of it
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
-BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/ ; BASE_URL variable
+BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
