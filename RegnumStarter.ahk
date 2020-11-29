@@ -3,8 +3,7 @@
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
-ANALYTICS_URL = https://analytics.treudler.net/matomo.php?action_name=RegnumStarter&idsite=8&rec=8
-rs_version_release = 5.0.1
+rs_version_release = 5.0.3
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -20,7 +19,7 @@ iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 gosub, make_gui
 
-
+#Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
 
 argc = %0%
 if(argc >= 4) {
@@ -50,9 +49,9 @@ Return
 
 ;	// RegnumStarter Update Check ToolTip
 ToolTip, % T.CHECKING_UPDATES
-SetTimer, updateServerConfig, -10 ; blauhirn: todo .. ? - do not block the gui
 SetTimer, updateRegnumNews, -10
-SetTimer, sendAnalytics, -10
+SetTimer, sendAnalyticsOnStart, -10
+
 
 ToolTip
 OnExit, ExitSub
@@ -61,9 +60,6 @@ return
 ; // checkAppdata function
 
 #Include %A_ScriptDir%\lib\core\checkAppdata.ahk
-
-#Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
-
 return
 
 updateRegnumNews:
@@ -112,7 +108,7 @@ updateServerConfigCallback() {
 	; main program update?
 	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
 		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
-		for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
+		for k,f in [ "RegnumStarter.exe"] {
 			tooltip, New update found. Downloading %f%_new...
 			urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
 			if(errorlevel)
@@ -125,9 +121,7 @@ updateServerConfigCallback() {
 		tooltip
 		updateBat =
 (
-Del RegnumStarter.ahk
 Del RegnumStarter.exe
-Rename RegnumStarter.ahk_new RegnumStarter.ahk
 Rename RegnumStarter.exe_new RegnumStarter.exe
 %A_ScriptFullPath%
 Del `%0
@@ -137,7 +131,7 @@ Del `%0
 		if(errorlevel)
 			gosub autoUpdateFailed
 		msgbox, ,RegnumStarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" rs_update_info
-		run, update.bat,, hide
+		run, update.bat,, ;hide
 		onExit
 		exitapp
 	}
@@ -387,6 +381,12 @@ goSub clearAppdata
 goSub clearTmpAppdata
 exitapp
 
+writeAllConfigs:
+	gui,submit,nohide
+	goSub writeUsers
+	goSub writeUserConfig
+return
+
 ExitSub:
 	gui,submit,nohide
 	goSub writeUsers
@@ -557,7 +557,9 @@ return
 
 login:
 	gosub setupParams
+	goSub writeUserConfig
 	gosub run
+	SetTimer, sendAnalyticsOnLogin, -10
 return
 
 setupParams:

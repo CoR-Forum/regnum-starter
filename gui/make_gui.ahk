@@ -96,11 +96,11 @@ make_gui:
 
 ; 	// user selection
 	Gui, Font, s8 normal cD8D8D8, Verdana
-	gui, add, dropdownlist, x260 y396 w200 vselected_user altsubmit
+	gui, add, dropdownlist, x260 y396 w200 gwriteAllConfigs vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
-	gui, add, dropdownlist, x+5 yp w70 vselected_server altsubmit
+	gui, add, dropdownlist, x+5 yp w70 gwriteAllConfigs vselected_server altsubmit 
 	gosub updateServerlist
 
 ; 	// login button
