@@ -65,6 +65,7 @@ make_gui:
 	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans, % T.UI_SETTINGS
 
+
 ;	// server status
 	Gui, Font, bold s9 cD8D8D8, Verdana
 	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status

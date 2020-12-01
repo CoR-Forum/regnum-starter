@@ -49,7 +49,7 @@ Return
 
 ;	// RegnumStarter Update Check ToolTip
 ToolTip, % T.CHECKING_UPDATES
-SetTimer, updateRegnumNews, -10
+SetTimer, updateServerConfig, -10
 SetTimer, sendAnalyticsOnStart, -10
 
 
@@ -62,30 +62,8 @@ return
 #Include %A_ScriptDir%\lib\core\checkAppdata.ahk
 return
 
-updateRegnumNews:
-	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
-	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
-	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
-	RegnumNewsReq := ComObjCreate("Msxml2.XMLHTTP")
-	RegnumNewsReq.open("GET", BASE_URL "RegnumNews.txt?disablecache=" A_TickCount, true)
-	RegnumNewsReq.onreadystatechange := Func("updateRegnumNewsCallback")
-	RegnumNewsReq.send()
-return
-
-updateRegnumNewsCallback() {
-	global
-	if (serverConfigReq.readyState != 4)
-		return
-	if (serverConfigReq.status != 200 || serverConfigReq.responseText == "") {
-		msgbox % T.INVALID_SERVER_CONFIG
-		return
-	}
-	fileDelete, %APPDATA%/ronews.txt
-	fileAppend, % RegnumNewsReq.responseText, %APPDATA%/ronews.txt
-
-}
-
 updateServerConfig:
+	tooltip, Downloading Server Configuration...
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
 	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
@@ -103,9 +81,11 @@ updateServerConfigCallback() {
 		msgbox % T.INVALID_SERVER_CONFIG
 		return
 	}
+	tooltip, Writing Server Configuration...
 	fileDelete, %APPDATA%/serverConfig.txt
 	fileAppend, % serverConfigReq.responseText, %APPDATA%/serverConfig.txt
 	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
+	tooltip
 	; main program update?
 	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
 		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
@@ -892,4 +872,6 @@ Run, explore %regnum_path%\LiveServer\screenshots
 return
 
 ;	// md5 function to securly save account passwords in users.txt
-#Include %A_ScriptDir%\lib\md5_function.ahk
+#Include %A_ScriptDir%\lib\md5.ahk
+
+#Include %A_ScriptDir%\lib\SimplePing.ahk
