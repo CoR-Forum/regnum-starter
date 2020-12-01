@@ -23,15 +23,7 @@ make_gui:
 ;	// display native windows title name - usually only seen when hovering over the task bar
 	gui, show, w700 h486 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
 
-;   // number generator for background image
-  Random, BgNum , 2, 2 ; the function Random generates a number between 1 and 2 and sets it to the variable BgNum
-  BgNumRound := Round(BgNum) ; variable BgNum will be round up or down and named BgNumRound
-
-;		// add border
-
-;		// randomly choose a background image based on the function above
-  Gui, Add, Picture, x0 y0, %APPDATA%\bg_main_v5_0_1.png ; uses the previously generated BgNumRound variable
-
+  	Gui, Add, Picture, x0 y0, %APPDATA%\bg_main_v5_0_1.png
 
 ;	// Window title
 	Gui, Font, s11 bold cD8D8D8, Verdana
@@ -71,11 +63,11 @@ make_gui:
 	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status
 	Gui, Font, normal s9 cD8D8D8, Verdana
 	Gui, Add, Picture, x35 yp+25 backgroundtrans, %APPDATA%\circle-on.png
-		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
+	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
-		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
+	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
 	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
-		Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
+	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
 	Gui, Font, s7 cD8D8D8, Verdana
 
 ; 	// screenshot folder
@@ -127,12 +119,7 @@ make_gui:
 	Gui, Margin , 0, 0
 	Gui -Caption
 
-
-
-
 	WinGet, GuiID, ID, A
-
-
 
 return
 
