@@ -23,12 +23,9 @@ checkAppdata:
 			}
 
 		}
-
 	}
-
+gosub, updateServerConfig
 return
-
-
 
 ;	function to clear unused data from %APPDATA%
 clearAppdata:
