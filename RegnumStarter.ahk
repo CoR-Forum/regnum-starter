@@ -493,8 +493,6 @@ runAsGuiToggled:
 	guicontrol,4:%wat%,gui_runas_required_text
 return
 
-#Include %A_ScriptDir%\gui\ManageAccounts.ahk
-
 #Include %A_ScriptDir%\gui\accounts.ahk
 
 language_changed:
