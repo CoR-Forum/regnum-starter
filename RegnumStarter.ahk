@@ -3,7 +3,7 @@
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
-rs_version_release = 5.0.3
+rs_version_release = 5.1.7
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -80,8 +80,9 @@ updateRegnumNewsCallback() {
 		msgbox % T.INVALID_SERVER_CONFIG
 		return
 	}
-	fileDelete, %APPDATA%/RegnumNews.txt
-	fileAppend, % RegnumNewsReq.responseText, %APPDATA%/RegnumNews.txt
+	fileDelete, %APPDATA%/ronews.txt
+	fileAppend, % RegnumNewsReq.responseText, %APPDATA%/ronews.txt
+
 }
 
 updateServerConfig:

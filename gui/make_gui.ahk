@@ -53,7 +53,7 @@ make_gui:
 
 ;	// display RegnumNews.txt
 	Gui, Font, s7 cD8D8D8, Verdana
-	FileRead, RegnumNewsText, %APPDATA%/RegnumNews.txt
+	FileRead, RegnumNewsText, %APPDATA%/ronews.txt
 	Gui, Add, Text, x265 y55 w500 h265 backgroundtrans, %RegnumNewsText%
 
 ;	// quick access to options
