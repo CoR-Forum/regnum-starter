@@ -196,3 +196,15 @@ Gui, 4:Show, w550 h336, settings
 
 return
 
+runAsGuiToggled:
+	gui,submit,nohide
+	if(runas)
+		wat:="show"
+	else
+		wat:="hide"
+	guicontrol,4:%wat%,runas_name
+	guicontrol,4:%wat%,runas_pw
+	guicontrol,4:%wat%,gui_runas_name_text
+	guicontrol,4:%wat%,gui_runas_pw_text
+	guicontrol,4:%wat%,gui_runas_required_text
+return

@@ -1,9 +1,13 @@
 #persistent ; keep the script running
 #singleinstance Force ; starting the application again will close any existing version of it
+
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
+
 BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
+
 rs_version_release = 5.1.7
+
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
@@ -21,6 +25,16 @@ gosub, make_gui
 
 #Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
 
+;	// INC_SCR remove window border
+#Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
+
+;	// INC_SCR try to automatically detect the language
+#Include %A_ScriptDir%\locales\checkLanguage.ahk
+
+;	// INC_SCR include translations snippet
+#Include %A_ScriptDir%\locales\translations.ahk
+
+;	// RegnumStarter is running from shortcut
 argc = %0%
 if(argc >= 4) {
 	; program is being run from a shortcut: run game & exit
@@ -39,7 +53,6 @@ if(argc >= 4) {
 	gosub run
 	;SetTimer, ExitAfterQuicklaunch, 3
 }
-
 
 ExitAfterQuicklaunch(){
 	Global
@@ -60,10 +73,9 @@ return
 ; // checkAppdata function
 
 #Include %A_ScriptDir%\lib\core\checkAppdata.ahk
-return
 
 updateServerConfig:
-	tooltip, Downloading Server Configuration...
+	ToolTip, % T.CHECKING_UPDATES
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
 	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
@@ -81,7 +93,7 @@ updateServerConfigCallback() {
 		msgbox % T.INVALID_SERVER_CONFIG
 		return
 	}
-	tooltip, Writing Server Configuration...
+	tooltip, Writing Configuration...
 	fileDelete, %APPDATA%/serverConfig.txt
 	fileAppend, % serverConfigReq.responseText, %APPDATA%/serverConfig.txt
 	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
@@ -101,12 +113,12 @@ updateServerConfigCallback() {
 		fc=
 		tooltip
 		updateBat =
-(
-Del RegnumStarter.exe
-Rename RegnumStarter.exe_new RegnumStarter.exe
-%A_ScriptFullPath%
-Del `%0
-)
+			(
+			Del RegnumStarter.exe
+			Rename RegnumStarter.exe_new RegnumStarter.exe
+			%A_ScriptFullPath%
+			Del `%0
+			)
 		filedelete, update.bat
 		fileAppend, %updateBat%, update.bat
 		if(errorlevel)
@@ -135,7 +147,6 @@ autoUpdateFailed:
 	tooltip
 	fc=
 	filedelete updateBat
-	filedelete RegnumStarter.ahk_new
 	filedelete RegnumStarter.exe_new
 exit
 ; //
@@ -155,6 +166,7 @@ patchLiveGamefile(file) {
 	tooltip
 	return true
 }
+
 updateGamefiles:
 	launcherini := regnum_path "ROLauncher.ini"
 	iniread, current_win64, %launcherini%, build, win64
@@ -448,36 +460,11 @@ empty(v) {
 	return false
 }
 
-;	// include make_gui snippet
 #Include %A_ScriptDir%\gui\make_gui.ahk
 
-;	// include graphic_settings snippet
-#Include %A_ScriptDir%\gui\graphic_settings.ahk
-
-;	// include settings snippet
 #Include %A_ScriptDir%\gui\settings.ahk
 
-
-
-
-
-runAsGuiToggled:
-	gui,submit,nohide
-	if(runas)
-		wat:="show"
-	else
-		wat:="hide"
-	guicontrol,4:%wat%,runas_name
-	guicontrol,4:%wat%,runas_pw
-	guicontrol,4:%wat%,gui_runas_name_text
-	guicontrol,4:%wat%,gui_runas_pw_text
-	guicontrol,4:%wat%,gui_runas_required_text
-return
-
 #Include %A_ScriptDir%\gui\accounts.ahk
-
-language_changed:
-reload
 
 ; //////
 updateUserlist:
@@ -523,16 +510,7 @@ return
 ; //////////////////////////
 
 ;	// load ShortcutCreate
-#Include %A_ScriptDir%\lib\shortcut.ahk
 
-; ////////////////////////
-
-
-
-
-;		// graphic settings window control elements
-
-; ////////////
 
 login:
 	gosub setupParams
@@ -752,14 +730,11 @@ startGame:
 
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
-
 	}
 	else
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
-
 	}
-
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return
@@ -792,14 +767,7 @@ startGame:
 
 return
 
-;	// INC_SCR remove window border
-#Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
 
-;	// INC_SCR try to automatically detect the language
-#Include %A_ScriptDir%\locales\checkLanguage.ahk
-
-;	// INC_SCR include translations snippet
-#Include %A_ScriptDir%\locales\translations.ahk
 
 ;	// make gui moveable
 ~LButton::

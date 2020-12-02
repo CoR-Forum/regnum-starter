@@ -3,6 +3,8 @@
 
 ; initialize the UI
 
+#Include %A_ScriptDir%\lib\shortcut.ahk
+
 make_gui:
 
     Gui -DPIScale
@@ -123,3 +125,5 @@ make_gui:
 
 return
 
+language_changed:
+reload

@@ -1,5 +1,4 @@
 ﻿shortcutCreate:
-
 	gui, submit, nohide
 	user := users[selected_user]
 	server := servers[selected_server]
@@ -27,5 +26,4 @@
 	}
 
 	shortcut_last := shortcut
-
 return
