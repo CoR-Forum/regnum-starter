@@ -191,7 +191,7 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 		gui, 4:add, text, x30 y60 backgroundtrans, GUI SKIN
 		gui, 4:add, dropdownlist, x+20 yp w140 vreg_vg_gui_skin AltSubmit, 1:regnum_default (newest)|2:regnum_loadingscreen|3:regnum_mainmenu|4:regnum_mainmenuv2|5:test|6:default
 		gui, 4:add, text, x+10 yp backgroundtrans, Current nr: %reg_vg_gui_skin%
-Gui, 4:Show, w550 h336, settings
+Gui, 4:Show, w550 h336 x%GuiX% y%GuiY%, settings
 
 
 return
