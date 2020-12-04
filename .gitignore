@@ -1,8 +1,9 @@
 .vscode
 *.exe
-*.code-workspace
 
 # blau?
 test*
 todo*
 todo*
+
+*.lnk
