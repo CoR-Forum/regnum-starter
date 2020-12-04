@@ -104,14 +104,14 @@ make_gui:
 	gui, add, Text, xp+40 yp+5 BackgroundTrans, % T.LOGIN
 
 ; 	// notes
-	Gui, Font, s7 cD8D8D8, Verdana
-	Gui, Add, Picture, x34 y443  backgroundtrans, %APPDATA%\btn_blue_70px.png
-	gui, add, Text, xp+20 yp+4 backgroundtrans, Notes
+	;Gui, Font, s7 cD8D8D8, Verdana
+	;Gui, Add, Picture, x34 y443 gNotes backgroundtrans, %APPDATA%\btn_blue_70px.png
+	;gui, add, Text, xp+20 yp+4 backgroundtrans, Notes
 
 ;	// close on start
-	;Gui, Font, s8 cD8D8D8, Verdana
-	;gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
-	;gui, add, text, x+3 yp backgroundtrans, close rs on login
+	Gui, Font, s8 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
+	gui, add, text, x+3 yp backgroundtrans, close rs on login
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.

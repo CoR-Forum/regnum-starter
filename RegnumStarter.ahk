@@ -466,6 +466,8 @@ empty(v) {
 
 #Include %A_ScriptDir%\gui\accounts.ahk
 
+#Include %A_ScriptDir%\gui\notes.ahk
+
 ; //////
 updateUserlist:
 		userlist := ""
@@ -721,7 +723,6 @@ return
 
 ; // The game will now start
 startGame:
-
 	;;;;;;;; REMOVE WINDOW BORDER OPTION
 
 	if(hide_window_border)
@@ -735,10 +736,16 @@ startGame:
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
 	}
+
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return
 	}
+	;else{
+;		if(rs_close_on_login == 1){
+;			goSub GuiClose
+;		}
+;	}
 
 ;	// prompt log.txt connection error
 
