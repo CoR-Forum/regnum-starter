@@ -72,6 +72,9 @@ Accounts:
 		refererlist .= "|" referer.name
 	}
 	placeholder := "   "
+	    Gui, 5:Font, normal s7 cD8D8D8, Verdana
+
+	gui, 5:add, text, x30 y32 backgroundtrans, % T.PASSWORD_ENCRYPTION_INFO
 	Gui, 5:Font, bold s8 cD8D8D8, Verdana
 Gui, 5:add, Text, x70 y50 backgroundtrans, % T.NAME
 Gui, 5:add, Text, x+70 yp backgroundtrans, % T.PASSWORD
@@ -99,7 +102,6 @@ Gui, 5:add, Text, x+70 yp backgroundtrans, % T.COMMENT
     	Gui, 5:Font, s7 normal cD8D8D8, Verdana
 	Gui, 5:Add, Picture, gAccountsGuiAdd x45 y+10 backgroundtrans, %APPDATA%\btn_blue_70px.png
     Gui, 5:Add, Text , xp+10 yp+5 backgroundtrans, add new
-	gui, 5:add, text, x45 y+10 backgroundtrans, % T.PASSWORD_ENCRYPTION_INFO
 Gui, 5:Show, w550 h336 x%GuiX% y%GuiY%, settings
 ;WinGet, GuiID, ID, A
 return

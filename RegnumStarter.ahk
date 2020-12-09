@@ -736,16 +736,14 @@ startGame:
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
 	}
-
+	;if(rs_close_on_login == 1){
+	;	SetTimer, ExitAfterQuicklaunch, -5
+	;}
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return
 	}
-	;else{
-;		if(rs_close_on_login == 1){
-;			goSub GuiClose
-;		}
-;	}
+
 
 ;	// prompt log.txt connection error
 

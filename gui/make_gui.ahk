@@ -86,12 +86,12 @@ make_gui:
 
 ;	// conjurer mode
 	Gui, Font, s8 cD8D8D8, Verdana
-	gui, add, checkbox, x550 y360 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
+	gui, add, checkbox, x550 y362 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
 ; 	// user selection
 	Gui, Font, s8 normal cD8D8D8, Verdana
-	gui, add, dropdownlist, x260 y396 w200 gwriteAllConfigs vselected_user altsubmit
+	gui, add, dropdownlist, x262 y396 w200 gwriteAllConfigs vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
@@ -109,9 +109,9 @@ make_gui:
 	;gui, add, Text, xp+20 yp+4 backgroundtrans, Notes
 
 ;	// close on start
-	Gui, Font, s8 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
-	gui, add, text, x+3 yp backgroundtrans, close rs on login
+;	Gui, Font, s8 cD8D8D8, Verdana
+;	gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
+;	gui, add, text, x+3 yp backgroundtrans, close rs on login
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.

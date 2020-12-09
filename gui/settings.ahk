@@ -33,7 +33,7 @@ Settings:
 
 ;	// Window title
 	Gui, 4:Font, s11 bold cD8D8D8, Verdana
-	Gui, 4:add, text, x240 center y6 w140 h25 backgroundtrans, settings
+	Gui, 4:add, text, x20 center y6 w140 h25 backgroundtrans, "settings"
 	Gui, 4:Font, s7 cD8D8D8, Verdana
   	Gui, 4:Add, Picture, x0 y0, %APPDATA%\bg_settings.png
 	Gui, 4:Font, s8  normal cD8D8D8, Verdana
