@@ -29,7 +29,7 @@ make_gui:
 
 ;	// Window title
 	Gui, Font, s11 bold cD8D8D8, Verdana
-	gui, add, text, x240 center y6 w140 h25 backgroundtrans, RegnumStarter
+	gui, add, text, x240 center y6 backgroundtrans, RegnumStarter
 
 ;	// version number next to the window title
 	Gui, Font, s7 normal cD8D8D8, Verdana
