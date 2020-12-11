@@ -696,13 +696,27 @@ else {
 
 ;	// remove NGE intro
 
-	if(skip_logo==1) {
+	if(skip_logo) {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
 		filedelete, %live%splash_nge.png
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_nge.ogg
 	}
+	else{
+			for k,v in ["splash_nge.ogg","splash_nge.png"] {
+		if(!FileExist(LIVE "/" v)) {
+			tooltip, Downloading NGE Splash
+			UrlDownloadToFile, %BASE_URL%%v%, %live%/%v%
+			;tooltip ; fix to remove the tooltip
+			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
+				; who cares
+			}
+
+		}
+	}
+	}
+	
 
 	if run_runas = 1
 	{
