@@ -21,7 +21,7 @@ goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-gosub, make_gui
+gosub, gui_main
 
 #Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
 
@@ -460,7 +460,7 @@ empty(v) {
 	return false
 }
 
-#Include %A_ScriptDir%\gui\make_gui.ahk
+#Include %A_ScriptDir%\gui\gui_main.ahk
 
 #Include %A_ScriptDir%\gui\settings.ahk
 
