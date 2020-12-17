@@ -518,7 +518,6 @@ login:
 	gosub setupParams
 	goSub writeUserConfig
 	gosub run
-	SetTimer, sendAnalyticsOnLogin, -10
 return
 
 setupParams:
@@ -535,6 +534,7 @@ run:
 	;	// game path for live and test server
 	live = %regnum_path%LiveServer\
 	test = %regnum_path%TestServer\
+	SetTimer, sendAnalyticsOnLogin, -10
 
 ;	// USER INPUT VALIDATION
 
