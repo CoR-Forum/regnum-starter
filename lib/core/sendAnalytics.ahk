@@ -1,5 +1,5 @@
 ANALYTICS_URL = https://analytics.treudler.net/matomo.php?idsite=8&rec=8&uid=%A_ComputerName%
-ANALYTICS_PARAMETER_START = &action_name=RegnumStarter_Start
+ANALYTICS_PARAMETER_START = &action_name=RegnumStarter_Start_%rs_version_release%
 
 sendAnalyticsOnStart:
 sendAnalytics := ComObjCreate("Msxml2.XMLHTTP")
