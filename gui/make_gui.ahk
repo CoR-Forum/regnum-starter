@@ -131,4 +131,5 @@ make_gui:
 return
 
 language_changed:
+goSub, writeAllConfigs
 reload
