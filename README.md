@@ -4,7 +4,7 @@
 
 ### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
-![](https://cdn.treudler.net/20/201125_222923_067-ujIuR-700x486.png)
+![](https://cdn.treudler.net/20/201218_003107_946-dP643-700x486.png)
 
 
 With this tool, you can log in to the game [Champions of Regnum](https://www.championsofregnum.com/) within just a few seconds and skip the input of username and password!
