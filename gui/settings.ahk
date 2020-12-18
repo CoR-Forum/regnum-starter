@@ -102,7 +102,7 @@ gui  4:add, text, x30 y60 backgroundtrans, % T.REGNUM_PATH ":"
 		Gui, 4:Font, s8 c000000, Verdana
 
 		gui, 4:add, edit, x30 y+5 w90 h18 -multi vrunas_name, %runas_name%
-		gui, 4:add, edit, x+30 yp w90 h18 -multi vrunas_pw, %runas_pw%
+		gui, 4:add, edit, x+30 yp w90 h18 -multi vrunas_pw password, %runas_pw%
 
 		Gui, 4:Font, s6 cD8D8D8, Verdana
 		gui, 4:add, text, x80 y+2 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
