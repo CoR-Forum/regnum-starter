@@ -4,9 +4,9 @@
 APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
 
-BASE_URL = https://www.cor-forum.de/regnum/schnellstarter/
+BASE_URL = https://cor-forum.de/regnum/schnellstarter/
 
-rs_version_release = 5.1.7
+rs_version_release = 5.1.8
 
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
@@ -20,6 +20,8 @@ gosub, readServerConfig ; servers and referers
 goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
+iniread, rs_news_version, %APPDATA%/serverConfig.txt, version, rs_news_version, -1
+iniread, rs_changelog_version, %APPDATA%/serverConfig.txt, version, rs_changelog_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
 gosub, gui_main
 
@@ -140,6 +142,19 @@ updateServerConfigCallback() {
 			msgbox, ,RegnumStarter - Metaupdate, % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
+	; otherwise, news update?
+	iniread, rs_news_version_new, %APPDATA%/serverConfig.txt, version, rs_news_version, -1
+	if(rs_news_version_new == -1) {
+		msgbox, % T.INVALID_SERVER_CONFIG
+		exitapp
+	}
+	;if(rs_news_version_new > rs_news_version) {
+;		Tooltip, moin
+		;urldownloadtofile, %BASE_URL%/ronews.txt, %APPDATA%/ronews.txt
+;		if(rs_news_version > -1)
+;			msgbox, ,RegnumStarter - News Update, News Updated!
+;		reload
+;	}
 }
 
 autoUpdateFailed:
@@ -467,6 +482,8 @@ empty(v) {
 #Include %A_ScriptDir%\gui\accounts.ahk
 
 #Include %A_ScriptDir%\gui\notes.ahk
+
+#Include %A_ScriptDir%\gui\gui7_changelogs.ahk
 
 ; //////
 updateUserlist:
