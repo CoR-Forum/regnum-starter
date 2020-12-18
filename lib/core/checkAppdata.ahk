@@ -1,5 +1,6 @@
 checkAppdata:
-	filedelete, %APPDATA%/ronews.txt ; delete Regnum News file on close so it re-downloads the new file
+tooltip, Updating news...
+	 ; delete Regnum News file on close so it re-downloads the new file
 ;	function to delete tmp files of the regnumStarter on ExitApp
 	if(!fileexist(APPDATA)) {
 		FileCreateDir, %APPDATA%
@@ -13,7 +14,7 @@ checkAppdata:
 		}
 	}
 
-	for k,v in ["icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg_main_v5_0_1.png", "bg_settings.png","ronews.txt", "btn_play.png","btn_blue_70px.png","btn_blue_90px.png","btn_blue_134px.png","btn_blue_158px.png","btn_green_70px.png","btn_green_90px.png","btn_green_162px.png","btn_red_70px.png","btn_red_90px.png","circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
+	for k,v in ["ronews.txt", "icon.png", "logo_cor.png", "logo_discord.png", "logo_forum.png", "logo_wiki.png", "bg_main_v5_0_1.png", "bg_settings.png", "btn_play.png","btn_blue_70px.png","btn_blue_90px.png","btn_blue_134px.png","btn_blue_158px.png","btn_green_70px.png","btn_green_90px.png","btn_green_162px.png","btn_red_70px.png","btn_red_90px.png","circle-on.png","circle-off.png"] { ; files needed for the RegnumStarter to work
 		if(!FileExist(APPDATA "/" v)) {
 			tooltip, Downloading %v%... 
 			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
@@ -21,7 +22,6 @@ checkAppdata:
 			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
 				; who cares
 			}
-
 		}
 	}
 gosub, updateServerConfig
@@ -29,6 +29,7 @@ return
 
 ;	function to clear unused data from %APPDATA%
 clearAppdata:
+		filedelete, %APPDATA%/ronews.txt
 		filedelete, %APPDATA%/bg1.png
 		filedelete, %APPDATA%/bg2.png
 		filedelete, %APPDATA%/bckg.png
