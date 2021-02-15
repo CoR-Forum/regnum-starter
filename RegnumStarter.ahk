@@ -6,13 +6,13 @@ global APPDATA
 
 BASE_URL = https://cor-forum.de/regnum/schnellstarter/
 
-rs_version_release = 5.1.8
+rs_version_release = 5.2.0
 
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
 gosub, readUserConfig
-gosub, checkLanguage
+;gosub, checkLanguage
 gosub, setTranslations
 try menu, tray, icon, %APPDATA%/rsicon.ico
 coordmode,mouse,screen
@@ -31,7 +31,7 @@ gosub, gui_main
 #Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
 
 ;	// INC_SCR try to automatically detect the language
-#Include %A_ScriptDir%\locales\checkLanguage.ahk
+;#Include %A_ScriptDir%\locales\checkLanguage.ahk
 
 ;	// INC_SCR include translations snippet
 #Include %A_ScriptDir%\locales\translations.ahk
@@ -307,6 +307,7 @@ return
 readUserConfig:
 	; name: defaultvalue
 	configEntries := { language: a_space
+		, language: "eng"
 		, rs_delete_tmp_files: 0
 		, rs_close_on_login: 0
 		, selected_user: 1
