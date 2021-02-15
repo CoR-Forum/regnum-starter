@@ -40,11 +40,11 @@ gui_main:
 
 ;	// discord and forum logo
 	;Gui, Add, Picture, gDiscordLink x30 y440 h32 w32 backgroundtrans, %APPDATA%\logo_discord.png
-	;Gui, Add, Picture, gForumLink x+15 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
+	Gui, Add, Picture, gForumLink x500 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
 	;Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
 Gui, Font, normal s7 underline, Verdana
 ;Gui, Add, Text, ggui7_Changelogs x540 y460 backgroundtrans, changelogs
-	Gui, Add, Text, gForumLink x605 y460 backgroundtrans, cor-forum.de
+	;Gui, Add, Text, gForumLink x605 y460 backgroundtrans, cor-forum.de
 
 ;	// display RegnumNews.txt
 	Gui, Font, normal s7 cD8D8D8, Verdana
