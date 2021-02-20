@@ -9,3 +9,4 @@ Ahk2Exe*/* filter=lfs diff=lfs merge=lfs
 
 # ignore the AHK compiler
 Ahk2Exe*/* filter=lfs diff=lfs merge=lfs
+RegnumStarter.exe
