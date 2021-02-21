@@ -6,7 +6,7 @@ global APPDATA
 
 BASE_URL = https://cor-forum.de/regnum/schnellstarter/
 
-rs_version_release = 5.2.0
+rs_version_release = 5.2.1
 
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
@@ -222,16 +222,19 @@ updateGamefiles:
 		msgbox
 		gosub startGame
 	} else {
-		; Check if update available, then download and overwrite those files that might contain changes
-		tooltip, % T.CHECKING_GAME_UPDATES
-
-		; Async: Will start game afterwards
-		add := win64 ? "64" : ""
-		gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
-		gameHeadReq := ComObjCreate("Msxml2.XMLHTTP")
-		gameHeadReq.open("HEAD", gameHeadUrl, true)
-		gameHeadReq.onreadystatechange := Func("updateGamefilesCallback")
-		gameHeadReq.send()
+		;; Check if update available, then download and overwrite those files that might contain changes
+		;tooltip, % T.CHECKING_GAME_UPDATES
+;
+		;; Async: Will start game afterwards
+		;add := win64 ? "64" : ""
+		;gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
+		;gameHeadReq := ComObjCreate("Msxml2.XMLHTTP")
+		;;gameHeadReq.setTimeouts(5000, 5000, 1000, 1000)
+		;RunWait, gameHeadReq.open("GET", gameHeadUrl, true), 1000
+		;gameHeadReq.onreadystatechange := Func("updateGamefilesCallback")
+		;gameHeadReq.send()
+		gosub startGame
+		gui, 1:-disabled
 	}
 return
 
