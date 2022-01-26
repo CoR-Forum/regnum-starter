@@ -6,7 +6,7 @@ global APPDATA
 
 BASE_URL = https://cor-forum.de/regnum/schnellstarter/
 
-rs_version_release = 5.2.1
+rs_version_release = 5.2.2
 
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
@@ -737,7 +737,7 @@ else {
 		}
 	}
 	}
-	
+
 
 	if run_runas = 1
 	{
