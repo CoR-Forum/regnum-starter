@@ -3,6 +3,7 @@
 - **fixed:** [ec60414f1ee26a4c4daf66ccc7935d6a74a3a20c] It was not possible to click on RegnumStarter UI after Regnum has been launched on Windows 11 which prevents players from starting Regnum multiple times at the same time, this is fixed.
 - **added:** [b5294398d82dcb2fe90bbc7b1215eb7953cef10a] Feature request: Checkbox underneath Login button to selecet if RegnumStarter should stay open or close after logging in to Regnum. Please note that as of now RegnumStarter will close after the Regnum client has been closed too. This will be changed in a further update.
 - **removed:** [44800a4f55402cec4268cd4ebd4a1009b5232039] Regnum News and Server Status have been removed. Server Status is no longer needed and Regnum News don't work the way they had been implemented initially.
+- **changed:** AutoHotKey updated to 1.1.34.00
 
 ## some versions missing here...
 
