@@ -758,6 +758,7 @@ return
 
 ; // The game will now start
 startGame:
+gui, 1:-disabled
 	;;;;;;;; REMOVE WINDOW BORDER OPTION
 
 	if(hide_window_border)
