@@ -48,36 +48,23 @@ Gui, Font, normal s7 underline, Verdana
 
 ;	// display RegnumNews.txt
 	Gui, Font, normal s7 cD8D8D8, Verdana
-	FileRead, RegnumNewsText, %APPDATA%/ronews.txt
+	; FileRead, RegnumNewsText, %APPDATA%/ronews.txt
 	Gui, Add, Text, x265 y55 w500 h265 backgroundtrans, %RegnumNewsText%
 
-;	// quick access to options
+;	// settings heading
 	Gui, Font, bold s9 cD8D8D8, Verdana
-	Gui, Add, Text, x90 y55 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
+	Gui, Add, Text, x90 y340 w500 h270 backgroundtrans, % T.UI_HEADING_QUICK_OPTIONS
 	Gui, Font, s7 normal cD8D8D8, Verdana
 
-; 	// settings
-	Gui, Add, Picture, gSettings x70 y300 backgroundtrans, %APPDATA%\btn_blue_134px.png
+; // settings
+	Gui, Add, Picture, gSettings x70 y370 backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+20 yp+5 backgroundtrans, % T.UI_SETTINGS
 
-
-;	// server status
-	Gui, Font, bold s9 cD8D8D8, Verdana
-	Gui, Add, Text, x80 y335 w500 h270 backgroundtrans, Server Status
-	Gui, Font, normal s9 cD8D8D8, Verdana
-	Gui, Add, Picture, x35 yp+25 backgroundtrans, %APPDATA%\circle-on.png
-	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Ra
-	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-on.png
-	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Valhalla
-	Gui, Add, Picture, x35 yp+20 backgroundtrans, %APPDATA%\circle-off.png
-	Gui, Add, Text, x+10 yp w500 h270 backgroundtrans, Amun (Test Server)
-	Gui, Font, s7 cD8D8D8, Verdana
-
-; 	// screenshot folder
+; // screenshot folder
 	Gui, Add, Picture, x263 y334 gOpenScreenshotsFolder backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+25 yp+4 backgroundtrans, Screenshots
 
-; 	// account management
+; // account management
 	Gui, Add, Picture, x263 y358 gAccounts backgroundtrans, %APPDATA%\btn_blue_134px.png
 	gui, add, Text, xp+15 yp+4 backgroundtrans, % T.MANAGE_ACCOUNTS
 
@@ -90,13 +77,13 @@ Gui, Font, normal s7 underline, Verdana
 	gui, add, checkbox, x550 y362 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
 	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
 
-; 	// user selection
+; // user selection
 	Gui, Font, s8 normal cD8D8D8, Verdana
 	gui, add, dropdownlist, x262 y396 w200 gwriteAllConfigs vselected_user altsubmit
 	goSub updateUserlist
 
 ; 	// server selection
-	gui, add, dropdownlist, x+5 yp w70 gwriteAllConfigs vselected_server altsubmit 
+	gui, add, dropdownlist, x+5 yp w70 gwriteAllConfigs vselected_server altsubmit
 	gosub updateServerlist
 
 ; 	// login button
@@ -122,7 +109,7 @@ Gui, Font, normal s7 underline, Verdana
 
 ;	// close button
 	Gui, Font, s12 cD8D8D8, Verdana
-	gui, add, text, x680 backgroundtrans y4 gguiclose, 
+	gui, add, text, x680 backgroundtrans y4 gguiclose,
 
 	Gui, Margin , 0, 0
 	Gui -Caption
