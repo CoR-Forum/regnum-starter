@@ -1,3 +1,10 @@
+## [v5.2.2] - 2022-01-26
+
+- **fixed:** [ec60414f1ee26a4c4daf66ccc7935d6a74a3a20c] It was not possible to click on RegnumStarter UI after Regnum has been launched on Windows 11 which prevents players from starting Regnum multiple times at the same time, this is fixed.
+- **removed:** [44800a4f55402cec4268cd4ebd4a1009b5232039] Regnum News and Server Status have been removed. Server Status is no longer needed and Regnum News don't work the way they had been implemented initially.
+
+## some versions missing here...
+
 ## [v4.0.2-pre] - 2020-05-11
 
 - **fixed:** [7f4dec8f32fe5298052d6635168c87a128961832] Shurtcuts are now working again.
