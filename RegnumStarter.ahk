@@ -772,9 +772,10 @@ gui, 1:-disabled
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
 	}
-	;if(rs_close_on_login == 1){
-	;	SetTimer, ExitAfterQuicklaunch, -5
-	;}
+	if(rs_close_on_login == 1){
+		SetTimer, guiClose, -1000
+		;gguiClose,
+	}
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return

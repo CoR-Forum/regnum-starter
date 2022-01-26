@@ -40,7 +40,7 @@ gui_main:
 
 ;	// discord and forum logo
 	;Gui, Add, Picture, gDiscordLink x30 y440 h32 w32 backgroundtrans, %APPDATA%\logo_discord.png
-	Gui, Add, Picture, gForumLink x500 y438 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
+	Gui, Add, Picture, gForumLink x30 y434 h40 w174 backgroundtrans, %APPDATA%\logo_forum.png
 	;Gui, Add, Picture, gWikiLink x+1 y436 h40 w153 backgroundtrans, %APPDATA%\logo_wiki.png
 Gui, Font, normal s7 underline, Verdana
 ;Gui, Add, Text, ggui7_Changelogs x540 y460 backgroundtrans, changelogs
@@ -97,9 +97,9 @@ Gui, Font, normal s7 underline, Verdana
 	;gui, add, Text, xp+20 yp+4 backgroundtrans, Notes
 
 ;	// close on start
-;	Gui, Font, s8 cD8D8D8, Verdana
-;	gui, add, checkbox, w%CBW% h%CBH% xp y+8 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
-;	gui, add, text, x+3 yp backgroundtrans, close rs on login
+	Gui, Font, s8 cD8D8D8, Verdana
+	gui, add, checkbox, w%CBW% h%CBH% x550 y450 checked%rs_close_on_login% backgroundtrans vrs_close_on_login
+	gui, add, text, x+3 yp backgroundtrans, close rs on login
 
 
 ;	// language selection. this will change both regnums and regnumstarters language.
