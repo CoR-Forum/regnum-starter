@@ -1,4 +1,10 @@
+.vscode
+*.exe
+
+# blau?
 test*
 todo*
-data
-.vscode
+todo*
+
+*.lnk
+*.bat

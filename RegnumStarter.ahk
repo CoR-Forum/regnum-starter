@@ -1,13 +1,18 @@
-#persistent
-#singleinstance off
-APPDATA := A_AppData "\RegnumStarter"
+#persistent ; keep the script running
+#singleinstance Force ; starting the application again will close any existing version of it
+
+APPDATA := A_AppData "\RegnumStarter" ; set the APPDATA folder
 global APPDATA
-BASE_URL = http://www.cor-forum.de/regnum/schnellstarter/
+
+BASE_URL = https://cor-forum.de/regnum/schnellstarter/
+
+rs_version_release = 5.2.2-1
+
 SetWorkingDir, %A_ScriptDir%
 OnError("ErrorFunc")
 gosub, checkAppdata
 gosub, readUserConfig
-gosub, checkLanguage
+;gosub, checkLanguage
 gosub, setTranslations
 try menu, tray, icon, %APPDATA%/rsicon.ico
 coordmode,mouse,screen
@@ -15,10 +20,23 @@ gosub, readServerConfig ; servers and referers
 goSub, readUsers
 iniread, server_version, %APPDATA%/serverConfig.txt, version, version, -1
 iniread, rs_version, %APPDATA%/serverConfig.txt, version, rs_version, -1
+iniread, rs_news_version, %APPDATA%/serverConfig.txt, version, rs_news_version, -1
+iniread, rs_changelog_version, %APPDATA%/serverConfig.txt, version, rs_changelog_version, -1
 iniread, autopatch_server, %APPDATA%/serverConfig.txt, general, autopatch_server
-rs_version_release = v2.2.0
-gosub, make_gui
+gosub, gui_main
 
+#Include %A_ScriptDir%\lib\core\sendAnalytics.ahk
+
+;	// INC_SCR remove window border
+#Include %A_ScriptDir%\lib\removeRegnumWindowBorder.ahk
+
+;	// INC_SCR try to automatically detect the language
+;#Include %A_ScriptDir%\locales\checkLanguage.ahk
+
+;	// INC_SCR include translations snippet
+#Include %A_ScriptDir%\locales\translations.ahk
+
+;	// RegnumStarter is running from shortcut
 argc = %0%
 if(argc >= 4) {
 	; program is being run from a shortcut: run game & exit
@@ -35,40 +53,31 @@ if(argc >= 4) {
 	run_runas_name = %6%
 	run_runas_pw = %7%
 	gosub run
-	
-	exitapp
+	;SetTimer, ExitAfterQuicklaunch, 3
 }
-tooltip, % T.CHECKING_UPDATES
-settimer, updateServerConfig, -10 ; todo .. ? - do not block the gui
-tooltip
 
+ExitAfterQuicklaunch(){
+	Global
+ExitApp
+Return
+}
+
+;	// RegnumStarter Update Check ToolTip
+ToolTip, % T.CHECKING_UPDATES
+SetTimer, updateServerConfig, -10
+SetTimer, sendAnalyticsOnStart, -10
+
+
+ToolTip
 OnExit, ExitSub
 
 return
-; //
-checkAppdata:
-	if(!fileexist(APPDATA)) {
-		FileCreateDir, %APPDATA%
-		if(errorlevel) {
-			msgbox, % "Couldn't create " APPDATA " folder. Can't startup [" errorlevel "]"
-			exitapp
-		}
-		if(FileExist("data") == "D") {
-			; change from v2.0 to v2.1
-			FileCopy, data\*, %APPDATA%
-		}
-	}
-	for k,v in ["background.png", "icon.png"] {
-		if(!FileExist(APPDATA "/" v)) {
-			tooltip, Downloading %v%...
-			UrlDownloadToFile, %BASE_URL%%v%, %APPDATA%/%v%
-			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
-				; who cares
-			}
-		}
-	}
-return
+; // checkAppdata function
+
+#Include %A_ScriptDir%\lib\core\checkAppdata.ahk
+
 updateServerConfig:
+	ToolTip, % T.CHECKING_UPDATES
 	; synchronously, blocks UI, cannot set timeout, messy when no internet connection
 	; urldownloadtofile, *0 %BASE_URL%serverConfig.txt?disablecache=%A_TickCount%, %APPDATA%/serverConfig.txt
 	; asynchronous (XHR), see https://www.autohotkey.com/docs/commands/URLDownloadToFile.htm#XHR:
@@ -77,6 +86,7 @@ updateServerConfig:
 	serverConfigReq.onreadystatechange := Func("updateServerConfigCallback")
 	serverConfigReq.send()
 return
+
 updateServerConfigCallback() {
 	global
 	if (serverConfigReq.readyState != 4)
@@ -85,13 +95,15 @@ updateServerConfigCallback() {
 		msgbox % T.INVALID_SERVER_CONFIG
 		return
 	}
+	tooltip, Writing Configuration...
 	fileDelete, %APPDATA%/serverConfig.txt
 	fileAppend, % serverConfigReq.responseText, %APPDATA%/serverConfig.txt
 	iniread, rs_version_new, %APPDATA%/serverConfig.txt, version, rs_version, -1 ; in versions < 2.1, this was program_version
+	tooltip
 	; main program update?
 	if(rs_version > -1 && rs_version_new > rs_version) { ; is not first program start and update
 		iniread, rs_update_info, %APPDATA%/serverConfig.txt, version, rs_update_info, -1
-		for k,f in [ "RegnumStarter.ahk", "RegnumStarter.exe" ] {
+		for k,f in [ "RegnumStarter.exe"] {
 			tooltip, New update found. Downloading %f%_new...
 			urldownloadtofile, *0 %BASE_URL%%f%, %f%_new
 			if(errorlevel)
@@ -103,24 +115,22 @@ updateServerConfigCallback() {
 		fc=
 		tooltip
 		updateBat =
-(
-Del RegnumStarter.ahk
-Del RegnumStarter.exe
-Rename RegnumStarter.ahk_new RegnumStarter.ahk
-Rename RegnumStarter.exe_new RegnumStarter.exe
-%A_ScriptFullPath%
-Del `%0
-)
+			(
+			Del RegnumStarter.exe
+			Rename RegnumStarter.exe_new RegnumStarter.exe
+			%A_ScriptFullPath%
+			Del `%0
+			)
 		filedelete, update.bat
 		fileAppend, %updateBat%, update.bat
 		if(errorlevel)
 			gosub autoUpdateFailed
 		msgbox, ,RegnumStarter - Update, % T.NEW_UPDATE_DOWNLOADED "`n`n" rs_update_info
-		run, update.bat,, hide
+		run, update.bat,, ;hide
 		onExit
 		exitapp
 	}
-	
+
 	; otherwise, metaupdate?
 	iniread, server_version_new, %APPDATA%/serverConfig.txt, version, version, -1
 	if(server_version_new == -1) {
@@ -132,13 +142,26 @@ Del `%0
 			msgbox, ,RegnumStarter - Metaupdate, % T.SERVERS_PUBLISHERS_UPDATED
 		reload
 	}
+	; otherwise, news update?
+	iniread, rs_news_version_new, %APPDATA%/serverConfig.txt, version, rs_news_version, -1
+	if(rs_news_version_new == -1) {
+		msgbox, % T.INVALID_SERVER_CONFIG
+		exitapp
+	}
+	;if(rs_news_version_new > rs_news_version) {
+;		Tooltip, moin
+		;urldownloadtofile, %BASE_URL%/ronews.txt, %APPDATA%/ronews.txt
+;		if(rs_news_version > -1)
+;			msgbox, ,RegnumStarter - News Update, News Updated!
+;		reload
+;	}
 }
+
 autoUpdateFailed:
 	msgbox % errorlevel " " T.AUTO_UPDATE_FAILED "`n`n" update_info
 	tooltip
 	fc=
 	filedelete updateBat
-	filedelete RegnumStarter.ahk_new
 	filedelete RegnumStarter.exe_new
 exit
 ; //
@@ -158,6 +181,7 @@ patchLiveGamefile(file) {
 	tooltip
 	return true
 }
+
 updateGamefiles:
 	launcherini := regnum_path "ROLauncher.ini"
 	iniread, current_win64, %launcherini%, build, win64
@@ -187,7 +211,7 @@ updateGamefiles:
 			necessaryLiveFiles.Push("steam_api64.dll") ; the only file with a different name in 64 bit mode...
 		else
 			necessaryLiveFiles.Push("steam_api.dll")
-		;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
+			;unnecessaryLiveFiles := [ "current_build", "dbghelp.dll", "libbz2.dll", "libjpeg62.dll", "libpng13.dll", "libtheora.dll", "libzip.dll", "ngdlogo.png", "ogg.dll", "readme.txt", "resources", "splash_ngd.ogg", "steamclient.dll", "Steam.dll", "tier0_s.dll", "vorbis.dll", "vorbisfile.dll", "vstdlib_s.dll", "zlib1.dll" ] ; all the waste the normal launcher downloads but is actually not needed
 		for k,file in necessaryLiveFiles {
 			if(!patchLiveGamefile(file)) {
 				FileDelete, %live%ROClientGame.exe ; so downloadAll will surely be true next time
@@ -198,16 +222,19 @@ updateGamefiles:
 		msgbox
 		gosub startGame
 	} else {
-		; Check if update available, then download and overwrite those files that might contain changes
-		tooltip, % T.CHECKING_GAME_UPDATES
-		
-		; Async: Will start game afterwards
-		add := win64 ? "64" : ""
-		gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
-		gameHeadReq := ComObjCreate("Msxml2.XMLHTTP")
-		gameHeadReq.open("HEAD", gameHeadUrl, true)
-		gameHeadReq.onreadystatechange := Func("updateGamefilesCallback")
-		gameHeadReq.send()
+		;; Check if update available, then download and overwrite those files that might contain changes
+		;tooltip, % T.CHECKING_GAME_UPDATES
+;
+		;; Async: Will start game afterwards
+		;add := win64 ? "64" : ""
+		;gameHeadUrl := autopatch_server "/autopatch/autopatch_files" add "_rgn/ROClientGame.exe?nocache&disablecache=" A_TickCount
+		;gameHeadReq := ComObjCreate("Msxml2.XMLHTTP")
+		;;gameHeadReq.setTimeouts(5000, 5000, 1000, 1000)
+		;RunWait, gameHeadReq.open("GET", gameHeadUrl, true), 1000
+		;gameHeadReq.onreadystatechange := Func("updateGamefilesCallback")
+		;gameHeadReq.send()
+		gosub startGame
+		gui, 1:-disabled
 	}
 return
 
@@ -283,6 +310,9 @@ return
 readUserConfig:
 	; name: defaultvalue
 	configEntries := { language: a_space
+		, language: "eng"
+		, rs_delete_tmp_files: 0
+		, rs_close_on_login: 0
 		, selected_user: 1
 		, selected_server: 1
 		, skip_logo: 1
@@ -295,6 +325,7 @@ readUserConfig:
 		, ingame_log: 1
 		, vg_fullscreen_mode: 0
 		, vg_vertical_sync: 1
+		, reg_vg_gui_skin: 1
 		, screenshot_quality: 1
 		, screenshot_autosave: 1
 		, cl_update_all_resources: 0
@@ -302,16 +333,19 @@ readUserConfig:
 		, cl_show_subclass_on_players: 0
 		, cl_show_hidden_armors: 0
 		, cl_invert_selection_priority: 0
+		, cl_disable_terrain_loading: 0
+		, cl_terrain_load_radius: 4
 		, dbg_ignore_server_time: 0
-		, env_weather: clear
+		, env_weather: "clear"
 		, debug_mode: 0
 		, hide_window_border:0
 		, regnum_path: "C:\Games\NGD Studios\Champions of Regnum\"
 		, runas: 0
 		, runas_name: a_space
 		, runas_pw: a_space
-		, PosGuiX: -1
-		, PosGuiY: -1
+		;, PosGuiX: -1
+		;, PosGuiY: -1
+		, close_on_run: 1
 		, shortcut_last: a_space }
 	for k,default in configEntries {
 		%k% := config_read(k, default)
@@ -320,6 +354,10 @@ return
 writeUserConfig:
 	if(selected_server=="")
 		selected_server := 1
+	if(reg_vg_gui_skin=="")
+		reg_vg_gui_skin := 1
+	if(cl_terrain_load_radius=="")
+		cl_terrain_load_radius := 4
 	for k,v in configEntries {
 		config_write(k, %k%)
 	}
@@ -351,7 +389,15 @@ return
 ; ///
 
 guiClose:
+goSub clearAppdata
+goSub clearTmpAppdata
 exitapp
+
+writeAllConfigs:
+	gui,submit,nohide
+	goSub writeUsers
+	goSub writeUserConfig
+return
 
 ExitSub:
 	gui,submit,nohide
@@ -433,226 +479,15 @@ empty(v) {
 	return false
 }
 
-; //////////////////////////////////
-make_gui:
-	SysGet, CBW, 71
-	SysGet, CBH, 72
-	cbw -= 2
-	cbh  -= 2
-	
-	Gui, Color, EEAA99
-	Gui +LastFound
-	WinSet, TransColor, EEAA99
-	
-; 	// background image	
-	gui, add, picture, x0 y0, %APPDATA%\background.png
+#Include %A_ScriptDir%\gui\gui_main.ahk
 
-;	// Window title
-	Gui, Font, s10 bold cD8D8D8, Verdana
-	gui, add, text, x240 center y7 w120 h25 backgroundtrans, RegnumStarter
-	
-;	// version number
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x500 center y10 w120 h25 backgroundtrans, v3.0.0-rc3
-;	Gui, add, link, x400 center y10 w87 h14 backgroundtrans, <a href="https://www.cor-forum.de/index.php?page=Thread&threadID=811">Help / Discussion</a>
-	
-; 	// login button
-	Gui, Font, s10 bold, Verdana
-	gui, add, button, w140 h35 x490 y290 glogin, % T.LOGIN
-	Gui, Font, s7 c000000, Verdana
+#Include %A_ScriptDir%\gui\settings.ahk
 
-; 	// user selection
-	gui, add, dropdownlist, x500 y240 w120 vselected_user altsubmit
-	goSub updateUserlist
+#Include %A_ScriptDir%\gui\accounts.ahk
 
-; 	// account management
-	gui, add, button, x400 y245 w80 h35 gaccounts_edit, % T.MANAGE_ACCOUNTS
+#Include %A_ScriptDir%\gui\notes.ahk
 
-; 	// graphic settings
-;	gui, add, button, x300 y150 h40 w80 ggraphic_settings, % T.GRAPHIC_SETTINGS
-
-; 	// server selection
-	gui, add, dropdownlist, x500 y265 w120 vselected_server altsubmit
-	gosub updateServerlist
-
-;	// create shortcut
-	Gui, Font, s6 c000000, Verdana
-	gui, add, button, w80 h35 x400 y290 gshortcutCreate, % T.CREATE_SHORTCUT
-
-;	// window resolution
-	Gui, Font, s7 norm cD8D8D8, Verdana
-	gui, add, text, x220 y260 backgroundtrans, % T.WINDOW_RESOLUTION ":"
-	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x225 y275 w42 h18 limit4 center number -multi vwidth, %width%
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x270 y275 backgroundtrans, x
-	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x280 y275 w42 h18 limit4 center number -multi vheight, %height%
-	
-
-
-;	// regnum path
-	Gui, Font, s8 bold cD8D8D8, Verdana
-	gui  add, text, backgroundtrans x10 y30, % T.REGNUM_PATH ":"
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x10 w300 r2 y50 backgroundtrans vregnum_path, %regnum_path%
-	Gui, Font, s7 c000000 norm, Verdana
-	gui, add, button, x150 w80 y30 gpath_edit, % T.CHANGE
-
-	Gui, Font, s8 c000000, Verdana
-
-;	// hide NGD intro
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y110 checked%skip_logo% backgroundtrans vskip_logo
-	gui, add, text, x+3 yp backgroundtrans, % T.DELETE_SPLASH
-
-;	// screenshot quality
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y130 checked%screenshot_quality% backgroundtrans vscreenshot_quality
-	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_QUALITY
-
-;	// screenshot autosave
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y150 checked%screenshot_autosave% backgroundtrans vscreenshot_autosave
-	gui, add, text, x+3 yp backgroundtrans, % T.SCREENSHOT_AUTOSAVE
-
-;	// cl_update_all_resources
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y170 checked%cl_update_all_resources% backgroundtrans vcl_update_all_resources
-	gui, add, text, x+3 yp backgroundtrans, % T.UPDATE_ALL_RES
-
-;	// debug mode
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, w%CBW% h%CBH% x10 y190 checked%debug_mode% backgroundtrans vdebug_mode
-	gui, add, text, x+3 yp backgroundtrans, % "debug mode (experimental)"
-
-;	// change 64bit mode
-	gui, add, checkbox, w%CBW% h%CBH% x10 y70 checked%win64% backgroundtrans vwin64
-	gui, add, text, x+3 yp backgroundtrans, % T.64BIT_MODE
-	
-;	// hide loading screen	
-	gui, add, checkbox, w%CBW% h%CBH% x10 y90 checked%hide_loading_screen% backgroundtrans vhide_loading_screen
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_LOADING_SCREEN
-
-;	// conjurer mode
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y220 checked%cl_invert_selection_priority% backgroundtrans w%CBW% h%CBH% vcl_invert_selection_priority
-	gui, add, text, x+3 yp backgroundtrans, % T.CONJ_MODE
-
-;	// fullscreen mode
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y200 checked%vg_fullscreen_mode% backgroundtrans w%CBW% h%CBH% vvg_fullscreen_mode
-	gui, add, text, x+3 yp backgroundtrans, % T.FULLSCREEN_MODE
-
-;	// vsync
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x510 y200 checked%vg_vertical_sync% backgroundtrans w%CBW% h%CBH% vvg_vertical_sync
-	gui, add, text, x+3 yp backgroundtrans, % T.VSYNC
-	
-;	// advanced ingame log
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y40 checked%ingame_log% backgroundtrans w%CBW% h%CBH% vingame_log
-	gui, add, text, x+3 yp backgroundtrans, % T.INGAME_LOG
-
-;	// cl_crafting_show_min_level
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y110 checked%cl_crafting_show_min_level% backgroundtrans w%CBW% h%CBH% vcl_crafting_show_min_level
-	gui, add, text, x+3 yp backgroundtrans, % "cl_crafting_show_min_level (experimental)"
-
-;	// cl_show_subclass_on_players
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y90 checked%cl_show_subclass_on_players% backgroundtrans w%CBW% h%CBH% vcl_show_subclass_on_players
-	gui, add, text, x+3 yp backgroundtrans, % "cl_show_subclass_on_players (experimental)"
-
-;	// cl_show_hidden_armors
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y70 checked%cl_show_hidden_armors% backgroundtrans w%CBW% h%CBH% vcl_show_hidden_armors
-	gui, add, text, x+3 yp backgroundtrans, % "cl_show_hidden_armors (experimental)"
-	
-;	// server time and weather
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x400 y150 checked%dbg_ignore_server_time% backgroundtrans w%CBW% h%CBH% vdbg_ignore_server_time
-	gui, add, text, x+3 yp backgroundtrans, % T.WEATHER
-	gui, add, dropdownlist, x510 y150 w70 vserver_time AltSubmit, morning|afternoon|evening|night
-	gui, add, dropdownlist, x590 y150 w50 vweather AltSubmit, clear|rainy|storm
-
-;	// fake net lag
-	gui, add, text, x10 y240 backgroundtrans, % T.NET_FAKE_LAG " (ms)"
-	gui, add, edit, x150 y240 w60 h15 -multi vnet_fake_lag, %net_fake_lag%,
-	
-;	// run as windows user	
-	gui, add, checkbox, x10 y260 checked%runas% w%CBW% h%CBH% grunasGuiToggled vrunas
-	gui, add, text, x+3 y260 backgroundtrans, % T.RUN_AS ":"
-	
-;	// hide window boarder
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-	gui, add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
-
-	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x10 y280 w85 h18 -multi vrunas_name, %runas_name%
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x20 y300 backgroundtrans vgui_runas_name_text, % "Windows " T.USER
-	Gui, Font, s7 c000000, Verdana
-	gui, add, edit, x109 y280 w85 h18 -multi vrunas_pw, %runas_pw%
-	Gui, Font, s7 cD8D8D8, Verdana
-	gui, add, text, x120 y300 backgroundtrans vgui_runas_pw_text, % "Win " T.PASSWORD
-	Gui, Font, s6 cD8D8D8, Verdana
-	gui, add, text, x80 y315 backgroundtrans vgui_runas_required_text, % "(" T.REQUIRED ")"
-	Gui, Font, s7 cD8D8D8, Verdana
-	
-	gosub, runasGuiToggled
-
-;	// language selection. this will change both regnums and regnumstarters language.	
-	Gui, Font, s7 c000000, Verdana
-	gui, add, dropdownlist, x480 y6 w45 vlanguage glanguage_changed, eng|deu|spa
-	gosub, updateLanguageList
-
-
-
-	Gui, Font, s13 bold cD8D8D8, Verdana
-	gui, add, text, x620 backgroundtrans y4 gguiclose, X
-
-	Gui, Margin , 0, 0
-	Gui -Caption
-	if(PosGuiX="" || PosGuiX<0)
-		PosGuiX = center
-	if(PosGuiY="" || PosGuiY<0)
-		PosGuiY = center
-	gui, show, w646 h331 x%PosGuiX% y%PosGuiY%, % T.WINDOW_TITLE " v" rs_version_release
-
-	WinGet, GuiID, ID, A
-
-return
-
-graphic_settings:
-	gui, 1:+disabled
-	Gui, 3:Font, s8 c000000, Verdana
-	gui, 3:add, text, x+40 y+6, % "under development"
-	;	// hide window boarder
-;	Gui, 3:Font, s7 cD8D8D8, Verdana
-;	gui, 3:add, checkbox, x220 y305 checked%hide_window_border% backgroundtrans w%CBW% h%CBH% vhide_window_border
-;	gui, 3:add, text, x+3 yp backgroundtrans, % T.HIDE_WINDOW_BORDER
-	gui, 3:add, button, g3guiok x235, Ok
-	gui, 3:add, button, g3guicancel x180 yp+0 xp+38, Cancel
-	gui, 3:show	
-return
-
-runasGuiToggled:
-	gui,submit,nohide
-	if(runas)
-		wat:="show"
-	else
-		wat:="hide"
-	guicontrol,1:%wat%,runas_name
-	guicontrol,1:%wat%,runas_pw
-	guicontrol,1:%wat%,gui_runas_name_text
-	guicontrol,1:%wat%,gui_runas_pw_text
-	guicontrol,1:%wat%,gui_runas_required_text
-return
-
-language_changed:
-reload
+#Include %A_ScriptDir%\gui\gui7_changelogs.ahk
 
 ; //////
 updateUserlist:
@@ -697,123 +532,12 @@ return
 
 ; //////////////////////////
 
-shortcutCreate:
+;	// load ShortcutCreate
 
-	gui, submit, nohide
-	user := users[selected_user]
-	server := servers[selected_server]
-	
-	fileselectfile, shortcut, S18, % shortcut_last "\" user.name " " server.name " Login", % T.CHOOSE_LINK_DESTINATION_FOR " " user.name " " server.name
-	ifnotinstring, shortcut, \
-		return
-	
-	params := """" user.name """ " user.pw_hashed " " user.referer.token " " server.name " " runas " """ runas_name """ """ runas_pw """"
-	if(a_iscompiled) {
-		exe = "%A_ScriptFullPath%"
-		filecreateshortcut, %exe%, %shortcut%.lnk, %a_workingDir%,% params,, %APPDATA%\icon.png
-	} else {
-		script = "%A_ScriptFullPath%"
-		filecreateshortcut,"%a_ahkpath%", %shortcut%.lnk, %a_workingDir%,% script " " params,, %APPDATA%\icon.png
-	}
-	
-	if(errorlevel) {
-		msgbox, % T.CREATE_LINK_FAILED
-	} else {
-		wat :=  user.name " " user.pw_hashed " " user.referer.name " " server.name
-		if(runas==1)
-			wat .= " " runas_name " " runas_pw
-		msgbox, % T.CREATE_LINK_SUCCESS_FOR ":`n" wat
-	}
-	
-	shortcut_last := shortcut
-	
-return
-
-; ////////////////////////
-
-
-accounts_edit:
-	refererlist =
-	for i,referer in referers {
-		refererlist .= "|" referer.name
-	}
-	placeholder := "   "
-	gui, 1:+disabled
-	Gui, 2:Font, s8 c000000, Verdana
-	gui, 2:add, text, x+40 y+6, % T.NAME "`t`t`t" T.PASSWORD "`t`t" T.PUBLISHER "`t`t" T.COMMENT
-	if(users.Length()==0)
-		users.push(new User())
-	for i,user in users {
-		y := 0 + a_index * 28
-		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, edit, -multi r1 x20 y%y% w130 vname%a_index%, % user.name
-		Gui, 2:Font, s8 c9B0000, Verdana
-		gui, 2:add, edit, -multi r1 x160 y%y% w130 vpw%a_index% password, %placeholder%
-		Gui, 2:Font, s8 c000000, Verdana
-		gui, 2:add, dropdownlist, x300 y%y% w100 vreferer%a_index% altsubmit
-		guicontrol, 2:, referer%a_index%, %refererlist%
-		try 
-			referer := referer_by_token(user.referer.token)
-		catch {
-			referer := referers[1]
-		}
-		guicontrol, 2:choose, referer%a_index%, % referer.name
-		gui, 2:add, edit, -multi r1 x410 y%y% w130 vcomment%a_index%, % user.comment
-	}
-	gui, 2:add, button, ggui2_add x20,Add new account
-	gui, 2:add, text, ggui2_add x30,Passwörter werden LOKAL VERSCHLÜSSELT gespeichert, NICHT auf dem cor-forum.de-Server!
-	gui, 2:add, button, g2guiok x235, Ok
-	gui, 2:add, button, g2guicancel x180 yp+0 xp+38, Cancel
-	gui, 2:show	
-return
-
-gui2_add:
-	gosub 2guiok
-	users.push(new User())
-	gosub accounts_edit
-return
-
-2guiok:
-	gui, 2:submit, nohide
-	; Update users:
-	amnt := users.Length()
-	new_users := Array()
-	loop, % amnt
-	{
-		if(empty(name%a_index%) || empty(referer%a_index%))
-			continue
-		if(pw%a_index% == placeholder) {
-			; no (new) password entered: use new values, but old pw hash
-			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], users[a_index].pw_hashed))
-		} else {
-			; also override pw: generate new pw hash
-			new_users.push(new User(name%a_index%, comment%a_index%, referers[referer%a_index%], , pw%a_index%))
-		}
-	}
-	users := new_users
-	; apply users to gui1:
-	goSub updateUserlist
-	gosub 2guiclose
-return
-
-2guiclose:
-2guicancel:	
-	gui, 1:-disabled
-	gui, 2:destroy
-	winactivate, ahk_id %GUIID%
-return
-3guiok:
-	gui, 3:submit, nohide
-return
-3guicancel:	
-	gui, 1:-disabled
-	gui, 3:destroy
-	winactivate, ahk_id %GUIID%
-return
-; ////////////
 
 login:
 	gosub setupParams
+	goSub writeUserConfig
 	gosub run
 return
 
@@ -831,6 +555,7 @@ run:
 	;	// game path for live and test server
 	live = %regnum_path%LiveServer\
 	test = %regnum_path%TestServer\
+	SetTimer, sendAnalyticsOnLogin, -10
 
 ;	// USER INPUT VALIDATION
 
@@ -854,17 +579,21 @@ run:
 		}
 	}
 
+
+
 	;;;;;;;; GAME.CFG
 
 ;	// set weather (these values seem to be wrong at all)
-if(weather == 1) 
-   env_weather := "clear" 
+if(weather == 1)
+   env_weather := "clear"
 else if (weather == 2)
-   env_weather := "rainy" 
+   env_weather := "rainy"
 else if (weather == 3)
    env_weather := "snow" // existing
 else if (weather == 4)
    env_weather := "thunder" // ?
+
+
 
 ;	// ??
 	gamecfg := regnum_path "game.cfg"
@@ -872,7 +601,24 @@ else if (weather == 4)
 		FileAppend, [Regnum Config File], %gamecfg% ; somehow fixes weird iniwrite behaviour
 		iniwrite, .., %gamecfg%, client, cl_sdb_path ; would otherwise wrongly be set to "." afterwards, when the file is being filled up by the game itself (as apposed to the one included in the installers where it is ".."). For compatibility's sake, set it to ".." here.)
 	}
-
+if(reg_vg_gui_skin == 1){
+   vg_gui_skin := "regnum_default"
+}
+if(reg_vg_gui_skin == 2){
+   vg_gui_skin := "regnum_loadingscreen"
+}
+if(reg_vg_gui_skin == 3){
+   vg_gui_skin := "regnum_mainmenu"
+}
+if(reg_vg_gui_skin == 4){
+   vg_gui_skin := "regnum_mainmenuv2"
+}
+if(reg_vg_gui_skin == 5){
+   vg_gui_skin := "test"
+}
+if(reg_vg_gui_skin == 6){
+   vg_gui_skin := "default"
+}
 ;	// write to regnum game.cfg
 	iniwrite,% run_server.ip,%gamecfg%,server,sv_game_server_host
 	iniwrite,% run_server.port,%gamecfg%,server,sv_game_server_tcp_port
@@ -884,9 +630,13 @@ else if (weather == 4)
 	iniwrite,% cl_invert_selection_priority,%gamecfg%,client,cl_invert_selection_priority
 	iniwrite,% cl_crafting_show_min_level,%gamecfg%,client,cl_crafting_show_min_level
 	iniwrite,% cl_show_subclass_on_players,%gamecfg%,client,cl_show_subclass_on_players
+	iniwrite,% cl_disable_terrain_loading,%gamecfg%,client,cl_disable_terrain_loading
+	iniwrite,% cl_terrain_load_radius,%gamecfg%,client,cl_terrain_load_radius
 	iniwrite,% width,%gamecfg%,video_graphics,vg_screen_width
 	iniwrite,% height,%gamecfg%,video_graphics,vg_screen_height
 	iniwrite,% vg_fullscreen_mode,%gamecfg%,video_graphics,vg_fullscreen_mode
+	iniwrite,% vg_vertical_sync,%gamecfg%,video_graphics,vg_vertical_sync
+	iniwrite,% vg_gui_skin,%gamecfg%,video_graphics,vg_gui_skin
 	iniwrite,% dbg_ignore_server_time,%gamecfg%,debug,dbg_ignore_server_time
 	iniwrite,% env_weather,%gamecfg%,general,env_weather
 	iniwrite,% env_time_of_day,%gamecfg%,general,env_time_of_day
@@ -894,15 +644,17 @@ else if (weather == 4)
 
 ;	// set time env in HOURS (24h)
 if(dbg_ignore_server_time == 1)  {
-	if(server_time == 1) 
-	   env_time_of_day := "8" 
+	if(server_time == 1)
+	   env_time_of_day := "8"
 	else if (server_time == 2)
-	   env_time_of_day := "13" 
+	   env_time_of_day := "13"
 	else if (server_time == 3)
 	   env_time_of_day := "18"
 	else if (server_time == 4)
 	   env_time_of_day := "1"
 	}
+
+
 
 ;	// set screenshot quality to 100 percent and save as png. default is jpg and 80 percent.
 if(screenshot_quality)  {
@@ -965,17 +717,30 @@ else {
 	    iniwrite, 0, %gamecfg%, debug, dbg_terrain_manager
 	}
 
-;	// remove NGD intro
+;	// remove NGE intro
 
-	if(skip_logo==1) {
+	if(skip_logo) {
 		filedelete, %live%splash.ngz
 		filedelete, %live%splash_ngd.ogg
-		filedelete, %live%splash_gmg.png
+		filedelete, %live%splash_nge.png
 		filedelete, %live%splash.ngz
-		filedelete, %live%splash_ngd.ogg
-		filedelete, %live%splash_gmg.png
+		filedelete, %live%splash_nge.ogg
 	}
-	
+	else{
+			for k,v in ["splash_nge.ogg","splash_nge.png"] {
+		if(!FileExist(LIVE "/" v)) {
+			tooltip, Downloading NGE Splash
+			UrlDownloadToFile, %BASE_URL%%v%, %live%/%v%
+			;tooltip ; fix to remove the tooltip
+			if(errorlevel) { ; note: no error will be detected when response is an error message like 404
+				; who cares
+			}
+
+		}
+	}
+	}
+
+
 	if run_runas = 1
 	{
 		if(empty(run_runas_name) || empty(run_runas_pw)) {
@@ -986,7 +751,7 @@ else {
 	}
 	else
 		runas
-	
+
 	;	// CHECK / DOWNLOAD / UPDATE LIVESERVER (async)
 
 	gui, 1:+disabled
@@ -995,14 +760,13 @@ return
 
 ; // The game will now start
 startGame:
-
+gui, 1:-disabled
 	;;;;;;;; REMOVE WINDOW BORDER OPTION
 
 	if(hide_window_border)
 		settimer, removeRegnumWindowBorder, -1000
-
 ;	// run the regnum client
-	 
+
 	if(run_server.name == "Amun") {
 		runwait, % """" test "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %test%, UseErrorLevel
 	}
@@ -1010,10 +774,15 @@ startGame:
 	{
 		runwait, % """" live "ROClientGame.exe" """" " " run_user.name " " run_user.pw_hashed, %live%, UseErrorLevel
 	}
+	if(rs_close_on_login == 1){
+		SetTimer, guiClose, -1000
+		;gguiClose,
+	}
 	if(errorlevel == "ERROR") {
 		msgbox, % T.RUN_ERROR
 		return
 	}
+
 
 ;	// prompt log.txt connection error
 
@@ -1034,7 +803,7 @@ startGame:
 			{
 				msgbox  % T.CONNECTION_ERROR_USER_ALREADY_LOGGED_IN
 			}
-			else 
+			else
 				msgbox % "Regnum connection error: `n" connection_error
 		}
 	}
@@ -1042,225 +811,7 @@ startGame:
 
 return
 
-;	// remove window border
 
-removeRegnumWindowBorder:
-	WinWaitActive, ahk_class Regnum,,3
-	WinSet, style, -0xC00000, ahk_class Regnum
-return
-
-;	// try to automatically detect the language
-
-checkLanguage:
-	while(empty(language)) {
-		InputBox, language, Language - Sprache - Idioma, Please select a language - Bitte wähle eine Sprache - Por favor elija un idioma.`n`neng deu spa,,,,,,,, deu
-		if(RegExMatch(language, "i)de|ger"))
-			language = deu
-		else if(RegExMatch(language, "i)en|usa|gb"))
-			language = eng
-		else if(RegExMatch(language, "i)es|sp|ar"))
-			language = spa
-		else {
-			msgbox, Failed to detect language.`n`nKonnte Sprache nicht erkennen.`n`nNo entendió el lenguaje.
-			language =
-		}
-	}
-return
-
-;	// translations
-
-setTranslations:
-translations := []
-translations["WEATHER"] := { deu: "Eigene Tageszeit"
-	, eng: "Custom daytime"
-	, spa: "Custom daytime" }
-translations["GRAPHIC_SETTINGS"] := { deu: "Grafik-`neinstellungen"
-	, eng: "Graphic Settings"
-	, spa: "Graphic Settings" }
-	translations["INGAME_LOG"] := { deu: "Ausführlicher Kampflog"
-	, eng: "Advanced combat log"
-	, spa: "Advanced combat log" }
-translations["CONJ_MODE"] := { deu: "Healbeschi-Modus"
-	, eng: "healconj mode"
-	, spa: "healconj mode" }
-translations["SCREENSHOT_QUALITY"] := { deu: "Screenshots in höchster Qualität"
-	, eng: "High Quality Screenshots"
-	, spa: "High Quality Screenshots" }
-translations["SCREENSHOT_AUTOSAVE"] := { deu: "Screenshots automatisch speichern"
-	, eng: "Auto-Save Screenshots"
-	, spa: "Auto-Save Screenshots" }
-translations["WEATHER_CLEAR"] := { deu: "Klar"
-	, eng: "Clear"
-	, spa: "Clear" }
-translations["WEATHER_RAINY"] := { deu: "Regnerisch"
-	, eng: "Rainy"
-	, spa: "Rainy" }
-translations["WEATHER_CLEAR"] := { deu: "Schnee"
-	, eng: "Snow"
-	, spa: "Snow" }
-translations["WINDOW_TITLE"] := { deu: "RegnumStarter"
-	, eng: "RegnumStarter"
-	, spa: "RegnumStarter" }
-translations["CHECKING_UPDATES"] := { deu: "Überprüfe auf neue RegnumStarter Updates..."
-	, eng: "Checking for RegnumStarter updates..."
-	, spa: "Comprobando actualizaciones de RegnumStarter" }
-translations["SERVERS_PUBLISHERS_UPDATED"] := { deu: "Liste der Server und Publisher wurde erfolgreich aktualisiert."
-	, eng: "List of servers and publishers updated successfully."
-	, spa: "Lista de servidores y editores actualizados con éxito." }
-translations["NEW_UPDATE_DOWNLOADED"] := { deu: "Ein neues Update für den RegnumStarter wurde automatisch heruntergeladen und wird jetzt als RegnumStarter.exe bzw. RegnumStarter.ahk die aktuelle Version ersetzen. Änderungen:"
-	, eng: "A new Update has been downloaded automatically and will now replace the current one as RegnumStarter.exe / RegnumStarter.ahk. Changelog:"
-	, spa: "Una nueva actualización se ha descargado automáticamente y ahora reemplazará la actual como RegnumStarter.exe / RegnumStarter.ahk. Registro de cambios:" }
-translations["AUTO_UPDATE_FAILED"] := { deu: "Das neue Update für den RegnumStarter konnte nicht automatisch heruntergeladen werden! Du kannst die neue Version aber manuell herunterladen. Hier ist der Changelog:"
-	, eng: "Error when trying to download and apply the auto-update for RegnumStarter! You can still download it manually. This is the changelog:"
-	, spa: "¡Error al intentar descargar y aplicar la actualización automática para RegnumStarter! Todavía puedes descargarlo manualmente. Este es el registro de cambios:" }
-translations["CHECKING_GAME_UPDATES"] := { deu: "Checke Spielversion..."
-	, eng: "Checking Game Version..."
-	, spa: "Revisando la versión del juego ..." }
-translations["NOTICED_NEW_UPDATE"] := { deu: "Neues Regnum Update erkannt: Der RegnumStarter wird jetzt die Spieldateien aktualisieren."
-	, eng: "New Regnum Update: RegnumStarter will now update the game files."
-	, spa: "Nueva actualización de Regnum: RegnumStarter ahora actualizará los archivos del juego." }
-translations["FAILED"] := { deu: "fehlgeschlagen"
-	, eng: "failed"
-	, spa: "ha fallado" }
-translations["UPDATING_FINISHED"] := { deu: "Updateprozess abgeschlossen."
-	, eng: "Update completed."
-	, spa: "Actualización completada." }
-translations["EMPTY"] := { deu: "leer"
-	, eng: "empty"
-	, spa: "vacío" }
-translations["LOGIN"] := { deu: "Login"
-	, eng: "Login"
-	, spa: "Iniciar sesión" }
-translations["MANAGE_ACCOUNTS"] := { deu: "Accounts verwalten"
-	, eng: "Manage Accounts"
-	, spa: "Cuentas de administración" }
-translations["64BIT_MODE"] := { deu: "64bit-Client starten (experimentell)"
-	, eng: "start 64bit-Client (experimental)"
-	, spa: "start 64bit-Client (experimental)" }
-translations["PUBLISHER"] := { deu: "Publisher"
-	, eng: "Publisher"
-	, agt: "hzi"
-	, spa: "Referente" }
-translations["CREATE_SHORTCUT"] := { deu: "Direktlink erstellen"
-	, eng: "Create Shortcut"
-	, spa: "Crear acceso directo" }
-translations["DELETE_SPLASH"] := { deu: "NGD-Intro ausblenden"
-	, eng: "Hide NGD-Intro"
-	, spa: "Ocultar NGD-Intro" }
-translations["HIDE_LOADING_SCREEN"] := { deu: "Ladescreen ausblenden"
-	, eng: "Hide Loading Screen"
-	, spa: "Ocultar pantalla de carga" }
-translations["HIDE_WINDOW_BORDER"] := { deu: "Fensterrahmen ausblenden"
-	, eng: "Hide window border"
-	, spa: "Ocultar el borde de la ventana" }
-translations["WINDOW_RESOLUTION"] := { deu: "Fenster-Auflösung"
-	, eng: "Screen Resolution"
-	, spa: "Resolución de la pantalla" }
-translations["REGNUM_PATH"] := { deu: "Spiel-Ordner"
-	, eng: "Game Folder"
-	, spa: "Carpeta de juego" }
-translations["FULLSCREEN_MODE"] := { deu: "Vollbildmodus"
-	, eng: "Fullscreen mode"
-	, spa: "Fullscreen mode" }
-translations["VSYNC"] := { deu: "vSync aktivieren"
-	, eng: "Enable vSync"
-	, spa: "Enable vSync" }
-translations["CHANGE"] := { deu: "ändern"
-	, eng: "change"
-	, spa: "cambio" }
-translations["RUN_AS"] := { deu: "Als anderer Win-Nutzer ausführen"
-	, eng: "Run as other windows user"
-	, spa: "ejecutar como otro usuario de Windows" }
-translations["USER"] := { deu: "Nutzer"
-	, eng: "User"
-	, spa: "Usuario" }
-translations["PASSWORD"] := { deu: "Passwort"
-	, eng: "Password"
-	, spa: "Contraseña" }
-translations["REQUIRED"] := { deu: "erforderlich"
-	, eng: "required"
-	, spa: "necesario" }
-translations["NET_FAKE_LAG"] := { deu: "Künstliche Latenz"
-	, eng: "Emulate latency"
-	, spa: "Emulate latency" }
-translations["SELECT_PATH"] := { deu: "Der Speicherort für die Spieldateien wurde nicht korrekt konfiguriert!"
-	, eng: "Path to Game Installation has not been configured!"
-	, spa: "Ruta de instalación del juego no se ha configurado!" }
-translations["CHOOSE_LINK_DESTINATION_FOR"] := { deu: "Wähle den Speicherort für die Verknüpfung für aus"
-	, eng: "Select where to create the Shortcut"
-	, spa: "Seleccione dónde crear el atajo" }
-translations["CREATE_LINK_FAILED"] := { deu: "Erstellung der Verknüpfung war nicht erfolgreich."
-	, eng: "Couldn't create shortcut."
-	, spa: "No se pudo crear el acceso directo." }
-translations["CREATE_LINK_SUCCESS_FOR"] := { deu: "Erstellung des Direktlinks erfolgreich für"
-	, eng: "Creation of direct link successfull for"
-	, spa: "Creación de enlace directo exitoso para" }
-translations["NAME"] := { deu: "Name"
-	, eng: "Name"
-	, spa: "Nombre" }
-translations["COMMENT"] := { deu: "Notiz"
-	, eng: "Note"
-	, spa: "Nota" }
-translations["PATH_INVALID"] := { deu: "Regnum-Ordnerpfad ungültig!"
-	, eng: "Invalid Regnum-Path!"
-	, spa: "Ruta de registro no válida!" }
-translations["NO_CFG_FOUND"] := { deu: "keine game.cfg gefunden"
-	, eng: "game.cfg not found"
-	, spa: "game.cfg no encontrado" }
-translations["CFG_TOO_SMALL"] := { deu: "game.cfg gefunden, aber kleiner als 0.5 kB"
-	, eng: "game.cfg was found, but it's smaller than 0.5 kB"
-	, spa: "Se encontró game.cfg, pero es más pequeño que 0.5 kB" }
-translations["CHOOSE_RESOLUTION"] := { deu: "Bitte wähle eine Bildschirm-Auflösung!"
-	, eng: "Please choose a screen resolution!"
-	, spa: "Por favor, elija una resolución de pantalla!" }
-translations["NO_SUCH_SERVER"] := { deu: "Server nicht vorhanden"
-	, eng: "Server not found"
-	, spa: "Servidor no encontrado" }
-translations["NO_SUCH_PUBLISHER"] := { deu: "Publisher nicht vorhanden"
-	, eng: "Publisher not found"
-	, spa: "Editor no encontrado" }
-translations["UPDATE_ALL_RES"] := { deu: "Alle Spielinhalte auf einmal aktualisieren"
-	, eng: "Update all resources at once"
-	, spa: "Update all resources at once" }
-translations["NO_ACCOUNT_CHOSEN"] := { deu: "Du hast keinen Account ausgewählt! Wähle zuerst 'Accounts verwalten' aus!"
-	, eng: "You didn't select any account! Go to 'Manage Accounts' first!"
-	, spa: "¡No seleccionaste ninguna cuenta! Vaya a 'Administrar cuentas' primero!" }
-translations["TEST_GAME_MISSING"] := { deu: "TestServer\ROClientGame.exe fehlt (Amun-Integration ist experimental)"
-	, eng: "TestServer\ROClientGame.exe missing (Amun-Integration is experimental)"
-	, spa: "Falta TestServer\ROClientGame.exe (Amun-Integration es experimental)" }
-translations["LIVE_GAME_MISSING"] := { deu: "Keine Spieldaten im angegeben Ordner gefunden"
-	, eng: "No game files found in the specified folder"
-	, spa: "No se encontraron archivos del juego en la carpeta especificada" }
-translations["DOWNLOAD_LIVE_GAME_NOW"] := { deu: "Soll das Spiel jetzt dorthin heruntergeladen werden? Das dauert nicht lange.`n`nWenn die Logindaten stimmen, wird das Spiel danach starten. Dann werden lange Zeit Resourcen heruntergeladen werden. Das ist ganz normal: Alle Texturen, die normalerweise im Installer enthalten sind, müssen vom Spiel noch nachgeladen werden, sobald es gestartet ist."
-	, eng: "Shall we download the game to this folder now? This doesn't take long.`n`nIf the login succeeds, Regnum will start downloading all game files which may take a long time. This is totally normal: All textures, which are normally included with the installer, need to be downloaded, once it has started."
-	, spa: "¿Descarguemos el juego a esta carpeta ahora? Esto no lleva mucho tiempo.`n`nSi el inicio de sesión se realiza correctamente, Regnum comenzará a descargar todos los archivos del juego, lo que puede llevar algún tiempo. Esto es totalmente normal: todas las texturas, que normalmente se incluyen con el instalador, deben descargarse." }
-translations["64_BIT_CHANGED"] := { deu: "64-bit-Modus wurde geändert. Deshalb werden jetzt ein paar Dateien aktualisiert. Fortfahren?"
-	, eng: "64-bit mode was changed. Thus, some files will be updated. Continue?"
-	, spa: "Se cambió el 64-bits-modo. Así, algunos archivos serán actualizados. ¿Continuar?" }
-translations["EMPTY_WINDOWS_CREDENTIALS"] := { deu: "Windowsnutzer-Daten müssen deaktiviert oder ausgefüllt sein!"
-	, eng: "Please fill out your windows login details or disable the usage of another windows user."
-	, spa: "Complete los detalles de inicio de sesión de Windows o deshabilite el uso de otro usuario de Windows." }
-translations["RUN_ERROR"] := { deu: "Konnte ROClientGame.exe nicht starten! Falsche Win-Nutzer-Daten oder fehlende Berechtigung?"
-	, eng: "Couldn't start ROClientGame.exe! Wrong windows login data or missing permissions?"
-	, spa: "No se pudo iniciar ROClientGame.exe! Datos de inicio de sesión incorrectos de Windows o permisos perdidos" }
-translations["CONNECTION_ERROR_USER_NOT_FOUND"] := { deu: "Logindaten falsch:`nFalschen Username, falsches Passwort oder falschen Publisher für diesen Account angegeben."
-	, eng: "Wrong credentials:`nWrong username, wrong password or wrong publisher configured for this account."
-	, spa: "Credenciales incorrectas: nombre de usuario `nWrong, contraseña incorrecta o editor incorrecto configurado para esta cuenta." }
-translations["CONNECTION_ERROR_USER_IS_DISABLED"] := { deu: "Accountdaten korrekt, aber der Account ist entweder`n`n1. ...nicht autorisiert: Hierfür bitte einmalig den normalen, offiziellen Launcher benutzen (Spiel betreten nicht notwendig, nur Autorisierung). Oder`n`n2. ...gebannt" ; todo right?
-	, eng: "Credentials are correct, but the account is either`n`n1. ...not authorized. To solve this, please for once use the normal, official Regnum Launcher (no need to actually enter the game, just authorize it). Or`n`n2. ...banned"
-	, spa: "Las credenciales son correctas, pero la cuenta es o bien `n`n1. ...no autorizado. Para resolver esto, por favor, por una vez, utilice el Regnum Launcher normal y oficial (no es necesario que ingrese al juego, solo autorícelo). O`n`n2. ... prohibido" }
-translations["CONNECTION_ERROR_USER_ALREADY_LOGGED_IN"] := { deu: "Account bereits eingeloggt!`n(Zwischen zwei Logins mit demselben Account müssen mindestens 5 Sekunden vergangen sein)"
-	, eng: "Account already logged in!`n(Between two logins with the same account there need to have passed 5 seconds at minimum (login cooldown))"
-	, spa: "La cuenta ya ha iniciado sesión. `n (Entre dos inicios de sesión con la misma cuenta debe haber pasado 5 segundos como mínimo (tiempo de reutilización de inicio de sesión))" }
-translations["INVALID_SERVER_CONFIG"] := { deu: "serverConfig.txt enthält nicht lesbare Daten. Vermutlich ist dies dein erster Programmstart und du hast keine Internetverbindung oder der cor-forum.de - Server ist offline / falsch konfiguriert. Bitte versuche es später noch einmal. Bitte melde uns diese Störung auch."
-	, eng: "serverConfig.txt contains invalid data. This is probably your first Quickstarter run and your internet connection or the cor-forum.de is offline / badly configured. Please try again later. Please also contact us if this problem persists."
-	, spa: "serverConfig.txt contiene datos inválidos. Esta es probablemente la primera vez que ejecuta Quickstarter y su conexión a Internet o cor-forum.de está fuera de línea / mal configurada. Por favor, inténtelo de nuevo más tarde. Por favor contáctenos también si este problema persiste." }
-global T := []
-for k,v in translations {
-	T[k] := v[language]
-}
-translations=
-return
 
 ;	// make gui moveable
 ~LButton::
@@ -1294,12 +845,12 @@ WatchMouse:
 GetKeyState, LButtonState, LButton, P
 if LButtonState = U		;	// Button has been released, so drag is complete.
 {
-			wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, Server
-			PosGuiX = %OL_Ecke_GuiX%
-			PosGuiY = %Ol_Ecke_GuiY%
+    wingetpos, OL_Ecke_GuiX, OL_Ecke_GuiY,,,, A
+    PosGuiX = %OL_Ecke_GuiX%
+    PosGuiY = %Ol_Ecke_GuiY%
 	SetTimer, WatchMouse, off
 	errorlevel := errorlevel_safe
-	return
+return
 }
 MouseGetPos, MouseX, MouseY
 DeltaX = %MouseX%
@@ -1316,33 +867,23 @@ WinMove, ahk_id %GuiID%,, %GuiX%, %GuiY%
 errorlevel := errorlevel_safe
 return
 
+DiscordLink:
+Run https://discord.gg/CbYETYc
+return
+
+ForumLink:
+Run https://cor-forum.de
+return
+
+WikiLink:
+Run https://regnum.wiki
+return
+
+OpenScreenshotsFolder:
+Run, explore %regnum_path%\LiveServer\screenshots
+return
+
 ;	// md5 function to securly save account passwords in users.txt
+#Include %A_ScriptDir%\lib\md5.ahk
 
-md5(string)		;	// by SKAN | rewritten by jNizM
-{
-	hModule := DllCall("LoadLibrary", "Str", "advapi32.dll", "Ptr")
-	, VarSetCapacity(MD5_CTX, 104, 0), DllCall("advapi32\MD5Init", "Ptr", &MD5_CTX)
-	, DllCall("advapi32\MD5Update", "Ptr", &MD5_CTX, "AStr", string, "UInt", StrLen(string))
-	, DllCall("advapi32\MD5Final", "Ptr", &MD5_CTX)
-	loop, 16
-		o .= Format("{:02" (case ? "X" : "x") "}", NumGet(MD5_CTX, 87 + A_Index, "UChar"))
-	DllCall("FreeLibrary", "Ptr", hModule)
-	StringLower, o,o
-	return o
-}	;	// https://autohotkey.com/boards/viewtopic.php?f=6&t=21
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#Include %A_ScriptDir%\lib\SimplePing.ahk
