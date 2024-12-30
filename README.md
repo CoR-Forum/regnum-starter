@@ -1,6 +1,11 @@
+> [!IMPORTANT]
+> **This AHK version of RegnumStarter is discontinued: no new features will be added, no fixes or data updates.**
+>
+> **Please see the new RegnumStarter, rewritten in C++, here: https://cor-forum.de/regnumstarter.**
+
 ## -> [Discussion](https://www.cor-forum.de/index.php?page=Thread&threadID=811)
 
-# RegnumStarter v5.1.0 ! - [DOWNLOAD](https://www.cor-forum.de/regnum/schnellstarter/RegnumStarter.exe)
+# RegnumStarter v5
 
 ### Alternative Launcher for [Champions of Regnum](https://www.championsofregnum.com/)
 
